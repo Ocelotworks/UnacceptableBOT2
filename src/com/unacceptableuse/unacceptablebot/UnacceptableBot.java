@@ -4,6 +4,8 @@ import org.pircbotx.hooks.Event;
 import org.pircbotx.hooks.ListenerAdapter;
 import org.pircbotx.hooks.types.GenericMessageEvent;
 
+import com.unacceptableuse.unacceptablebot.handler.CommandHandler;
+
 public class UnacceptableBot extends ListenerAdapter
 {
 

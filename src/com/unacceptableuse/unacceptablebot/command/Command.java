@@ -19,6 +19,12 @@ public abstract class Command
 		
 	}
 	
+	
+	public void sendMessage()
+	{
+		
+	}
+	
 	public abstract String[] getAliases();
 	
 	public Level getAccessLevel()

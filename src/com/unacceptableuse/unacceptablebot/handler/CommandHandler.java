@@ -1,4 +1,4 @@
-package com.unacceptableuse.unacceptablebot;
+package com.unacceptableuse.unacceptablebot.handler;
 
 import java.util.ArrayList;
 
