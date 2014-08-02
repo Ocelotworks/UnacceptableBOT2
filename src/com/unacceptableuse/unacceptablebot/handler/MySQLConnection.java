@@ -20,7 +20,7 @@ public class MySQLConnection
 
 	    Properties p = new Properties();
 	    p.put("user", "root");
-	    p.put("password", "1907");
+	    p.put("password", "");
 
 	    c = DriverManager.getConnection(CONNECTION, p);
 	}

@@ -6,6 +6,7 @@ import org.pircbotx.PircBotX;
 public class Initializer
 {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
+	
 	public Initializer(String username)
 	{
 
@@ -19,11 +20,12 @@ public class Initializer
 						.addAutoJoinChannel("##UBTesting")
 						.buildConfiguration();
 		
-		try{
-		PircBotX bot = new PircBotX(config);
-		
-		bot.startBot();
-		}catch(Exception e)
+		try
+		{
+			PircBotX bot = new PircBotX(config);
+			bot.startBot();
+		}
+		catch(Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -31,7 +33,8 @@ public class Initializer
 		
 	}
 	
-	public static void main(String[] args) throws Exception{
+	public static void main(String[] args) throws Exception
+	{
 		new Initializer("UnacceptableBOT2");
 	}
 }
