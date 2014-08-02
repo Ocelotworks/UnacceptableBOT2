@@ -20,9 +20,9 @@ public abstract class Command
 	}
 	
 	
-	public void sendMessage()
+	public void sendMessage(PircBotX ub, String message)
 	{
-		
+		ub.sendIRC().message(target, message);
 	}
 	
 	public abstract String[] getAliases();
