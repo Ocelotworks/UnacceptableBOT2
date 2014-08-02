@@ -26,7 +26,17 @@ public class CommandHandler
 	
 	public void processMessage(GenericMessageEvent event)
 	{
+		String[] args = event.getMessage().split(" ");
 		
+		Command chosenCommand = getCommand(args[0]);
+		
+		if(chosenCommand == null)
+		{
+			return; //These arn't the commands you are looking for...
+		}else
+		{
+			chosenCommand.performCommand(event.getUser(), event.getMessage().substring(event.getMessage().indexOf(" "), event.getMessage().length()).split(" "), event.getMessage(), event.getBot());
+		}
 	}
 	
 	
