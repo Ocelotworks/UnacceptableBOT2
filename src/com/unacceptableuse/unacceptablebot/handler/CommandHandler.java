@@ -9,16 +9,19 @@ import org.pircbotx.hooks.Event;
 import org.pircbotx.hooks.events.MessageEvent;
 
 import com.unacceptableuse.unacceptablebot.command.Command;
+import com.unacceptableuse.unacceptablebot.command.CommandFillMeIn;
 import com.unacceptableuse.unacceptablebot.command.CommandSql;
 
 public class CommandHandler
 {	
 	public ArrayList<Command> _commands = new ArrayList<Command>();
 	
+	/**Register Commands here!**/
 	public void init()
 	{
 		System.out.println("init m8");
 		addCommand(new CommandSql());
+		addCommand(new CommandFillMeIn());
 	}
 	
 	
@@ -31,7 +34,7 @@ public class CommandHandler
 		PircBotX bot = event.getBot();
 		
 
-		Command chosenCommand = getCommand(message.replaceFirst("!", "").substring(0, message.indexOf(" ")));
+		Command chosenCommand = getCommand(message.replaceFirst("!", "").split(" ")[0]);
 		
 		System.out.println("Chosen Command: " + chosenCommand);
 		
@@ -87,7 +90,7 @@ public class CommandHandler
 	public Command getCommand(String c)
 	{
 		System.out.println("C: " + c);
-		for(Command command : getCommands())
+		for(Command command : _commands)
 		{
 			System.out.println("Command: " + command);
 			for(String s : command.getAliases())
