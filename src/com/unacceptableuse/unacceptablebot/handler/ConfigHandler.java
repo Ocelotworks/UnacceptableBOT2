@@ -8,6 +8,11 @@ public class ConfigHandler
 	 */
 	
 	
+	public void init()
+	{
+		
+	}
+	
 	
 	public boolean getBoolean(String key)
 	{

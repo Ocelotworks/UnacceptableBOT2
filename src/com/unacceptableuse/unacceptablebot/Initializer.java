@@ -22,8 +22,6 @@ public class Initializer
 		
 		try
 		{
-			CommandHandler handler = new CommandHandler();
-			handler.init();
 			PircBotX bot = new PircBotX(config);
 			bot.startBot();
 		}

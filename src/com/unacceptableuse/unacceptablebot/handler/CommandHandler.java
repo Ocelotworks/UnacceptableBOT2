@@ -20,10 +20,7 @@ public class CommandHandler
 	
 	public void processMessage(String message, String target, PircBotX bot)
 	{
-		String[] commandName = message.split("!");
-		String[] args = message.split(" ");
-		
-		Command chosenCommand = new CommandSql();
+		Command chosenCommand = getCommand(message.replaceFirst("!", "").split(" ")[0]);
 		
 		System.out.println("Chosen Command: " + chosenCommand);
 		
