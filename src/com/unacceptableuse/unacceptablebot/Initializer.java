@@ -3,14 +3,14 @@ package com.unacceptableuse.unacceptablebot;
 import org.pircbotx.Configuration;
 import org.pircbotx.PircBotX;
 
+import com.unacceptableuse.unacceptablebot.handler.CommandHandler;
+
 public class Initializer
 {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	
 	public Initializer(String username)
-	{
-
-		
+	{	
 		Configuration config = new Configuration.Builder()
 						.setName(username)
 						.setLogin(username)
@@ -22,6 +22,8 @@ public class Initializer
 		
 		try
 		{
+			CommandHandler handler = new CommandHandler();
+			handler.init();
 			PircBotX bot = new PircBotX(config);
 			bot.startBot();
 		}

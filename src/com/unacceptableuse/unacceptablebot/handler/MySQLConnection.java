@@ -10,7 +10,7 @@ public class MySQLConnection
 {
 	private static final String dbClassName = "com.mysql.jdbc.Driver";
 
-	private static final String CONNECTION = "jdbc:mysql://127.0.0.1/UnacceptableBot";
+	private static final String CONNECTION = "jdbc:mysql://localhost";
 
 	protected Connection c;
 
@@ -25,12 +25,13 @@ public class MySQLConnection
 	    c = DriverManager.getConnection(CONNECTION, p);
 	}
 
-	public String getSetting(String setting)
+	public String getSetting()
 	{
 		try
 		{
-			ResultSet rs = query("SELECT * FROM  Settings.Global_settings WHERE  `Setting` =  '" + setting + "' LIMIT 1");
-			return rs.next() ? rs.getString(2) : null;
+			ResultSet rs = query("SELECT data FROM UnacceptableBot.botTest");
+			System.out.println(rs);
+			return rs.next() ? rs.getString(1) : null;
 		}
 		catch (SQLException e)
 		{

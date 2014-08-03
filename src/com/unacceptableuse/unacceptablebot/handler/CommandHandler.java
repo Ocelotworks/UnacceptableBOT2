@@ -2,40 +2,38 @@ package com.unacceptableuse.unacceptablebot.handler;
 
 import java.util.ArrayList;
 
-import org.pircbotx.hooks.types.GenericMessageEvent;
+import org.pircbotx.PircBotX;
 
 import com.unacceptableuse.unacceptablebot.command.Command;
+import com.unacceptableuse.unacceptablebot.command.CommandSql;
 
 public class CommandHandler
-{
-
-	
-	private ArrayList<Command> _commands = new ArrayList<Command>();
-	
-	public CommandHandler()
-	{
-		
-	}
-	
+{	
+	public ArrayList<Command> _commands = new ArrayList<Command>();
 	
 	public void init()
 	{
-		
+		System.out.println("init m8");
+		addCommand(new CommandSql());
 	}
 	
 	
-	public void processMessage(GenericMessageEvent event)
+	public void processMessage(String message, String target, PircBotX bot)
 	{
-		String[] args = event.getMessage().split(" ");
+		String[] commandName = message.split("!");
+		String[] args = message.split(" ");
 		
-		Command chosenCommand = getCommand(args[0]);
+		Command chosenCommand = new CommandSql();
+		
+		System.out.println("Chosen Command: " + chosenCommand);
 		
 		if(chosenCommand == null)
 		{
 			return; //These arn't the commands you are looking for...
-		}else
+		}
+		else
 		{
-			chosenCommand.performCommand(event.getUser(), event.getMessage().substring(event.getMessage().indexOf(" "), event.getMessage().length()).split(" "), event.getMessage(), event.getBot());
+			chosenCommand.performCommand(target, message.substring(message.indexOf(" "), message.length()).split(" "), message, bot);
 		}
 	}
 	
@@ -80,12 +78,17 @@ public class CommandHandler
 	
 	public Command getCommand(String c)
 	{
+		System.out.println("C: " + c);
 		for(Command command : getCommands())
 		{
+			System.out.println("Command: " + command);
 			for(String s : command.getAliases())
 			{
-				if(s.equalsIgnoreCase(c))
+				System.out.println("S: " + s);
+				if(s.toLowerCase().equals(c))
+				{
 					return command;
+				}
 			}
 		}
 		return null;
