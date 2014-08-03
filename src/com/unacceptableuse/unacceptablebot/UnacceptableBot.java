@@ -26,17 +26,17 @@ public class UnacceptableBot extends ListenerAdapter
 		if(event.getMessage().startsWith("!"))
 		{
 			String channel = event.getChannel().getName();
-			handler.processMessage(event.getMessage(), channel, event.getBot());
+			handler.processMessage(event);
 		}
 	}
 	
 	@Override
 	public void onPrivateMessage(final PrivateMessageEvent event)throws Exception
 	{
-		if(event.getMessage().startsWith("!"))
-		{
-			String user = event.getUser().getNick();
-			handler.processMessage(event.getMessage(), user, event.getBot());
-		}
+//		if(event.getMessage().startsWith("!"))
+//		{
+//			String user = event.getUser().getNick();
+//			handler.processMessage(event);
+//		}
 	}
 }

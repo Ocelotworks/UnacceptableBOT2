@@ -2,7 +2,9 @@ package com.unacceptableuse.unacceptablebot.command;
 
 import java.sql.SQLException;
 
+import org.pircbotx.Channel;
 import org.pircbotx.PircBotX;
+import org.pircbotx.User;
 
 import com.unacceptableuse.unacceptablebot.handler.MySQLConnection;
 import com.unacceptableuse.unacceptablebot.variable.Level;
@@ -15,7 +17,7 @@ public class CommandSql extends Command
 	}
 	
 	@Override
-	public void performCommand(String target, String[] args, String message, PircBotX bot)
+	public void performCommand(User sender, Channel channel, String message, String[] args, PircBotX bot)
 	{
 		MySQLConnection con = new MySQLConnection();
 		try
@@ -26,7 +28,7 @@ public class CommandSql extends Command
 		{
 			e.printStackTrace();
 		}
-		sendMessage(con.getSetting(), target, bot);
+		sendMessage(con.getSetting(), channel.getName(), bot);
 		try
 		{
 			con.disconnect();

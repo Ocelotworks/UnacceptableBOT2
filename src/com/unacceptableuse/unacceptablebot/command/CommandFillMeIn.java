@@ -1,12 +1,13 @@
 package com.unacceptableuse.unacceptablebot.command;
 
+import org.pircbotx.Channel;
 import org.pircbotx.PircBotX;
+import org.pircbotx.User;
 
 public class CommandFillMeIn extends Command {
 
 	@Override
-	public void performCommand(String target, String[] args, String message,
-			PircBotX bot) {
+	public void performCommand(User sender, Channel channel, String message, String[] args, PircBotX bot) {
 		
 		
 	}

@@ -2,7 +2,11 @@ package com.unacceptableuse.unacceptablebot.handler;
 
 import java.util.ArrayList;
 
+import org.pircbotx.Channel;
 import org.pircbotx.PircBotX;
+import org.pircbotx.User;
+import org.pircbotx.hooks.Event;
+import org.pircbotx.hooks.events.MessageEvent;
 
 import com.unacceptableuse.unacceptablebot.command.Command;
 import com.unacceptableuse.unacceptablebot.command.CommandSql;
@@ -18,9 +22,16 @@ public class CommandHandler
 	}
 	
 	
-	public void processMessage(String message, String target, PircBotX bot)
+	public void processMessage(MessageEvent event)
 	{
-		Command chosenCommand = getCommand(message.replaceFirst("!", "").split(" ")[0]);
+		
+		String message = event.getMessage();
+		Channel channel = event.getChannel();
+		User sender = event.getUser();
+		PircBotX bot = event.getBot();
+		
+
+		Command chosenCommand = getCommand(message.replaceFirst("!", "").substring(0, message.indexOf(" ")));
 		
 		System.out.println("Chosen Command: " + chosenCommand);
 		
@@ -30,7 +41,7 @@ public class CommandHandler
 		}
 		else
 		{
-			chosenCommand.performCommand(target, message.substring(message.indexOf(" "), message.length()).split(" "), message, bot);
+			chosenCommand.performCommand(sender, channel, message, message.split(" "), bot);
 		}
 	}
 	

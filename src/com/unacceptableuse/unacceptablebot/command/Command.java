@@ -1,8 +1,9 @@
 package com.unacceptableuse.unacceptablebot.command;
 
+import org.pircbotx.Channel;
 import org.pircbotx.PircBotX;
+import org.pircbotx.User;
 
-import com.unacceptableuse.unacceptablebot.UnacceptableBot;
 import com.unacceptableuse.unacceptablebot.variable.Level;
 
 public abstract class Command
@@ -13,7 +14,7 @@ public abstract class Command
 		
 	}
 	
-	public abstract void performCommand(String target, String[] args, String message, PircBotX bot);
+	public abstract void performCommand(User sender, Channel channel, String message, String[] args, PircBotX bot);
 	
 	public void sendMessage(PircBotX ub, String message, String target)
 	{
