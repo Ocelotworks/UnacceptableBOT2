@@ -36,8 +36,6 @@ public class CommandHandler
 
 		Command chosenCommand = getCommand(message.replaceFirst("!", "").split(" ")[0]);
 		
-		System.out.println("Chosen Command: " + chosenCommand);
-		
 		if(chosenCommand == null)
 		{
 			return; //These arn't the commands you are looking for...
@@ -89,13 +87,10 @@ public class CommandHandler
 	
 	public Command getCommand(String c)
 	{
-		System.out.println("C: " + c);
-		for(Command command : _commands)
+		for(Command command : getCommands())
 		{
-			System.out.println("Command: " + command);
 			for(String s : command.getAliases())
 			{
-				System.out.println("S: " + s);
 				if(s.toLowerCase().equals(c))
 				{
 					return command;
