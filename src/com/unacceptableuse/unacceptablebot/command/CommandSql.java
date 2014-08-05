@@ -1,7 +1,5 @@
 package com.unacceptableuse.unacceptablebot.command;
 
-import java.sql.SQLException;
-
 import org.pircbotx.Channel;
 import org.pircbotx.PircBotX;
 import org.pircbotx.User;
@@ -20,23 +18,7 @@ public class CommandSql extends Command
 	public void performCommand(User sender, Channel channel, String message, String[] args, PircBotX bot)
 	{
 		MySQLConnection con = new MySQLConnection();
-		try
-		{
-			con.connect();
-		}
-		catch (ClassNotFoundException | SQLException e)
-		{
-			e.printStackTrace();
-		}
-		sendMessage(con.getSetting(), channel.getName(), bot);
-		try
-		{
-			con.disconnect();
-		}
-		catch (SQLException e)
-		{
-			e.printStackTrace();
-		}
+		con.test();
 	}
 	
 	
