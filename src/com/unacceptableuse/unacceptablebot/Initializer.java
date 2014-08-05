@@ -35,6 +35,6 @@ public class Initializer
 	
 	public static void main(String[] args) throws Exception
 	{
-		new Initializer("UnacceptableBOT2");
+		new Initializer("UnacceptableBOT");
 	}
 }
