@@ -4,7 +4,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Calendar;
-import java.util.Date;
+import java.util.Random;
 
 import org.pircbotx.Channel;
 import org.pircbotx.PircBotX;
@@ -13,18 +13,22 @@ import org.pircbotx.hooks.ListenerAdapter;
 import org.pircbotx.hooks.events.MessageEvent;
 import org.pircbotx.hooks.events.PrivateMessageEvent;
 
-import com.unacceptableuse.unacceptablebot.command.CommandSql;
 import com.unacceptableuse.unacceptablebot.handler.CommandHandler;
 import com.unacceptableuse.unacceptablebot.handler.ConfigHandler;
 
 public class UnacceptableBot extends ListenerAdapter {
-	CommandHandler handler = new CommandHandler();
-	ConfigHandler config = new ConfigHandler();
+	
+
+	private static CommandHandler handler = new CommandHandler();
+	private static ConfigHandler config = new ConfigHandler();
+	public static Random rand = new Random();
 
 	public UnacceptableBot() {
 		handler.init();
 		config.init();
+		
 	}
+	
 
 	@Override
 	public void onMessage(final MessageEvent event) throws Exception {
@@ -74,5 +78,15 @@ public class UnacceptableBot extends ListenerAdapter {
 			e.printStackTrace();
 		}
 
+	}
+	
+	public static CommandHandler getCommandHandler()
+	{
+		return handler;
+	}
+
+	public static ConfigHandler getConfigHandler()
+	{
+		return config;
 	}
 }

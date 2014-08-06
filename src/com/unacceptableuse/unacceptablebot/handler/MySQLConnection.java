@@ -2,77 +2,83 @@ package com.unacceptableuse.unacceptablebot.handler;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.Properties;
+
+import com.unacceptableuse.unacceptablebot.UnacceptableBot;
+
+
 
 public class MySQLConnection
 {
-	public void test()
+ private static final String dbClassName = "com.mysql.jdbc.Driver";
+	 
+	 private static final String CONNECTION =
+			 "jdbc:mysql://127.0.0.1/";
+	 
+	 
+	 protected Connection c;
+	 
+	 
+	 
+
+	
+	public void connect() throws SQLException, ClassNotFoundException
+	{
+		 Class.forName(dbClassName);
+
+	    Properties p = new Properties();
+	    p.put("user","root");
+	  //  p.put("password",UnacceptableBot.getConfigHandler().getPassword("mysql"));
+	    p.put("password","1907");
+	
+	    c = DriverManager.getConnection(CONNECTION,p);
+
+	}
+	
+	
+	
+	public String getSetting(String setting)
 	{
 		try
 		{
-			Class.forName("com.mysql.jdbc.Driver");
-		}
-		catch(ClassNotFoundException e)
+			ResultSet rs = query("SELECT * FROM  Settings.Global_Settings WHERE  `Setting` =  '"+setting+"' LIMIT 1");
+			return rs.next() ? rs.getString(2) : null;
+		} catch (SQLException e)
 		{
 			e.printStackTrace();
+			return "Error "+e.getErrorCode()+" "+e.getLocalizedMessage();
 		}
-		
-		Connection con = null;
-		Statement statement = null;
-		ResultSet result = null;
-		
-		String url = "jdbc:mysql://127.0.0.1";
-		String user = "root";
-		String password = "";
-		
-		
+	}
+	
+	public boolean setSetting(String setting, String value)
+	{
 		try
 		{
-            con = DriverManager.getConnection(url, user, password);
-            statement = con.createStatement();
-            result = statement.executeQuery("SELECT VERSION()");
-
-            if(result.next())
-            {
-                System.out.println(result.getString(1));
-            }
-
-        }
-		catch(SQLException ex)
+			return excecute("INSERT INTO `Settings`.`Global_Settings` (`Setting`, `Value`) VALUES ('"+setting+"', '"+value+"');");
+		} catch (SQLException e)
 		{
-            Logger lgr = Logger.getLogger(MySQLConnection.class.getName());
-            lgr.log(Level.SEVERE, ex.getMessage(), ex);
-
-        } 
-		finally
-		{
-            try
-            {
-                if(result != null)
-                {
-                    result.close();
-                }
-                
-                if(statement != null)
-                {
-                	statement.close();
-                }
-                
-                if(con != null)
-                {
-                    con.close();
-                }
-
-            }
-            catch (SQLException ex)
-            {
-                Logger lgr = Logger.getLogger(MySQLConnection.class.getName());
-                lgr.log(Level.WARNING, ex.getMessage(), ex);
-            }
-        }
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	
+	
+	public ResultSet query(String sql) throws SQLException
+	{
+		return c.prepareStatement(sql).executeQuery();
+	}
+	
+	public boolean excecute(String sql) throws SQLException
+	{
+		return c.prepareStatement(sql).execute();
+	}
+	
+	public void disconnect() throws SQLException
+	{
+		 c.close();
 	}
 }

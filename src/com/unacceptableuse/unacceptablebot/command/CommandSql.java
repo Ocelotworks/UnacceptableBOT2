@@ -4,6 +4,7 @@ import org.pircbotx.Channel;
 import org.pircbotx.PircBotX;
 import org.pircbotx.User;
 
+import com.unacceptableuse.unacceptablebot.UnacceptableBot;
 import com.unacceptableuse.unacceptablebot.handler.MySQLConnection;
 import com.unacceptableuse.unacceptablebot.variable.Level;
 
@@ -17,15 +18,20 @@ public class CommandSql extends Command
 	@Override
 	public void performCommand(User sender, Channel channel, String message, String[] args, PircBotX bot)
 	{
-		MySQLConnection con = new MySQLConnection();
-		con.test();
+		if(args[1].equals("set"))
+		{
+			UnacceptableBot.getConfigHandler().setString(args[2], args[3]);
+		}else if(args[1].equals("get")) 
+		{
+			sendMessage(bot, UnacceptableBot.getConfigHandler().getString(args[2]), channel.getName());
+		}else
+		{
+			sendMessage(bot, "Unrecoginized argument "+args[1], channel.getName());
+		}
+		
 	}
 	
 	
-	public void sendMessage(String message, String target, PircBotX ub)
-	{
-		ub.sendIRC().message(target, message);
-	}
 	
 	@Override
 	public String[] getAliases()
@@ -33,10 +39,6 @@ public class CommandSql extends Command
 		return new String[]{"sql"};
 	}
 	
-	public Level getAccessLevel()
-	{
-		return Level.USER;
-	}
 	
 	public int requiredArguments()
 	{
