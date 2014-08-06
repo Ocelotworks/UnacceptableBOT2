@@ -32,7 +32,7 @@ public class CommandFaucet extends Command
 				}
 			}
 			
-			sendMessage(bot, String.format(tipbotFormat, UnacceptableBot.rand.nextInt(UnacceptableBot.getConfigHandler().getInteger("faucetLimit"))), channel.getName());
+			sendMessage(bot, String.format(tipbotFormat, UnacceptableBot.rand.nextInt(UnacceptableBot.getConfigHandler().getInteger("faucetLimit")), sender.getNick()), channel.getName());
 			UnacceptableBot.getConfigHandler().setLong("faucetAt:"+sender.getUserId().toString(), new Date().getTime());
 		}
 	}
