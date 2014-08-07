@@ -16,7 +16,7 @@ public class MySQLConnection
  private static final String dbClassName = "com.mysql.jdbc.Driver";
 	 
 	 private static final String CONNECTION =
-			 "jdbc:mysql://127.0.0.1/";
+			 "jdbc:mysql://hp.matrixdevuk.pw/";
 	 
 	 
 	 protected Connection c;
@@ -30,9 +30,9 @@ public class MySQLConnection
 		 Class.forName(dbClassName);
 
 	    Properties p = new Properties();
-	    p.put("user","root");
-	  //  p.put("password",UnacceptableBot.getConfigHandler().getPassword("mysql"));
-	    p.put("password","1907");
+	    p.put("user","USERNAMEEEEEEEEE");
+	    p.put("password",UnacceptableBot.getConfigHandler().getPassword("mysql"));
+	    //p.put("password","PASSWORDDDDDD"); // Don't commit with your password, that's just dumb... Love matrixdevuk
 	
 	    c = DriverManager.getConnection(CONNECTION,p);
 
