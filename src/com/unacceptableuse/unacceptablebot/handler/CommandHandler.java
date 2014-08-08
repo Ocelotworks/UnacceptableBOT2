@@ -5,12 +5,17 @@ import java.util.ArrayList;
 import org.pircbotx.Channel;
 import org.pircbotx.PircBotX;
 import org.pircbotx.User;
-import org.pircbotx.hooks.Event;
 import org.pircbotx.hooks.events.MessageEvent;
 
+import com.unacceptableuse.unacceptablebot.UnacceptableBot;
 import com.unacceptableuse.unacceptablebot.command.Command;
+import com.unacceptableuse.unacceptablebot.command.CommandConnect;
+import com.unacceptableuse.unacceptablebot.command.CommandFaucet;
 import com.unacceptableuse.unacceptablebot.command.CommandFillMeIn;
+import com.unacceptableuse.unacceptablebot.command.CommandMessageStats;
+import com.unacceptableuse.unacceptablebot.command.CommandSetup;
 import com.unacceptableuse.unacceptablebot.command.CommandSql;
+import com.unacceptableuse.unacceptablebot.variable.Level;
 
 public class CommandHandler
 {	
@@ -22,6 +27,10 @@ public class CommandHandler
 		System.out.println("init m8");
 		addCommand(new CommandSql());
 		addCommand(new CommandFillMeIn());
+		addCommand(new CommandConnect());
+		addCommand(new CommandFaucet());
+		addCommand(new CommandSetup());
+		addCommand(new CommandMessageStats());
 	}
 	
 	
@@ -42,7 +51,22 @@ public class CommandHandler
 		}
 		else
 		{
-			chosenCommand.performCommand(sender, channel, message, message.split(" "), bot);
+			if(chosenCommand.getAccessLevel() == Level.BANNED)
+			{
+				event.respond("You do not have permission to perform this command");
+			}else
+			{
+				if(chosenCommand.requiredArguments() > event.getMessage().split(" ").length)
+				{
+					event.respond("Insufficent Arguments. There should be help here but I havn't gotten around to it.");
+				}else
+				{
+					UnacceptableBot.getConfigHandler().increment("stat:commandsPerformed");
+					chosenCommand.performCommand(sender, channel, message, message.split(" "), bot);
+				}
+				
+			}
+			
 		}
 	}
 	

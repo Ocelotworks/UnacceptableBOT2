@@ -23,7 +23,7 @@ public class CommandFaucet extends Command
 		}else
 		{
 			long lastFaucet = UnacceptableBot.getConfigHandler().getLong("faucetAt:"+sender.getUserId().toString());
-			int faucetTimeout = UnacceptableBot.getConfigHandler().getInteger("faucettimeout");
+			int faucetTimeout = UnacceptableBot.getConfigHandler().getInteger("faucetTimeout");
 			if(lastFaucet != 0L)
 			{
 				if(new Date().getTime()-lastFaucet < faucetTimeout)

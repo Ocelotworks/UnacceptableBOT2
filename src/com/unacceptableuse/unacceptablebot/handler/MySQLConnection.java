@@ -44,7 +44,7 @@ public class MySQLConnection
 	{
 		try
 		{
-			ResultSet rs = query("SELECT * FROM  Settings.Global_Settings WHERE  `Setting` =  '"+setting+"' LIMIT 1");
+			ResultSet rs = query("SELECT * FROM  teknogeek_settings.Global_Settings WHERE  `Setting` =  '"+setting+"' LIMIT 1");
 			return rs.next() ? rs.getString(2) : null;
 		} catch (SQLException e)
 		{
@@ -57,7 +57,7 @@ public class MySQLConnection
 	{
 		try
 		{
-			return excecute("INSERT INTO `Settings`.`Global_Settings` (`Setting`, `Value`) VALUES ('"+setting+"', '"+value+"');");
+			return excecute("INSERT INTO `teknogeek_settings`.`Global_Settings` (`Setting`, `Value`) VALUES ('"+setting+"', '"+value+"');");
 		} catch (SQLException e)
 		{
 			e.printStackTrace();

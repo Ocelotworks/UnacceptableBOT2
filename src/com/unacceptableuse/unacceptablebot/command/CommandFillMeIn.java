@@ -27,10 +27,10 @@ public class CommandFillMeIn extends Command {
 			String output = "";
 
 			while ((line = buf.readLine()) != null) {
-				output += line + "\n";
+				bot.sendIRC().notice(sender.getNick(),line);
 			}
 
-			bot.sendIRC().notice(sender.getNick(),output);
+			
 		} catch (IOException | InterruptedException e) {
 			e.printStackTrace();
 		}

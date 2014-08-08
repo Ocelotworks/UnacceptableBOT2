@@ -63,7 +63,12 @@ public class ConfigHandler
 	public Level getUserLevel(User user)
 	{
 		int intLevel = getInteger("al:"+user.getUserId().toString());
-		return intLevel < -1 ? Level.BOT : intLevel == 0 ? Level.USER : intLevel <= 5 ? Level.TRUSTED : intLevel <= 100 ? Level.ADMIN : intLevel > 100 ? Level.SUPERADMIN : intLevel == -1 ? Level.BANNED : Level.USER;
+		return Level.intToLevel(intLevel);
+	}
+	
+	public void setUserLevel(String uuid, Level level)
+	{
+		setInteger("al:"+uuid, Level.levelToInt(level));
 	}
 	
 	public String getPassword(String key)
@@ -109,6 +114,16 @@ public class ConfigHandler
 	public void setString(String key, String string)
 	{
 		sql.setSetting(key, string);
+	}
+	
+	public void increment(String key, int amt)
+	{
+		sql.setSetting(key, String.valueOf((Integer.parseInt(sql.getSetting(key))+amt)));
+	}
+	
+	public void increment(String key)
+	{
+		increment(key, 1);
 	}
 	
 	

@@ -9,16 +9,22 @@ import com.unacceptableuse.unacceptablebot.variable.Level;
 public abstract class Command
 {
 	
-	public Command()
-	{
-		
-	}
 	
 	public abstract void performCommand(User sender, Channel channel, String message, String[] args, PircBotX bot);
 	
 	public void sendMessage(PircBotX ub, String message, String target)
 	{
 		ub.sendIRC().message(target, message);
+	}
+	
+	public void sendMessage(PircBotX ub, String message, Channel channel)
+	{
+		sendMessage(ub, message, channel.getName());
+	}
+	
+	public void sendMessage(PircBotX ub, String message, User user)
+	{
+		sendMessage(ub, message, user.getNick());
 	}
 	
 	public abstract String[] getAliases();
