@@ -12,5 +12,5 @@ hs_err_pid*
 /bin
 
 #Stops the passwords being uploaded to github
-*.cfg
+*.properties
 *.ub2log

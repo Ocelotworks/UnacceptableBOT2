@@ -25,6 +25,20 @@ public class ConfigHandler
 	
 	public void init()
 	{
+		staticVars = new Properties();
+		try
+		{
+			staticVars.load(new FileInputStream(new File("static.properties")));
+			System.out.println(staticVars.getProperty("mysql"));
+		} catch (FileNotFoundException e)
+		{
+			
+			e.printStackTrace();
+		} catch (IOException e)
+		{
+			
+			e.printStackTrace();
+		}
 		sql = new MySQLConnection();
 		try
 		{
@@ -37,19 +51,6 @@ public class ConfigHandler
 		{
 			
 			e1.printStackTrace();
-		}
-		staticVars = new Properties();
-		try
-		{
-			staticVars.load(new FileInputStream(new File("static.cfg")));
-		} catch (FileNotFoundException e)
-		{
-			
-			e.printStackTrace();
-		} catch (IOException e)
-		{
-			
-			e.printStackTrace();
 		}
 	}
 	

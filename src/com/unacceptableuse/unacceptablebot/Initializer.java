@@ -16,7 +16,9 @@ public class Initializer
 						.setLogin(username)
 						.setAutoNickChange(true)
 						.addListener(new UnacceptableBot())
-						.setServerHostname("irc.freenode.net")
+						.setServerHostname("peter.unacceptableuse.com")
+						.setServerPort(6868)
+						.setServerPassword("Stevie/Freenode:botbot")
 						.addAutoJoinChannel("##UBTesting")
 						.buildConfiguration();
 		
