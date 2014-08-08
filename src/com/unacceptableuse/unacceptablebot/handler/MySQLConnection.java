@@ -30,7 +30,7 @@ public class MySQLConnection
 		 Class.forName(dbClassName);
 
 	    Properties p = new Properties();
-	    p.put("user","USERNAMEEEEEEEEE");
+	    p.put("user","unacceptablebot");
 	    p.put("password",UnacceptableBot.getConfigHandler().getPassword("mysql"));
 	    //p.put("password","PASSWORDDDDDD"); // Don't commit with your password, that's just dumb... Love matrixdevuk
 	
