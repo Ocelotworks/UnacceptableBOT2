@@ -80,7 +80,7 @@ public class CommandMessageStats extends Command
 	public String[] getAliases()
 	{
 		
-		return null;
+		return new String[]{"messagestats"};
 	}
 
 	

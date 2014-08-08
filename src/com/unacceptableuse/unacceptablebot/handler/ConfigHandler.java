@@ -62,8 +62,8 @@ public class ConfigHandler
 	
 	public Level getUserLevel(User user)
 	{
-		int intLevel = getInteger("al:"+user.getUserId().toString());
-		return Level.intToLevel(intLevel);
+		Integer intLevel = getInteger("al:"+user.getUserId().toString());
+		return intLevel == null ? Level.USER : Level.intToLevel(intLevel);
 	}
 	
 	public void setUserLevel(String uuid, Level level)
@@ -118,7 +118,8 @@ public class ConfigHandler
 	
 	public void increment(String key, int amt)
 	{
-		sql.setSetting(key, String.valueOf((Integer.parseInt(sql.getSetting(key))+amt)));
+		String val = sql.getSetting(key);
+		sql.setSetting(key, val == null ? "1" : String.valueOf((Integer.parseInt(val)+amt)));
 	}
 	
 	public void increment(String key)
