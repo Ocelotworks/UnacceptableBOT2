@@ -28,6 +28,8 @@ public class UnacceptableBot extends ListenerAdapter {
 		handler.init();
 		config.init();
 		
+		config.increment("stat:startups");
+		
 	}
 	
 

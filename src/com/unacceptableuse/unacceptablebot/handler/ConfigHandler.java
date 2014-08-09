@@ -118,8 +118,7 @@ public class ConfigHandler
 	
 	public void increment(String key, int amt)
 	{
-		String val = sql.getSetting(key);
-		sql.setSetting(key, val == null ? "1" : String.valueOf((Integer.parseInt(val)+amt)));
+		sql.incrementValue(key, amt);
 	}
 	
 	public void increment(String key)

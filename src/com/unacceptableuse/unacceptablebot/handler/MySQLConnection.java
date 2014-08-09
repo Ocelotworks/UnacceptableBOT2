@@ -66,6 +66,22 @@ public class MySQLConnection
 	}
 	
 	
+	public boolean incrementValue(String setting, int amt)
+	{
+		try
+		{
+			return excecute("UPDATE `teknogeek_settings`.`Global_Settings` SET 'Value' = 'Value'+"+amt+" WHERE 'Setting' = "+setting+");");
+		} catch (SQLException e)
+		{
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	
+	
+	
+	
 	
 	public ResultSet query(String sql) throws SQLException
 	{
