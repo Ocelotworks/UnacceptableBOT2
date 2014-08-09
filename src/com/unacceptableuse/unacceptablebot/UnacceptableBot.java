@@ -2,9 +2,14 @@ package com.unacceptableuse.unacceptablebot;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.Calendar;
 import java.util.Random;
+
+import javax.net.ssl.HttpsURLConnection;
 
 import org.pircbotx.Channel;
 import org.pircbotx.PircBotX;
@@ -91,6 +96,39 @@ public class UnacceptableBot extends ListenerAdapter {
 
 	}
 	
+	public static InputStream getUrlContents(String surl)
+	{
+		URL url;
+		 
+		try {
+			url = new URL(surl);
+			URLConnection conn = url.openConnection();
+			InputStream is =  conn.getInputStream();
+ 
+			return is;
+		} catch (Exception e) {
+			System.err.println("Could not connect: "+e.getMessage());
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public static InputStream getHTTPSUrlContents(String surl)
+	{
+		URL url;
+		 
+		try {
+			url = new URL(surl);
+			HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
+			InputStream is =  conn.getInputStream();
+ 
+			return is;
+ 
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 	public static CommandHandler getCommandHandler()
 	{
 		return handler;

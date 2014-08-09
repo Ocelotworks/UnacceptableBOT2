@@ -12,9 +12,12 @@ import com.unacceptableuse.unacceptablebot.command.Command;
 import com.unacceptableuse.unacceptablebot.command.CommandConnect;
 import com.unacceptableuse.unacceptablebot.command.CommandFaucet;
 import com.unacceptableuse.unacceptablebot.command.CommandFillMeIn;
+import com.unacceptableuse.unacceptablebot.command.CommandInsult;
 import com.unacceptableuse.unacceptablebot.command.CommandMessageStats;
-import com.unacceptableuse.unacceptablebot.command.CommandSetup;
+import com.unacceptableuse.unacceptablebot.command.CommandRand;
 import com.unacceptableuse.unacceptablebot.command.CommandSql;
+import com.unacceptableuse.unacceptablebot.command.CommandStevie;
+import com.unacceptableuse.unacceptablebot.command.CommandWhoami;
 import com.unacceptableuse.unacceptablebot.variable.Level;
 
 public class CommandHandler
@@ -29,8 +32,12 @@ public class CommandHandler
 		addCommand(new CommandFillMeIn());
 		addCommand(new CommandConnect());
 		addCommand(new CommandFaucet());
-		addCommand(new CommandSetup());
+		//addCommand(new CommandSetup()); literally cant even
 		addCommand(new CommandMessageStats());
+		addCommand(new CommandWhoami());
+		addCommand(new CommandInsult());
+		addCommand(new CommandRand());
+		addCommand(new CommandStevie());
 	}
 	
 	
