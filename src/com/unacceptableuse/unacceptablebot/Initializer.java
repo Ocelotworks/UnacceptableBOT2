@@ -6,6 +6,7 @@ import java.util.Properties;
 
 import org.pircbotx.Configuration;
 import org.pircbotx.PircBotX;
+import org.slf4j.Logger;
 
 public class Initializer
 {
