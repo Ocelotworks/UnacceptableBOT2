@@ -12,6 +12,7 @@ import com.unacceptableuse.unacceptablebot.command.Command;
 import com.unacceptableuse.unacceptablebot.command.CommandConnect;
 import com.unacceptableuse.unacceptablebot.command.CommandFaucet;
 import com.unacceptableuse.unacceptablebot.command.CommandFillMeIn;
+import com.unacceptableuse.unacceptablebot.command.CommandImport;
 import com.unacceptableuse.unacceptablebot.command.CommandInsult;
 import com.unacceptableuse.unacceptablebot.command.CommandMessageStats;
 import com.unacceptableuse.unacceptablebot.command.CommandRand;
@@ -38,6 +39,7 @@ public class CommandHandler
 		addCommand(new CommandInsult());
 		addCommand(new CommandRand());
 		addCommand(new CommandStevie());
+		addCommand(new CommandImport());
 	}
 	
 	
