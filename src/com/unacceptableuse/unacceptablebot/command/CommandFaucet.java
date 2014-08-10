@@ -1,6 +1,5 @@
 package com.unacceptableuse.unacceptablebot.command;
 
-import java.sql.Time;
 import java.util.Date;
 
 import org.pircbotx.Channel;

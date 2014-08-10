@@ -1,40 +1,38 @@
 package com.unacceptableuse.unacceptablebot.command;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import org.pircbotx.Channel;
 import org.pircbotx.PircBotX;
 import org.pircbotx.User;
 
-import com.unacceptableuse.unacceptablebot.variable.Level;
+import com.unacceptableuse.unacceptablebot.UnacceptableBot;
+import com.unacceptableuse.unacceptablebot.handler.ConfigHandler;
 
 public class CommandFillMeIn extends Command {
 
 	@Override
 	public void performCommand(User sender, Channel channel, String message,
 			String[] args, PircBotX bot) {
-
-		Process p;
+		String id = "";
 		try {
-			p = Runtime.getRuntime().exec("tail " + channel.getName() + ".ub2log lines=" + args[0]);
-
-			p.waitFor();
-			BufferedReader buf = new BufferedReader(new InputStreamReader(
-					p.getInputStream()));
-			String line = "";
-			String output = "";
-
-			while ((line = buf.readLine()) != null) {
-				bot.sendIRC().notice(sender.getNick(),line);
-			}
-
-			
-		} catch (IOException | InterruptedException e) {
+			ConfigHandler config = UnacceptableBot.getConfigHandler();
+			ResultSet rs = config.logQuery(channel.getName());
+			id = rs.getString(1);
+		} catch (SQLException e) {
 			e.printStackTrace();
+			System.out.println("Error from CommandFillMeIn.class. Ranging from line 18 to line 21");
 		}
-
+		try{
+		for(int i = 0; i < Integer.parseInt(args[1]);i++){
+			ResultSet rs = UnacceptableBot.getConfigHandler().getLog(channel.getName(), Integer.parseInt(id)-i);
+			bot.sendIRC().notice(sender.getNick(), rs.getString(1));
+		}
+		}
+		catch (SQLException e){
+			System.out.println("Error from CommandFillMeIn.class. Ranging from line 27 to line 30");
+		}
 	}
 
 	@Override

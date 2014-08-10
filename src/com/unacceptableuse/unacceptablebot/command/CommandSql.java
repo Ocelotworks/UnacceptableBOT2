@@ -5,8 +5,6 @@ import org.pircbotx.PircBotX;
 import org.pircbotx.User;
 
 import com.unacceptableuse.unacceptablebot.UnacceptableBot;
-import com.unacceptableuse.unacceptablebot.handler.MySQLConnection;
-import com.unacceptableuse.unacceptablebot.variable.Level;
 
 public class CommandSql extends Command
 {
