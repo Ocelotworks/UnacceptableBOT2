@@ -41,6 +41,7 @@ public class CommandHandler
 	}
 	
 	
+	@SuppressWarnings("rawtypes")
 	public void processMessage(MessageEvent event)
 	{
 		
