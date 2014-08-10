@@ -24,7 +24,7 @@ public class CommandFillMeIn extends Command {
 			System.out.println("id");
 		} catch (SQLException e) {
 			e.printStackTrace();
-			System.out.println("Error from CommandFillMeIn.class. Ranging from line 18 to line 21");
+			System.out.println("Error from CommandFillMeIn.class. Ranging from line 20 to line 24");
 		}
 		try{
 		for(int i = 0; i < Integer.parseInt(args[1]);i++){
@@ -35,7 +35,7 @@ public class CommandFillMeIn extends Command {
 		}
 		catch (SQLException e){
 			e.printStackTrace();
-			System.out.println("Error from CommandFillMeIn.class. Ranging from line 27 to line 30");
+			System.out.println("Error from CommandFillMeIn.class. Ranging from line 29 to line 38");
 		}
 	}
 
