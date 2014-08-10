@@ -36,12 +36,15 @@ public class CommandImport extends Command {
 				String logMessage = split[4];
 				config.createChannelTable(args[2]);
 				config.setLog(time, user, logMessage, args[2]);
-				bot.sendIRC().message(channel.getName(), "Import complete!");
+				
 			}
 		} catch (IOException | SQLException e) {
 			e.printStackTrace();
 			bot.sendIRC().message(channel.getName(), "Import failed!");
+			return;
 		}
+		
+		bot.sendIRC().message(channel.getName(), "Import complete!");
 		
 	}
 
