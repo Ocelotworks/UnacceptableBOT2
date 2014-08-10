@@ -73,7 +73,7 @@ public class UnacceptableBot extends ListenerAdapter {
 		int minutes = calendar.get(Calendar.MINUTE);
 		int date = calendar.get(Calendar.DATE);
 		int month = calendar.get(Calendar.MONTH);
-		String[] months = new String[] { "Jan", "Feb", "Mar", "Apr", "May",
+		final String[] months = new String[] { "Jan", "Feb", "Mar", "Apr", "May",
 				"Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
 				"WHAT ARE YOU, A FUCKING WIZARD?!" };
 		String stringMonth = months[month];

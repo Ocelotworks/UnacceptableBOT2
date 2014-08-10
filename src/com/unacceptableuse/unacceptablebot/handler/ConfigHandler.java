@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
@@ -19,7 +20,7 @@ public class ConfigHandler {
 	 * BE DRAWN FROM HERE
 	 */
 
-	private MySQLConnection sql = null;
+	public MySQLConnection sql = null;
 	private Properties staticVars = null;
 
 	public void init() {
@@ -68,7 +69,12 @@ public class ConfigHandler {
 	}
 
 	public Integer getInteger(String key) {
-		return Integer.parseInt(sql.getSetting(key));
+		try{
+			return Integer.parseInt(sql.getSetting(key));
+		}catch(NumberFormatException e)
+		{
+			return 0;
+		}
 	}
 
 	public long getLong(String key) {
@@ -117,9 +123,11 @@ public class ConfigHandler {
 	public boolean setLog(String time, String user, String message,
 			String channel) {
 		try {
-			return sql.excecute("INSERT INTO `database`.`" + channel
-					+ "` (`Time`, `Username`, `Message`) VALUES ('" + time
-					+ "', '" + user + ", '" + message + "'');");
+			PreparedStatement ps = sql.getPreparedStatement("INSERT INTO `teknogeek_unacceptablebot`.`"+channel+"` (`Time`, `Username`, `Message`) VALUES (?, ?, ?)");
+			ps.setString(1, time);
+			ps.setString(2, user);
+			ps.setString(3, message);
+			return ps.executeUpdate() == 0;
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return false;
@@ -139,8 +147,8 @@ public class ConfigHandler {
 			// This gets the logth record. It requires some black magic before
 			// handing it a number
 			// Similar to the stuff I did in the first fillmein.
-			ResultSet rs = sql.query("SELECT * FROM `database`.`" + channel
-					+ "` ORDER BY ID LIMIT n,1");
+			ResultSet rs = sql.query("SELECT Time,Username,Message FROM `teknogeek_unacceptablebot`.`" + channel
+					+ "` ORDER BY ID LIMIT "+log+",1");
 			return rs;
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -156,10 +164,7 @@ public class ConfigHandler {
 	 * **/
 	public boolean createChannelTable(String channel) throws SQLException {
 		try {
-			sql.excecute("CREATE TABLE IF NOT EXISTS 'Channels'.'" + channel
-					+ "'('ID' int,'Time' text,'Username' text,'Message' text);");
-			return sql.excecute("ALTER TABLE 'Channels'.'" + channel
-					+ "' ADD PRIMARY KEY (ID);");
+			return sql.excecute("CREATE TABLE IF NOT EXISTS `teknogeek_unacceptablebot`.`"+channel+"` (ID int NOT NULL AUTO_INCREMENT, Time text,Username text,Message text, PRIMARY KEY (ID))");
 		} catch (SQLException e) {
 			e.printStackTrace();
 			System.err.println("Error occurred making channel table");
@@ -175,8 +180,7 @@ public class ConfigHandler {
 	 * **/
 	public ResultSet logQuery(String channel) {
 		try {
-			return sql.query("SELECT ID FROM Channels." + channel
-					+ " ORDER BY date DESC LIMIT 1");
+			return sql.query("SELECT ID FROM `teknogeek_unacceptablebot`.`"+channel+"` ORDER BY `Time` DESC LIMIT 1");
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return null;

@@ -2,6 +2,7 @@ package com.unacceptableuse.unacceptablebot.handler;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
@@ -20,10 +21,7 @@ public class MySQLConnection {
 
 		Properties p = new Properties();
 		p.put("user", "unacceptablebot");
-		p.put("password",
-				UnacceptableBot.getConfigHandler().getPassword("mysql"));
-		// p.put("password","PASSWORDDDDDD"); // Don't commit with your
-		// password, that's just dumb... Love matrixdevuk
+		p.put("password",UnacceptableBot.getConfigHandler().getPassword("mysql"));
 
 		c = DriverManager.getConnection(CONNECTION, p);
 
@@ -31,8 +29,7 @@ public class MySQLConnection {
 
 	public String getSetting(String setting) {
 		try {
-			ResultSet rs = query("SELECT * FROM  teknogeek_settings.Global_Settings WHERE  `Setting` =  '"
-					+ setting + "' LIMIT 1");
+			ResultSet rs = query("SELECT * FROM  teknogeek_settings.Global_Settings WHERE  `Setting` =  '"+ setting + "' LIMIT 1");
 			return rs.next() ? rs.getString(2) : null;
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -42,8 +39,7 @@ public class MySQLConnection {
 
 	public boolean setSetting(String setting, String value) {
 		try {
-			return excecute("INSERT INTO `teknogeek_settings`.`Global_Settings` (`Setting`, `Value`) VALUES ('"
-					+ setting + "', '" + value + "');");
+			return excecute("INSERT INTO `teknogeek_settings`.`Global_Settings` (`Setting`, `Value`) VALUES ('"+ setting + "', '" + value + "');");
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return false;
@@ -52,14 +48,17 @@ public class MySQLConnection {
 
 	public boolean incrementValue(String setting, int amt) {
 		try {
-			return excecute("UPDATE `teknogeek_settings`.`Global_Settings` SET 'Value' = 'Value'+"
-					+ amt + " WHERE 'Setting' = " + setting + ");");
+			return excecute("UPDATE `teknogeek_settings`.`Global_Settings` SET `Value` = `Value`+"+amt+" WHERE `Setting` = '"+setting+"';");
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return false;
 		}
 	}
-
+	
+	public PreparedStatement getPreparedStatement(String sql) throws SQLException
+	{
+		return c.prepareStatement(sql);
+	}
 
 	public ResultSet query(String sql) throws SQLException {
 		return c.prepareStatement(sql).executeQuery();

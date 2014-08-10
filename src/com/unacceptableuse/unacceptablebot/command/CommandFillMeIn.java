@@ -19,7 +19,9 @@ public class CommandFillMeIn extends Command {
 		try {
 			ConfigHandler config = UnacceptableBot.getConfigHandler();
 			ResultSet rs = config.logQuery(channel.getName());
+			rs.next();
 			id = rs.getString(1);
+			System.out.println("id");
 		} catch (SQLException e) {
 			e.printStackTrace();
 			System.out.println("Error from CommandFillMeIn.class. Ranging from line 18 to line 21");
@@ -27,10 +29,12 @@ public class CommandFillMeIn extends Command {
 		try{
 		for(int i = 0; i < Integer.parseInt(args[1]);i++){
 			ResultSet rs = UnacceptableBot.getConfigHandler().getLog(channel.getName(), Integer.parseInt(id)-i);
-			bot.sendIRC().notice(sender.getNick(), rs.getString(1));
+			rs.next();
+			bot.sendIRC().notice(sender.getNick(), "["+rs.getString(1)+"] <"+rs.getString(2)+"> "+rs.getString(3));
 		}
 		}
 		catch (SQLException e){
+			e.printStackTrace();
 			System.out.println("Error from CommandFillMeIn.class. Ranging from line 27 to line 30");
 		}
 	}
