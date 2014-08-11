@@ -30,13 +30,18 @@ public class CommandSentence extends Command
 			
 			while(rs.next())
 			{
+				int id = rs.getInt(1);
+				String sentence = rs.getString(2);
 				if(context > 0)
 				{
-					for(int i = 0; i < context; i++)
+					for(int i = context; i > context; i--)
 					{
-						PreparedStatement cps = UnacceptableBot.getConfigHandler().sql.getPreparedStatement("SELECT Message from ");
-						//not done
+						PreparedStatement cps = UnacceptableBot.getConfigHandler().sql.getPreparedStatement("SELECT Message FROM `teknogeek_unacceptablebot`.`"+channel.getName()+"` WHERE Id = '?' LIMIT 1");
+						cps.setInt(1, id-i);
+						ResultSet crs = cps.executeQuery();
+						
 					}
+					sendMessage(bot, "----", channel);
 				}
 			}
 			
