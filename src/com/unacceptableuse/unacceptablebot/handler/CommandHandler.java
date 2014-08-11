@@ -15,6 +15,7 @@ import com.unacceptableuse.unacceptablebot.command.CommandFillMeIn;
 import com.unacceptableuse.unacceptablebot.command.CommandImport;
 import com.unacceptableuse.unacceptablebot.command.CommandInsult;
 import com.unacceptableuse.unacceptablebot.command.CommandMessageStats;
+import com.unacceptableuse.unacceptablebot.command.CommandQuote;
 import com.unacceptableuse.unacceptablebot.command.CommandRand;
 import com.unacceptableuse.unacceptablebot.command.CommandSql;
 import com.unacceptableuse.unacceptablebot.command.CommandStevie;
@@ -25,10 +26,12 @@ public class CommandHandler
 {	
 	public ArrayList<Command> _commands = new ArrayList<Command>();
 	
-	/**Register Commands here!**/
+	/**Register Commands here!
+	 * @author UnacceptableUse
+	 * **/
 	public void init()
 	{
-		System.out.println("init m8");
+		System.out.println("Starting command registration");
 		addCommand(new CommandSql());
 		addCommand(new CommandFillMeIn());
 		addCommand(new CommandConnect());
@@ -40,9 +43,15 @@ public class CommandHandler
 		addCommand(new CommandRand());
 		addCommand(new CommandStevie());
 		addCommand(new CommandImport());
+		addCommand(new CommandQuote());
+		System.out.println("Registered " +  getCommands().size() + " commands successfully!");
 	}
 	
 	
+	/**Pass in onMessage for runnign commands
+	 * @author UnacceptableUse, teknogeek
+	 * @param event - The MessageEvent containing user, channel etc
+	 * **/
 	@SuppressWarnings("rawtypes")
 	public void processMessage(MessageEvent event)
 	{
@@ -81,17 +90,28 @@ public class CommandHandler
 	}
 	
 	
-	
+	/**Returns the command ArrayList
+	 * @author UnacceptableUse
+	 * @return ArrayList
+	 * **/
 	public ArrayList<Command> getCommands()
 	{
 		return _commands;
 	}
 	
+	/**Sets the command arraylist
+	 * @author UnacceptableUse
+	 * @param c - ArrayList to set
+	 * **/
 	public void setCommands(ArrayList<Command> c)
 	{
 		_commands = c;
 	}
 	
+	/**Registers Command
+	 * @author UnacceptableUse
+	 * @param c - Command to add
+	 * **/
 	public void addCommand(Command c)
 	{
 		_commands.add(c);
