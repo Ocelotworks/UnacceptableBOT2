@@ -180,7 +180,7 @@ public class ConfigHandler {
 	 * **/
 	public ResultSet logQuery(String channel) {
 		try {
-			return sql.query("SELECT ID FROM `teknogeek_unacceptablebot`.`"+channel+"` ORDER BY `Time` DESC LIMIT 1");
+			return sql.query("SELECT MAX(id) FROM `teknogeek_unacceptablebot`.`"+channel+"`");
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return null;
