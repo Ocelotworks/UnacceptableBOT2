@@ -9,6 +9,7 @@ import org.pircbotx.hooks.events.MessageEvent;
 
 import com.unacceptableuse.unacceptablebot.UnacceptableBot;
 import com.unacceptableuse.unacceptablebot.command.Command;
+import com.unacceptableuse.unacceptablebot.command.CommandBroadcast;
 import com.unacceptableuse.unacceptablebot.command.CommandConnect;
 import com.unacceptableuse.unacceptablebot.command.CommandFaucet;
 import com.unacceptableuse.unacceptablebot.command.CommandFillMeIn;
@@ -44,6 +45,7 @@ public class CommandHandler
 		addCommand(new CommandStevie());
 		addCommand(new CommandImport());
 		addCommand(new CommandQuote());
+		addCommand(new CommandBroadcast());
 		System.out.println("Registered " +  getCommands().size() + " commands successfully!");
 	}
 	
