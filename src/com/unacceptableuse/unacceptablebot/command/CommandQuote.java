@@ -17,7 +17,7 @@ public class CommandQuote extends Command {
 			String[] args, PircBotX bot) {
 		String user = args[1];
 		try{
-			PreparedStatement ps = UnacceptableBot.getConfigHandler().sql.getPreparedStatement("SELECT Message FROM `teknogeek_unacceptablebot`.`"+channel.getName()+"` WHERE Username = '"+user+"' ORDER BY RAND() LIMIT 1");
+			PreparedStatement ps = UnacceptableBot.getConfigHandler().sql.getPreparedStatement("SELECT Message FROM `teknogeek_unacceptablebot`.`" + args.length == 3 ? (args[2].startsWith("#") ? args[2] : "#" + args[2]) : channel.getName() + "` WHERE Username = '"+user+"' ORDER BY RAND() LIMIT 1");
 			ResultSet rs = ps.executeQuery();
 			bot.sendIRC().message(channel.getName(), rs.getString(1));
 		} catch(SQLException e){
