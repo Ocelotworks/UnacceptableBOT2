@@ -20,20 +20,24 @@ public class CommandImport extends Command {
 	@Override
 	public void performCommand(User sender, Channel channel, String message,
 			String[] args, PircBotX bot) {
-		//			0    1      2            3    4
-		//format: [8 Aug, 21:49] <ThaHandyman> aye
+		//			  0   1  2        3   4     5           6             split.length()-1
+		//format: [Wed Jan 29 21:28:27 GMT 2014] <teknogeek> i cant ssh in
 		//args: logFile, table
 		try {
+			bot.sendIRC().message(channel.getName(), "Starting import!");
 			String[] log = readLog(args[1]);
+			bot.sendIRC().message(channel.getName(), "Import 50% complete!");
 			ConfigHandler config = UnacceptableBot.getConfigHandler();
 			for(int i = 0; i < log.length; i++){
 				String[] split = log[i].split(" ");
-				String time = split[2].replace("[", "");
-				time = time.replace("]", "");
-				time = split[0].replace("[", "") + ", " + time;
-				String user = split[3].replace("<", "");
-				user = user.replace(">", "");
-				String logMessage = split[4];
+				String time = split[1] + " " + split[2] + ", " + split[3];
+				String user = split[6];
+				String logMessage = "";
+				for(int k = 0; k < split.length; k++){
+					if(i > 6){
+						logMessage = logMessage + " " +split[i];
+					}
+				}
 				config.createChannelTable(args[2]);
 				config.setLog(time, user, logMessage, args[2]);
 				
