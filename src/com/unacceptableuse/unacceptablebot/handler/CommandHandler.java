@@ -11,6 +11,7 @@ import com.unacceptableuse.unacceptablebot.UnacceptableBot;
 import com.unacceptableuse.unacceptablebot.command.Command;
 import com.unacceptableuse.unacceptablebot.command.CommandBroadcast;
 import com.unacceptableuse.unacceptablebot.command.CommandConnect;
+import com.unacceptableuse.unacceptablebot.command.CommandDefine;
 import com.unacceptableuse.unacceptablebot.command.CommandFaucet;
 import com.unacceptableuse.unacceptablebot.command.CommandFillMeIn;
 import com.unacceptableuse.unacceptablebot.command.CommandGoogle;
@@ -51,6 +52,7 @@ public class CommandHandler
 		addCommand(new CommandLive());
 		addCommand(new CommandHelp());
 		addCommand(new CommandGoogle());
+		addCommand(new CommandDefine());
 		System.out.println("Registered " +  getCommands().size() + " commands successfully!");
 	}
 	
