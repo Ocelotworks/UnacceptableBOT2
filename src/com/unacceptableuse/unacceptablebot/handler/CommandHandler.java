@@ -40,7 +40,6 @@ public class CommandHandler
 		addCommand(new CommandFillMeIn());
 		addCommand(new CommandConnect());
 		addCommand(new CommandFaucet());
-		//addCommand(new CommandSetup()); literally cant even
 		addCommand(new CommandMessageStats());
 		addCommand(new CommandWhoami());
 		addCommand(new CommandInsult());
@@ -89,7 +88,12 @@ public class CommandHandler
 				}else
 				{
 					UnacceptableBot.getConfigHandler().increment("stat:commandsPerformed");
-					chosenCommand.performCommand(sender, channel, message, message.split(" "), bot);
+					try{
+						chosenCommand.performCommand(sender, channel, message, message.split(" "), bot);
+					}catch(Exception e)
+					{
+						event.respond("An error occurred. ("+e.toString()+")");
+					}
 				}
 				
 			}

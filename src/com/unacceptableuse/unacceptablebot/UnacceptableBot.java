@@ -15,6 +15,7 @@ import org.pircbotx.PircBotX;
 import org.pircbotx.User;
 import org.pircbotx.hooks.ListenerAdapter;
 import org.pircbotx.hooks.events.InviteEvent;
+import org.pircbotx.hooks.events.JoinEvent;
 import org.pircbotx.hooks.events.MessageEvent;
 import org.pircbotx.hooks.events.PrivateMessageEvent;
 
@@ -65,6 +66,13 @@ public class UnacceptableBot extends ListenerAdapter {
 		System.out.println(event.getUser() + " invited bot to "
 				+ event.getChannel());
 		event.getBot().sendIRC().joinChannel(event.getChannel());
+	}
+	
+	@Override
+	public void onJoin(final JoinEvent event)
+	{
+		if(event.getUser().equals(event.getBot().getUserBot()))
+			channels.add(event.getChannel().getName());
 	}
 
 	private void recordMessage(final MessageEvent event) throws SQLException {

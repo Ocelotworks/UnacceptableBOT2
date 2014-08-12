@@ -45,7 +45,26 @@ public class MySQLConnection {
 
 	public boolean setSetting(String setting, String value) {
 		try {
-			return excecute("INSERT INTO `teknogeek_settings`.`Global_Settings` (`Setting`, `Value`) VALUES ('"+ setting + "', '" + value + "');");
+			return excecute("INSERT INTO `teknogeek_settings`.`Global_Settings` (`Setting`, `Value`) VALUES ('"+ setting + "', '" + value + "') ON DUPLICATE KEY UPDATE Setting=VALUES(Setting);");
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	public int getAccessLevel(String user) {
+		try {
+			ResultSet rs = query("SELECT * FROM  teknogeek_settings.Access_Levels WHERE  `Username` =  '"+ user + "' LIMIT 1");
+			return rs.next() ? rs.getInt(2) : 0;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return 0;
+		}
+	}
+
+	public boolean setAccessLevel(String user, int level) {
+		try {
+			return excecute("INSERT INTO `teknogeek_settings`.`Access_Levels` (`Username`, `Level`) VALUES ('"+ user + "', '" + level + "') ON DUPLICATE KEY UPDATE Username=VALUES(Username);");
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return false;
@@ -54,7 +73,7 @@ public class MySQLConnection {
 
 	public boolean incrementValue(String setting, int amt) {
 		try {
-			return excecute("UPDATE `teknogeek_settings`.`Global_Settings` SET `Value` = `Value`+"+amt+" WHERE `Setting` = '"+setting+"';");
+			return excecute("UPDATE `teknogeek_settings`.`Access_Levels` SET `Value` = `Value`+"+amt+" WHERE `Setting` = '"+setting+"';");
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return false;

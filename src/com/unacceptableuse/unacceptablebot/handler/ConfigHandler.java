@@ -54,13 +54,12 @@ public class ConfigHandler {
 		return getBoolean("cd:" + command + ":" + channel);
 	}
 
-	public Level getUserLevel(User user) {
-		Integer intLevel = getInteger("al:" + user.getUserId().toString());
-		return intLevel == null ? Level.USER : Level.intToLevel(intLevel);
+	public int getUserLevel(User user) {
+		return user.isIrcop() ? 10 : user.isVerified() ? sql.getAccessLevel(user.getNick()) : 0;
 	}
 
-	public void setUserLevel(String uuid, Level level) {
-		setInteger("al:" + uuid, Level.levelToInt(level));
+	public void setUserLevel(String uuid, int level) {
+		
 	}
 
 	public String getPassword(String key) {

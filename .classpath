@@ -6,7 +6,7 @@
 	<classpathentry kind="lib" path="slf4j-api-1.7.7.jar"/>
 	<classpathentry kind="lib" path="gson-2.2.4.jar"/>
 	<classpathentry kind="lib" path="commons-lang3-3.3.2.jar"/>
-	<classpathentry kind="lib" path="pircbotx-2.0.1.jar"/>
+	<classpathentry kind="lib" path="pircbotx-2.0.1.jar" sourcepath="C:/Users/Peter/.m2/repository/org/pircbotx/pircbotx/2.0.1/pircbotx-2.0.1-sources.jar"/>
 	<classpathentry kind="lib" path="jdom-2.0.5.jar"/>
 	<classpathentry kind="lib" path="slf4j-simple-1.7.7.jar"/>
 	<classpathentry kind="lib" path="guava-17.0.jar"/>
