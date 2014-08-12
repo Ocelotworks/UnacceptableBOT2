@@ -27,6 +27,10 @@ public class UnacceptableBot extends ListenerAdapter {
 	private static ConfigHandler config = new ConfigHandler();
 	public static Random rand = new Random();
 
+	/**
+	 * Starts the init process of everything
+	 * @author UnacceptableUse
+	 */
 	public UnacceptableBot() {
 		handler.init();
 		config.init();

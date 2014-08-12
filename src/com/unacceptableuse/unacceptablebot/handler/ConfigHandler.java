@@ -23,6 +23,9 @@ public class ConfigHandler {
 	public MySQLConnection sql = null;
 	private Properties staticVars = null;
 
+	/**
+	 * Initialises the configurations, {@link MySQLConnection} and {@link Properties}
+	 */
 	public void init() {
 		staticVars = new Properties();
 		try {

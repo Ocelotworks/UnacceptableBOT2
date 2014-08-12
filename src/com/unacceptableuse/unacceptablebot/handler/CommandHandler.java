@@ -123,6 +123,12 @@ public class CommandHandler
 		_commands.remove(c);
 	}
 	
+	/**
+	 * Remove the <b>first</b> command that has the alias <code>c</code>
+	 * @param c The command (without the "!" prefix)
+	 * @author UnacceptableUse
+	 * @return True if the command was found and removed successfully.
+	 */
 	public boolean removeCommand(String c)
 	{
 		for(Command command : getCommands())
@@ -139,6 +145,12 @@ public class CommandHandler
 		return false;
 	}
 	
+	/**
+	 * Get the <b>first</b> command that has the alias <code>c</code>
+	 * @param c The command (without the "!" prefix)
+	 * @author UnacceptableUse
+	 * @return The command object with the alias <code>c</code>
+	 */
 	public Command getCommand(String c)
 	{
 		for(Command command : getCommands())

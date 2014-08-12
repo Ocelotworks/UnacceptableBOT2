@@ -16,6 +16,12 @@ public class MySQLConnection {
 
 	protected Connection c;
 
+	/**
+	 * Connects to the MySQL server. Password is stored in static.properties
+	 * @author UnacceptableUse, teknogeek
+	 * @throws SQLException Thrown if the username/password is rejected.
+	 * @throws ClassNotFoundException Thrown if the JDBC driver is not correctly installed.
+	 */
 	public void connect() throws SQLException, ClassNotFoundException {
 		Class.forName(dbClassName);
 
