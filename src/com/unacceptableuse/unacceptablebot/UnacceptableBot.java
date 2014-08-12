@@ -4,6 +4,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Random;
 
@@ -26,6 +27,7 @@ public class UnacceptableBot extends ListenerAdapter {
 	private static CommandHandler handler = new CommandHandler();
 	private static ConfigHandler config = new ConfigHandler();
 	public static Random rand = new Random();
+	public static ArrayList<String> channels = null;
 
 	/**
 	 * Starts the init process of everything
@@ -34,7 +36,7 @@ public class UnacceptableBot extends ListenerAdapter {
 	public UnacceptableBot() {
 		handler.init();
 		config.init();
-
+		channels = new ArrayList<String>();
 		config.increment("stat:startups");
 
 	}
@@ -125,5 +127,9 @@ public class UnacceptableBot extends ListenerAdapter {
 
 	public static ConfigHandler getConfigHandler() {
 		return config;
+	}
+	
+	public static ArrayList<String> getChannels(){
+		return channels;
 	}
 }

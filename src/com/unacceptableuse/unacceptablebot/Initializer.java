@@ -31,6 +31,7 @@ public class Initializer
 			.addAutoJoinChannel(props.getProperty("default_channel"))
 			.buildConfiguration();
 			
+			UnacceptableBot.channels.add(props.getProperty("default_channel"));
 			props.clear();
 			is.close();
 			 
