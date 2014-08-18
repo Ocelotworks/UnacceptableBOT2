@@ -10,6 +10,7 @@ import org.pircbotx.hooks.events.MessageEvent;
 import com.unacceptableuse.unacceptablebot.UnacceptableBot;
 import com.unacceptableuse.unacceptablebot.command.Command;
 import com.unacceptableuse.unacceptablebot.command.CommandBroadcast;
+import com.unacceptableuse.unacceptablebot.command.CommandCommand;
 import com.unacceptableuse.unacceptablebot.command.CommandConnect;
 import com.unacceptableuse.unacceptablebot.command.CommandDefine;
 import com.unacceptableuse.unacceptablebot.command.CommandFaucet;
@@ -24,6 +25,7 @@ import com.unacceptableuse.unacceptablebot.command.CommandQuote;
 import com.unacceptableuse.unacceptablebot.command.CommandRand;
 import com.unacceptableuse.unacceptablebot.command.CommandSql;
 import com.unacceptableuse.unacceptablebot.command.CommandStevie;
+import com.unacceptableuse.unacceptablebot.command.CommandTime;
 import com.unacceptableuse.unacceptablebot.command.CommandWhoami;
 import com.unacceptableuse.unacceptablebot.variable.Level;
 
@@ -53,6 +55,8 @@ public class CommandHandler
 		addCommand(new CommandHelp());
 		addCommand(new CommandGoogle());
 		addCommand(new CommandDefine());
+		addCommand(new CommandTime());
+		addCommand(new CommandCommand());
 		System.out.println("Registered " +  getCommands().size() + " commands successfully!");
 	}
 	
