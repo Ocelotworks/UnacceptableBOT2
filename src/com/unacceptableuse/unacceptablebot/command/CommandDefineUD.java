@@ -1,7 +1,6 @@
 package com.unacceptableuse.unacceptablebot.command;
 
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -9,7 +8,6 @@ import org.pircbotx.Channel;
 import org.pircbotx.PircBotX;
 import org.pircbotx.User;
 
-import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 public class CommandDefineUD extends Command

@@ -11,8 +11,6 @@ import java.util.Properties;
 
 import org.pircbotx.User;
 
-import com.unacceptableuse.unacceptablebot.variable.Level;
-
 public class ConfigHandler {
 
 	/*

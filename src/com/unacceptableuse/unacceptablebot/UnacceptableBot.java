@@ -75,6 +75,9 @@ public class UnacceptableBot extends ListenerAdapter {
 			channels.add(event.getChannel().getName());
 	}
 
+	/**Record the message to the database
+	 * @author Neil
+	 * **/
 	private void recordMessage(final MessageEvent event) throws SQLException {
 		String message = event.getMessage();
 		Channel channel = event.getChannel();

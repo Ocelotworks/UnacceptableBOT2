@@ -12,14 +12,15 @@ public class CommandBroadcast extends Command{
 	public void performCommand(User sender, Channel channel, String message,
 			String[] args, PircBotX bot) {
 		
-		for(String s : UnacceptableBot.getChannels())
-			bot.sendIRC().message(s, message.replace("!broadcast ", "BROADCAST FROM "+sender+": "));
+		for(int i = 0; i < UnacceptableBot.getChannels().size(); i++) {
+			bot.sendIRC().message(UnacceptableBot.getChannels().get(i), "BROADCAST FROM " + sender.getNick() + ": " + message.replace("!broadcast ", ""));
+		}
 		
 	}
 
 	@Override
 	public String[] getAliases() {
-		return new String[]{"broadcast"};
+		return new String[]{"broadcast", "bc"};
 	}
 
 	@Override
