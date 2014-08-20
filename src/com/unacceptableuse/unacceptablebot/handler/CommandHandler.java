@@ -20,6 +20,7 @@ import com.unacceptableuse.unacceptablebot.command.CommandGoogle;
 import com.unacceptableuse.unacceptablebot.command.CommandHelp;
 import com.unacceptableuse.unacceptablebot.command.CommandImport;
 import com.unacceptableuse.unacceptablebot.command.CommandInsult;
+import com.unacceptableuse.unacceptablebot.command.CommandListChans;
 import com.unacceptableuse.unacceptablebot.command.CommandLive;
 import com.unacceptableuse.unacceptablebot.command.CommandMessageStats;
 import com.unacceptableuse.unacceptablebot.command.CommandQuote;
@@ -59,6 +60,7 @@ public class CommandHandler
 		addCommand(new CommandTime());
 		addCommand(new CommandCommand());
 		addCommand(new CommandFucksGiven());
+		addCommand(new CommandListChans());
 		System.out.println("Registered " +  getCommands().size() + " commands successfully!");
 	}
 	
