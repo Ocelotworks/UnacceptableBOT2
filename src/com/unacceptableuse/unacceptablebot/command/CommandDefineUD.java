@@ -10,6 +10,11 @@ import org.pircbotx.User;
 
 import com.google.gson.JsonParser;
 
+/**
+ * 
+ * @author Joel
+ *
+ */
 public class CommandDefineUD extends Command
 {
 

@@ -4,6 +4,11 @@ import org.pircbotx.Channel;
 import org.pircbotx.PircBotX;
 import org.pircbotx.User;
 
+/**
+ * 
+ * @author Joel?
+ *
+ */
 public class CommandGoogle extends Command
 {
 

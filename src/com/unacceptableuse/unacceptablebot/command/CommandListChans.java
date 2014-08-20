@@ -6,6 +6,11 @@ import org.pircbotx.User;
 
 import com.unacceptableuse.unacceptablebot.UnacceptableBot;
 
+/**
+ * 
+ * @author Neil
+ *
+ */
 public class CommandListChans extends Command{
 
 	@Override

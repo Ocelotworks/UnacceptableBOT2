@@ -10,6 +10,11 @@ import org.pircbotx.User;
 import com.unacceptableuse.unacceptablebot.UnacceptableBot;
 import com.unacceptableuse.unacceptablebot.handler.ConfigHandler;
 
+/**
+ * 
+ * @author Neil
+ *
+ */
 public class CommandFillMeIn extends Command {
 
 	@Override

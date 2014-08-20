@@ -15,6 +15,11 @@ import com.unacceptableuse.unacceptablebot.UnacceptableBot;
 import com.unacceptableuse.unacceptablebot.handler.ConfigHandler;
 import com.unacceptableuse.unacceptablebot.variable.Level;
 
+/**
+ * 
+ * @author Neil
+ *
+ */
 public class CommandImport extends Command {
 
 	@Override

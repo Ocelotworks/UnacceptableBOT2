@@ -5,7 +5,11 @@ import org.pircbotx.PircBotX;
 import org.pircbotx.User;
 
 import com.unacceptableuse.unacceptablebot.UnacceptableBot;
-
+/**
+ * 
+ * @author Peter
+ *
+ */
 public class CommandStevie extends Command
 {
 

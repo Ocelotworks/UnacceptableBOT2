@@ -6,6 +6,11 @@ import org.pircbotx.Channel;
 import org.pircbotx.PircBotX;
 import org.pircbotx.User;
 
+/**
+ * 
+ * @author Peter
+ *
+ */
 public class CommandFucksGiven extends Command {
 
 	@Override

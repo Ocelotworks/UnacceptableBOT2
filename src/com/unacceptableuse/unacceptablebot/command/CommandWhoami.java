@@ -6,6 +6,11 @@ import org.pircbotx.User;
 
 import com.unacceptableuse.unacceptablebot.UnacceptableBot;
 
+/**
+ * 
+ * @author Peter
+ *
+ */
 public class CommandWhoami extends Command
 {
 

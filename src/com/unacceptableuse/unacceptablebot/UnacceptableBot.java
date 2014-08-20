@@ -48,6 +48,12 @@ public class UnacceptableBot extends ListenerAdapter {
 		if (event.getMessage().startsWith("!")) {
 			//String channel = event.getChannel().getName();
 			handler.processMessage(event);
+		}else if(event.getChannel().getName().equals("#doge-coin"))
+		{
+			if(event.getUser().getNick().equals("DogeWallet") && event.getMessage().contains("sent "+getConfigHandler().getString("botName")))
+			{
+				event.getBot().sendIRC().message("DogeWallet", ".balance");
+			}
 		}
 	}
 
@@ -59,6 +65,38 @@ public class UnacceptableBot extends ListenerAdapter {
 		// String user = event.getUser().getNick();
 		// handler.processMessage(event);
 		// }
+		
+		if(event.getUser().getNick().equals("DogeWallet"))
+		{
+			if(event.getMessage().contains("Active"))
+			{
+				int activeUsers = Integer.parseInt(event.getMessage().split(": ")[1]);
+				if(activeUsers == 0)
+				{
+					event.getBot().sendIRC().message("#doge-coin", ">> There are no active users, so soak cannot happen :( <<");
+				}else
+				{
+					long amtToSoak = (getConfigHandler().getLong("dogeWalletBalance")-(getConfigHandler().getInteger("faucetReserve")+getConfigHandler().getInteger("profitReserve")))/activeUsers;
+					event.getBot().sendIRC().message("#doge-coin", ".soak "+amtToSoak);
+					getConfigHandler().increment("stat:totalSoaked", (int)amtToSoak);
+				}			
+			}else
+			{
+				long balance = Long.parseLong(event.getMessage().split(".")[0]);
+				final int tipOver = getConfigHandler().getInteger("faucetReserve")+getConfigHandler().getInteger("profitReserve")+getConfigHandler().getInteger("soakThreshold");
+				getConfigHandler().setLong("dogeWalletBalance", balance);
+				
+				if(balance > tipOver)
+				{
+					event.getBot().sendIRC().message("DogeWallet", ".active");
+				}else
+				{
+					event.getBot().sendIRC().message("#doge-coin", ">> Only "+(tipOver-balance)+" Doge needed to soak! <<");
+				}
+				
+			
+			}
+		}
 	}
 
 	@Override

@@ -13,6 +13,11 @@ import org.w3c.dom.Node;
 
 import com.unacceptableuse.unacceptablebot.UnacceptableBot;
 
+/**
+ * 
+ * @author Peter
+ *
+ */
 public class CommandInsult extends Command
 {
 

@@ -6,6 +6,11 @@ import org.pircbotx.User;
 
 import com.unacceptableuse.unacceptablebot.UnacceptableBot;
 
+/**
+ * 
+ * @author Peter
+ *
+ */
 public class CommandBroadcast extends Command{
 
 	@Override

@@ -12,6 +12,11 @@ import org.pircbotx.User;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
+/**
+ * 
+ * @author Joel
+ *
+ */
 public class CommandLive extends Command {
 
 	@Override

@@ -4,6 +4,11 @@ import org.pircbotx.Channel;
 import org.pircbotx.PircBotX;
 import org.pircbotx.User;
 
+/**
+ * 
+ * @author Neil?
+ *
+ */
 public class CommandHelp extends Command {
 
 	@Override

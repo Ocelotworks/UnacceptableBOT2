@@ -10,6 +10,11 @@ import org.pircbotx.User;
 
 import com.unacceptableuse.unacceptablebot.UnacceptableBot;
 
+/**
+ * 
+ * @author Neil
+ *
+ */
 public class CommandQuote extends Command {
 
 	@Override
@@ -32,11 +37,7 @@ public class CommandQuote extends Command {
 
 		try {
 			PreparedStatement ps = UnacceptableBot.getConfigHandler().sql
-					.getPreparedStatement("SELECT Message FROM `teknogeek_unacceptablebot`.`"
-							+ channel.getName()
-							+ "` WHERE Username = '"
-							+ args[1].replace(" ", "")
-							+ "' ORDER BY RAND() LIMIT " + count);
+					.getPreparedStatement("SELECT Message FROM `teknogeek_unacceptablebot`.`"+ channel.getName()+ "` WHERE Username = '"+ args[1].replace(" ", "")+ "' ORDER BY RAND() LIMIT " + count);
 			/*
 			 * ps.setString(1, args.length == 3 ? args[2].startsWith("#") ?
 			 * args[2] : "#" + args[2] : channel.getName()); Like, what the fuck
