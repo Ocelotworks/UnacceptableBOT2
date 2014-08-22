@@ -35,7 +35,13 @@ public class CommandSql extends Command
 			ResultSet rs = UnacceptableBot.getConfigHandler().sql.query(message.split(args[2])[1].replace("&CHANNEL",channel.getName()));
 			while(rs.next())
 			{
-				sendMessage(bot, rs.getString(1)+" "+rs.getString(2)+" "+rs.getString(3)+" "+rs.getString(3), channel);
+				StringBuilder stb = new StringBuilder();
+				for(int i = 1; i == rs.getMetaData().getColumnCount(); i++)
+				{
+					stb.append(rs.getString(i));
+				}
+				sendMessage(bot, stb.toString(), channel);
+				
 			}
 			}catch(Exception e)
 			{

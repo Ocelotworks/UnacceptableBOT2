@@ -25,6 +25,7 @@ import com.unacceptableuse.unacceptablebot.command.CommandLive;
 import com.unacceptableuse.unacceptablebot.command.CommandMessageStats;
 import com.unacceptableuse.unacceptablebot.command.CommandQuote;
 import com.unacceptableuse.unacceptablebot.command.CommandRand;
+import com.unacceptableuse.unacceptablebot.command.CommandSetAccessLevel;
 import com.unacceptableuse.unacceptablebot.command.CommandSql;
 import com.unacceptableuse.unacceptablebot.command.CommandStevie;
 import com.unacceptableuse.unacceptablebot.command.CommandTime;
@@ -61,6 +62,7 @@ public class CommandHandler
 		addCommand(new CommandCommand());
 		addCommand(new CommandFucksGiven());
 		addCommand(new CommandListChans());
+		addCommand(new CommandSetAccessLevel());
 		System.out.println("Registered " +  getCommands().size() + " commands successfully!");
 	}
 	

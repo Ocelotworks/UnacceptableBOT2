@@ -56,8 +56,9 @@ public class ConfigHandler {
 		return user.isIrcop() ? 10 : user.isVerified() ? sql.getAccessLevel(user.getNick()) : 0;
 	}
 
-	public void setUserLevel(String uuid, int level) {
-		
+	public void setUserLevel(User user, int level) {
+		if(user.isVerified())
+			sql.setAccessLevel(user.getNick(), level);
 	}
 
 	public String getPassword(String key) {

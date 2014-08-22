@@ -6,6 +6,7 @@ import java.net.URLConnection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Random;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -39,6 +40,7 @@ public class UnacceptableBot extends ListenerAdapter {
 		config.init();
 		channels = new ArrayList<String>();
 		config.increment("stat:startups");
+		config.setLong("startupTime", new Date().getTime());
 
 	}
 
@@ -98,11 +100,12 @@ public class UnacceptableBot extends ListenerAdapter {
 			}
 		}
 	}
+	
+	
 
 	@Override
 	public void onInvite(final InviteEvent event) {
-		System.out.println(event.getUser() + " invited bot to "
-				+ event.getChannel());
+		log("INFO", "INVITE", event.getUser() + " invited bot to "+ event.getChannel());
 		event.getBot().sendIRC().joinChannel(event.getChannel());
 	}
 	
@@ -110,7 +113,11 @@ public class UnacceptableBot extends ListenerAdapter {
 	public void onJoin(final JoinEvent event)
 	{
 		if(event.getUser().equals(event.getBot().getUserBot()))
+		{
 			channels.add(event.getChannel().getName());
+			log("INFO", "JOIN", "Joined channel "+event.getChannel().getName());
+		}
+			
 	}
 
 	/**Record the message to the database
@@ -123,7 +130,7 @@ public class UnacceptableBot extends ListenerAdapter {
 		PircBotX bot = event.getBot();
 		if(bot.getNick() == ""){} //Here to tidy up the error console. Please ignore 
 		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(new java.util.Date());
+		calendar.setTime(new Date());
 		int hours = calendar.get(Calendar.HOUR_OF_DAY);
 		int minutes = calendar.get(Calendar.MINUTE);
 		int date = calendar.get(Calendar.DATE);
@@ -137,6 +144,11 @@ public class UnacceptableBot extends ListenerAdapter {
 		config.createChannelTable(channel.getName());
 		config.setLog(dateTime, sender.getNick(), message, channel.getName());
 	}
+	
+	public static void log(String level, String origin, String message)
+	{
+		getConfigHandler().setLog(new Date().toString(), origin, "["+level+"]"+" "+message, "SYSTEM");
+	}
 
 	public static InputStream getUrlContents(String surl) {
 		URL url;
@@ -148,7 +160,7 @@ public class UnacceptableBot extends ListenerAdapter {
 
 			return is;
 		} catch (Exception e) {
-			System.err.println("Could not connect: " + e.getMessage());
+			log("ERROR", "getUrlContents", "Unable to connect to "+surl+": "+e.toString());
 			e.printStackTrace();
 		}
 		return null;
@@ -165,6 +177,7 @@ public class UnacceptableBot extends ListenerAdapter {
 			return is;
 
 		} catch (Exception e) {
+			log("ERROR", "getHTTPSUrlContents", "Unable to connect to "+surl+": "+e.toString());
 			e.printStackTrace();
 		}
 		return null;
