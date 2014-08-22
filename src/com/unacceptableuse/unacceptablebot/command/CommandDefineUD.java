@@ -18,6 +18,7 @@ import com.google.gson.JsonParser;
 public class CommandDefineUD extends Command
 {
 
+	@SuppressWarnings("unused")
 	@Override
 	public void performCommand(User sender, Channel channel, String message, String[] args, PircBotX bot) 
 	{

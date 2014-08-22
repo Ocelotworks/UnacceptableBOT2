@@ -15,6 +15,7 @@ import org.pircbotx.User;
  */
 public class CommandCommand extends Command{
 
+	@SuppressWarnings("unused")
 	@Override
 	public void performCommand(User sender, Channel channel, String message, String[] args, PircBotX bot)
 	{

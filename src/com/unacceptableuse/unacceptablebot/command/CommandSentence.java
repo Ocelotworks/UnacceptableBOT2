@@ -18,6 +18,7 @@ import com.unacceptableuse.unacceptablebot.UnacceptableBot;
 public class CommandSentence extends Command
 {
 
+	@SuppressWarnings("unused")
 	@Override
 	public void performCommand(User sender, Channel channel, String message,
 			String[] args, PircBotX bot)
