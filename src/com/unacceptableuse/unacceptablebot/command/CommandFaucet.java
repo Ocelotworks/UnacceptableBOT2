@@ -7,6 +7,7 @@ import org.pircbotx.PircBotX;
 import org.pircbotx.User;
 
 import com.unacceptableuse.unacceptablebot.UnacceptableBot;
+import com.unacceptableuse.unacceptablebot.variable.Level;
 
 /**
  * 
@@ -46,6 +47,11 @@ public class CommandFaucet extends Command
 	{
 		
 		return new String[]{"faucet","freedoge"};
+	}
+
+	@Override
+	public Level getAccessLevel() {
+		return Level.USER;
 	}
 
 }

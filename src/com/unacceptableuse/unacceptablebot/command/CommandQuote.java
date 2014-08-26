@@ -9,6 +9,7 @@ import org.pircbotx.PircBotX;
 import org.pircbotx.User;
 
 import com.unacceptableuse.unacceptablebot.UnacceptableBot;
+import com.unacceptableuse.unacceptablebot.variable.Level;
 
 /**
  * 
@@ -60,6 +61,11 @@ public class CommandQuote extends Command {
 	@Override
 	public int requiredArguments() {
 		return 1;
+	}
+
+	@Override
+	public Level getAccessLevel() {
+		return Level.USER;
 	}
 
 }

@@ -32,15 +32,15 @@ import com.unacceptableuse.unacceptablebot.command.CommandTime;
 import com.unacceptableuse.unacceptablebot.command.CommandWhoami;
 import com.unacceptableuse.unacceptablebot.variable.Level;
 
-public class CommandHandler
-{	
+public class CommandHandler {
 	public ArrayList<Command> _commands = new ArrayList<Command>();
-	
-	/**Register Commands here!
+
+	/**
+	 * Register Commands here!
+	 * 
 	 * @author UnacceptableUse
 	 * **/
-	public void init()
-	{
+	public void init() {
 		System.out.println("Starting command registration");
 		addCommand(new CommandSql());
 		addCommand(new CommandFillMeIn());
@@ -63,104 +63,104 @@ public class CommandHandler
 		addCommand(new CommandFucksGiven());
 		addCommand(new CommandListChans());
 		addCommand(new CommandSetAccessLevel());
-		System.out.println("Registered " +  getCommands().size() + " commands successfully!");
+		System.out.println("Registered " + getCommands().size()
+				+ " commands successfully!");
 	}
-	
-	
-	/**Pass in onMessage for runnign commands
+
+	/**
+	 * Pass in onMessage for runnign commands
+	 * 
 	 * @author UnacceptableUse, teknogeek
-	 * @param event - The MessageEvent containing user, channel etc
+	 * @param event
+	 *            - The MessageEvent containing user, channel etc
 	 * **/
 	@SuppressWarnings("rawtypes")
-	public void processMessage(MessageEvent event)
-	{
-		
+	public void processMessage(MessageEvent event) {
+
 		String message = event.getMessage();
 		Channel channel = event.getChannel();
 		User sender = event.getUser();
 		PircBotX bot = event.getBot();
-		
 
-		Command chosenCommand = getCommand(message.replaceFirst("!", "").split(" ")[0]);
-		
-		if(chosenCommand == null)
-		{
-			return; //These arn't the commands you are looking for...
-		}
-		else
-		{
-			if(chosenCommand.getAccessLevel() == Level.BANNED)
-			{
+		Command chosenCommand = getCommand(message.replaceFirst("!", "").split(
+				" ")[0]);
+
+		if (chosenCommand == null) {
+			return; // These arn't the commands you are looking for...
+		} else {
+			if (chosenCommand.getAccessLevel() == Level.BANNED
+					|| UnacceptableBot.getConfigHandler().getUserLevel(sender) < Level
+							.levelToInt(chosenCommand.getAccessLevel())) {
 				event.respond("You do not have permission to perform this command");
-			}else
-			{
-				if(chosenCommand.requiredArguments() > event.getMessage().split(" ").length)
-				{
+			} else {
+				if (chosenCommand.requiredArguments() > event.getMessage()
+						.split(" ").length) {
 					event.respond("Insufficent Arguments. There should be help here but I havn't gotten around to it.");
-				}else
-				{
-					UnacceptableBot.getConfigHandler().increment("stat:commandsPerformed");
-					try{
-						chosenCommand.performCommand(sender, channel, message, message.split(" "), bot);
-					}catch(Exception e)
-					{
-						event.respond("An error occurred. ("+e.toString()+")");
+				} else {
+					UnacceptableBot.getConfigHandler().increment(
+							"stat:commandsPerformed");
+					try {
+						chosenCommand.performCommand(sender, channel, message,
+								message.split(" "), bot);
+					} catch (Exception e) {
+						event.respond("An error occurred. (" + e.toString()
+								+ ")");
 					}
 				}
-				
+
 			}
-			
+
 		}
 	}
-	
-	
-	/**Returns the command ArrayList
+
+	/**
+	 * Returns the command ArrayList
+	 * 
 	 * @author UnacceptableUse
 	 * @return ArrayList
 	 * **/
-	public ArrayList<Command> getCommands()
-	{
+	public ArrayList<Command> getCommands() {
 		return _commands;
 	}
-	
-	/**Sets the command arraylist
+
+	/**
+	 * Sets the command arraylist
+	 * 
 	 * @author UnacceptableUse
-	 * @param c - ArrayList to set
+	 * @param c
+	 *            - ArrayList to set
 	 * **/
-	public void setCommands(ArrayList<Command> c)
-	{
+	public void setCommands(ArrayList<Command> c) {
 		_commands = c;
 	}
-	
-	/**Registers Command
+
+	/**
+	 * Registers Command
+	 * 
 	 * @author UnacceptableUse
-	 * @param c - Command to add
+	 * @param c
+	 *            - Command to add
 	 * **/
-	public void addCommand(Command c)
-	{
+	public void addCommand(Command c) {
 		_commands.add(c);
 	}
-	
-	
-	public void removeCommand(Command c)
-	{
+
+	public void removeCommand(Command c) {
 		_commands.remove(c);
 	}
-	
+
 	/**
 	 * Remove the <b>first</b> command that has the alias <code>c</code>
-	 * @param c The command (without the "!" prefix)
+	 * 
+	 * @param c
+	 *            The command (without the "!" prefix)
 	 * @author UnacceptableUse
 	 * @return True if the command was found and removed successfully.
 	 */
-	public boolean removeCommand(String c)
-	{
-		for(Command command : getCommands())
-		{
-			for(String s  : command.getAliases())
-			{
-				if(s.equalsIgnoreCase(c))
-				{
+	public boolean removeCommand(String c) {
+		for (Command command : getCommands()) {
+			for (String s : command.getAliases()) {
+				if (s.equalsIgnoreCase(c)) {
 					removeCommand(command);
 					return true;
 				}
@@ -168,30 +168,24 @@ public class CommandHandler
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Get the <b>first</b> command that has the alias <code>c</code>
-	 * @param c The command (without the "!" prefix)
+	 * 
+	 * @param c
+	 *            The command (without the "!" prefix)
 	 * @author UnacceptableUse
 	 * @return The command object with the alias <code>c</code>
 	 */
-	public Command getCommand(String c)
-	{
-		for(Command command : getCommands())
-		{
-			for(String s : command.getAliases())
-			{
-				if(s.toLowerCase().equals(c))
-				{
+	public Command getCommand(String c) {
+		for (Command command : getCommands()) {
+			for (String s : command.getAliases()) {
+				if (s.toLowerCase().equals(c)) {
 					return command;
 				}
 			}
 		}
 		return null;
 	}
-	
-	
-	
-	
-	
+
 }
