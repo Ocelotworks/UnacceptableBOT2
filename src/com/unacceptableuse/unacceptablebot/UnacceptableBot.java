@@ -18,7 +18,6 @@ import java.util.Random;
 import javax.net.ssl.HttpsURLConnection;
 
 import org.pircbotx.Channel;
-import org.pircbotx.PircBotX;
 import org.pircbotx.User;
 import org.pircbotx.hooks.ListenerAdapter;
 import org.pircbotx.hooks.events.InviteEvent;
@@ -154,11 +153,6 @@ public class UnacceptableBot extends ListenerAdapter {
 		String message = event.getMessage();
 		Channel channel = event.getChannel();
 		User sender = event.getUser();
-		PircBotX bot = event.getBot();
-		//WHY THE WORLD WOULD YOU USE A BLANK IF STATEMENT
-		//ITS LITERALLY DOING NOTHING
-		if(bot.getNick() == ""){} //Here to tidy up the error console. Please ignore WHAT THE FUCK IS THIS SHIT NEIL THIS IS THE WORST PROGRAMMING IVE EVER SEEN
-		// FIXME FIXME FIXME WHAT THE HELL
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(new Date());
 		int hours = calendar.get(Calendar.HOUR_OF_DAY);

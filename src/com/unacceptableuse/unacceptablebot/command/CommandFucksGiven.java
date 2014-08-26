@@ -6,6 +6,8 @@ import org.pircbotx.Channel;
 import org.pircbotx.PircBotX;
 import org.pircbotx.User;
 
+import com.unacceptableuse.unacceptablebot.variable.Level;
+
 /**
  * 
  * @author Peter
@@ -29,6 +31,11 @@ public class CommandFucksGiven extends Command {
 	@Override
 	public String[] getAliases() {
 		return new String[] { "fucksgiven" };
+	}
+
+	@Override
+	public Level getAccessLevel() {
+		return Level.USER;
 	}
 
 }

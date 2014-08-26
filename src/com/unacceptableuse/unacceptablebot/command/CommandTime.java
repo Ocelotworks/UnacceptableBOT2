@@ -4,7 +4,7 @@ import org.pircbotx.Channel;
 import org.pircbotx.PircBotX;
 import org.pircbotx.User;
 
-import com.unacceptableuse.unacceptablebot.UnacceptableBot;
+import com.unacceptableuse.unacceptablebot.variable.Level;
 
 public class CommandTime extends Command{
 
@@ -23,5 +23,10 @@ public class CommandTime extends Command{
 	public int requiredArguments()
 	{
 		return 1;
+	}
+
+	@Override
+	public Level getAccessLevel() {
+		return Level.USER;
 	}
 }

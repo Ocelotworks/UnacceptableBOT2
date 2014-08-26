@@ -38,10 +38,7 @@ public abstract class Command
 	
 	public abstract String[] getAliases();
 	
-	public Level getAccessLevel()
-	{
-		return Level.USER;
-	}
+	public abstract Level getAccessLevel();
 	
 	/**
 	 * Override this if a command has any arguments, forcing the {@link CommandHandler} to throw an error if there are no arguments

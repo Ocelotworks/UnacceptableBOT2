@@ -5,6 +5,7 @@ import org.pircbotx.PircBotX;
 import org.pircbotx.User;
 
 import com.unacceptableuse.unacceptablebot.UnacceptableBot;
+import com.unacceptableuse.unacceptablebot.variable.Level;
 
 /**
  * 
@@ -27,6 +28,11 @@ public class CommandListChans extends Command{
 	@Override
 	public String[] getAliases() {
 		return new String[]{"listchan", "channels", "chan"};
+	}
+
+	@Override
+	public Level getAccessLevel() {
+		return Level.ADMIN;
 	}
 
 }

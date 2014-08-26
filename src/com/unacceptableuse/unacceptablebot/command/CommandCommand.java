@@ -8,6 +8,8 @@ import org.pircbotx.Channel;
 import org.pircbotx.PircBotX;
 import org.pircbotx.User;
 
+import com.unacceptableuse.unacceptablebot.variable.Level;
+
 /**
  * 
  * @author Peter
@@ -15,6 +17,7 @@ import org.pircbotx.User;
  */
 public class CommandCommand extends Command{
 
+	@SuppressWarnings("unused")
 	@Override
 	public void performCommand(User sender, Channel channel, String message, String[] args, PircBotX bot)
 	{
@@ -75,5 +78,10 @@ public class CommandCommand extends Command{
 	public int requiredArguments()
 	{
 		return 1;
+	}
+
+	@Override
+	public Level getAccessLevel() {
+		return  Level.SUPERADMIN;
 	}
 }
