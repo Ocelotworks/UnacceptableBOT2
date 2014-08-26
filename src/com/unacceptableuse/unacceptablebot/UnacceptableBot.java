@@ -1,6 +1,12 @@
 package com.unacceptableuse.unacceptablebot;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 import java.sql.SQLException;
@@ -30,6 +36,8 @@ public class UnacceptableBot extends ListenerAdapter {
 	private static ConfigHandler config = new ConfigHandler();
 	public static Random rand = new Random();
 	public static ArrayList<String> channels = null;
+	private int messageCount = 0;
+	private ArrayList<String> sexQuotes = new ArrayList<String>();
 
 	/**
 	 * Starts the init process of everything
@@ -41,6 +49,8 @@ public class UnacceptableBot extends ListenerAdapter {
 		channels = new ArrayList<String>();
 		config.increment("stat:startups");
 		config.setLong("startupTime", new Date().getTime());
+		
+		loadSexQuotes();
 
 	}
 
@@ -55,6 +65,23 @@ public class UnacceptableBot extends ListenerAdapter {
 			if(event.getUser().getNick().equals("DogeWallet") && event.getMessage().contains("sent "+getConfigHandler().getString("botName")))
 			{
 				event.getBot().sendIRC().message("DogeWallet", ".balance");
+			}
+		}
+		
+		if(event.getChannel().getName().equals("##Ocelotworks"))
+		{
+			if(event.getMessage().equals("new topic plz"))
+				messageCount = 100;
+			if(event.getMessage().equals("reload those sweet sex phrases bro"))
+			{
+				sexQuotes.clear();
+				loadSexQuotes();
+			}
+			messageCount++;
+			if(messageCount > 100)
+			{
+				event.getBot().sendRaw().rawLine("TOPIC ##Ocelotworks "+sexQuotes.get(rand.nextInt(sexQuotes.size())));
+				messageCount = 0;
 			}
 		}
 	}
@@ -184,6 +211,27 @@ public class UnacceptableBot extends ListenerAdapter {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	private void loadSexQuotes()
+	{
+		try
+		{
+			BufferedReader br = new BufferedReader(new FileReader(new File("sexquotes.txt")));
+			String line = "missingno";
+			while((line = br.readLine()) != null)
+			{
+				sexQuotes.add(line);
+			}
+		} catch (FileNotFoundException e)
+		{
+			
+			e.printStackTrace();
+		} catch (IOException e)
+		{
+			
+			e.printStackTrace();
+		}
 	}
 
 	public static CommandHandler getCommandHandler() {

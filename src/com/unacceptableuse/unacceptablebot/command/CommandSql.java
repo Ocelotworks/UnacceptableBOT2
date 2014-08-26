@@ -1,6 +1,7 @@
 package com.unacceptableuse.unacceptablebot.command;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import org.pircbotx.Channel;
 import org.pircbotx.PircBotX;
@@ -29,6 +30,20 @@ public class CommandSql extends Command
 		}else if(args[1].equals("get")) 
 		{
 			sendMessage(bot, UnacceptableBot.getConfigHandler().getString(args[2]), channel.getName());
+		}else if(args[1].equals("connect"))
+		{
+			try
+			{
+				UnacceptableBot.getConfigHandler().sql.connect();
+			} catch (ClassNotFoundException e)
+			{
+				
+				e.printStackTrace();
+			} catch (SQLException e)
+			{
+				
+				e.printStackTrace();
+			}
 		}else if(args[1].equals("query"))
 		{
 			try{
