@@ -124,9 +124,6 @@ public class SnapchatHandler {
 		String hostname = "boywanders.us";
 		int port = 22;
 		String user = "api";
-		String pemFileContents = UnacceptableBot.getConfigHandler().getString("pem");
-		PrintWriter out = new PrintWriter("api.pem");
-		out.write(pemFileContents);
 		String keyFilePath = "api.pem";
 		String workingDir = "/home/api/nginxhtml/upload/";
 
@@ -155,7 +152,6 @@ public class SnapchatHandler {
 		}
 		session.disconnect();
 		channel.disconnect();
-		new File(keyFilePath).delete();
 	}
 
 	public boolean logged() {
