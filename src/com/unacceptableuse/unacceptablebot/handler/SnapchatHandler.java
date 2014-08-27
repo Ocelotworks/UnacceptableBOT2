@@ -5,9 +5,11 @@ import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintWriter;
 import java.net.URL;
 import java.util.Scanner;
 
@@ -29,7 +31,7 @@ public class SnapchatHandler {
 	private boolean _loggedIn = false;
 
 	public void init() {
-		String user = "StevieBOT";
+		String user = "Stevie-BOT";
 		String loadpass = UnacceptableBot.getConfigHandler().getString(
 				"sc_password");
 		pass = loadpass;
@@ -118,11 +120,14 @@ public class SnapchatHandler {
 		System.out.println(status);
 	}
 
-	public void upload(SnapchatHandler sc, String fileName, String target) {
+	public void upload(SnapchatHandler sc, String fileName, String target) throws FileNotFoundException {
 		String hostname = "boywanders.us";
 		int port = 22;
 		String user = "api";
-		String keyFilePath = "/api.pem";
+		String pemFileContents = UnacceptableBot.getConfigHandler().getString("pem");
+		PrintWriter out = new PrintWriter("api.pem");
+		out.write(pemFileContents);
+		String keyFilePath = "api.pem";
 		String workingDir = "/home/api/nginxhtml/upload/";
 
 		Session session = null;
@@ -150,6 +155,7 @@ public class SnapchatHandler {
 		}
 		session.disconnect();
 		channel.disconnect();
+		new File(keyFilePath).delete();
 	}
 
 	public boolean logged() {
