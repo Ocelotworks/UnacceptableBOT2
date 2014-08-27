@@ -14,3 +14,6 @@ hs_err_pid*
 #Stops the passwords being uploaded to github
 *.properties
 *.ub2log
+
+#Stops Snapchat API key being uploaded
+*.pem

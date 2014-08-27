@@ -1,13 +1,15 @@
 UnacceptableBOT2
-================
+===================
 
-Steve II
+	Steve II
+
+	Snapchat
+===================
+		Ask teknogeek or dvd604 for the pem to package into the JAR so that shit will work.
 
 
-
-HOW SHIT ALL WORKS AND STUFF
-
-- The database:
+	Database
+====================
 	The database will be processed by `ConfigHandler.class` and managed by `MySQLConnection.class`.  
 	Every variable will be managed by `ConfigHandler.class` for example Disabled commands, banned users etc
 	

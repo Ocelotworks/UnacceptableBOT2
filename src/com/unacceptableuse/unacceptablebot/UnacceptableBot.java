@@ -27,12 +27,14 @@ import org.pircbotx.hooks.events.PrivateMessageEvent;
 
 import com.unacceptableuse.unacceptablebot.handler.CommandHandler;
 import com.unacceptableuse.unacceptablebot.handler.ConfigHandler;
+import com.unacceptableuse.unacceptablebot.handler.SnapchatHandler;
 
 @SuppressWarnings("rawtypes")
 public class UnacceptableBot extends ListenerAdapter {
 
 	private static CommandHandler handler = new CommandHandler();
 	private static ConfigHandler config = new ConfigHandler();
+	private static SnapchatHandler snapchat = new SnapchatHandler();
 	public static Random rand = new Random();
 	public static ArrayList<String> channels = null;
 	private int messageCount = 0;
@@ -40,15 +42,17 @@ public class UnacceptableBot extends ListenerAdapter {
 
 	/**
 	 * Starts the init process of everything
+	 * 
 	 * @author UnacceptableUse
 	 */
 	public UnacceptableBot() {
 		handler.init();
+		getSnapchat().init();
 		config.init();
 		channels = new ArrayList<String>();
 		config.increment("stat:startups");
 		config.setLong("startupTime", new Date().getTime());
-		
+
 		loadSexQuotes();
 
 	}
@@ -57,29 +61,31 @@ public class UnacceptableBot extends ListenerAdapter {
 	public void onMessage(final MessageEvent event) throws Exception {
 		recordMessage(event);
 		if (event.getMessage().startsWith("!")) {
-			//String channel = event.getChannel().getName();
+			// String channel = event.getChannel().getName();
 			handler.processMessage(event);
-		}else if(event.getChannel().getName().equals("#doge-coin"))
-		{
-			if(event.getUser().getNick().equals("DogeWallet") && event.getMessage().contains("sent "+getConfigHandler().getString("botName")))
-			{
+		} else if (event.getChannel().getName().equals("#doge-coin")) {
+			if (event.getUser().getNick().equals("DogeWallet")
+					&& event.getMessage().contains(
+							"sent " + getConfigHandler().getString("botName"))) {
 				event.getBot().sendIRC().message("DogeWallet", ".balance");
 			}
 		}
-		
-		if(event.getChannel().getName().equals("##Ocelotworks"))
-		{
-			if(event.getMessage().equals("new topic plz"))
+
+		if (event.getChannel().getName().equals("##Ocelotworks")) {
+			if (event.getMessage().equals("new topic plz"))
 				messageCount = 100;
-			if(event.getMessage().equals("reload those sweet sex phrases bro"))
-			{
+			if (event.getMessage().equals("reload those sweet sex phrases bro")) {
 				sexQuotes.clear();
 				loadSexQuotes();
 			}
 			messageCount++;
-			if(messageCount > 100)
-			{
-				event.getBot().sendRaw().rawLine("TOPIC ##Ocelotworks "+sexQuotes.get(rand.nextInt(sexQuotes.size())));
+			if (messageCount > 100) {
+				event.getBot()
+						.sendRaw()
+						.rawLine(
+								"TOPIC ##Ocelotworks "
+										+ sexQuotes.get(rand.nextInt(sexQuotes
+												.size())));
 				messageCount = 0;
 			}
 		}
@@ -93,60 +99,70 @@ public class UnacceptableBot extends ListenerAdapter {
 		// String user = event.getUser().getNick();
 		// handler.processMessage(event);
 		// }
-		
-		if(event.getUser().getNick().equals("DogeWallet"))
-		{
-			if(event.getMessage().contains("Active"))
-			{
-				int activeUsers = Integer.parseInt(event.getMessage().split(": ")[1]);
-				if(activeUsers == 0)
-				{
-					event.getBot().sendIRC().message("#doge-coin", ">> There are no active users, so soak cannot happen :( <<");
-				}else
-				{
-					long amtToSoak = (getConfigHandler().getLong("dogeWalletBalance")-(getConfigHandler().getInteger("faucetReserve")+getConfigHandler().getInteger("profitReserve")))/activeUsers;
-					event.getBot().sendIRC().message("#doge-coin", ".soak "+amtToSoak);
-					getConfigHandler().increment("stat:totalSoaked", (int)amtToSoak);
-				}			
-			}else
-			{
-				long balance = Long.parseLong(event.getMessage().split(".")[0]);
-				final int tipOver = getConfigHandler().getInteger("faucetReserve")+getConfigHandler().getInteger("profitReserve")+getConfigHandler().getInteger("soakThreshold");
-				getConfigHandler().setLong("dogeWalletBalance", balance);
-				
-				if(balance > tipOver)
-				{
-					event.getBot().sendIRC().message("DogeWallet", ".active");
-				}else
-				{
-					event.getBot().sendIRC().message("#doge-coin", ">> Only "+(tipOver-balance)+" Doge needed to soak! <<");
+
+		if (event.getUser().getNick().equals("DogeWallet")) {
+			if (event.getMessage().contains("Active")) {
+				int activeUsers = Integer.parseInt(event.getMessage().split(
+						": ")[1]);
+				if (activeUsers == 0) {
+					event.getBot()
+							.sendIRC()
+							.message("#doge-coin",
+									">> There are no active users, so soak cannot happen :( <<");
+				} else {
+					long amtToSoak = (getConfigHandler().getLong(
+							"dogeWalletBalance") - (getConfigHandler()
+							.getInteger("faucetReserve") + getConfigHandler()
+							.getInteger("profitReserve")))
+							/ activeUsers;
+					event.getBot().sendIRC()
+							.message("#doge-coin", ".soak " + amtToSoak);
+					getConfigHandler().increment("stat:totalSoaked",
+							(int) amtToSoak);
 				}
-				
-			
+			} else {
+				long balance = Long.parseLong(event.getMessage().split(".")[0]);
+				final int tipOver = getConfigHandler().getInteger(
+						"faucetReserve")
+						+ getConfigHandler().getInteger("profitReserve")
+						+ getConfigHandler().getInteger("soakThreshold");
+				getConfigHandler().setLong("dogeWalletBalance", balance);
+
+				if (balance > tipOver) {
+					event.getBot().sendIRC().message("DogeWallet", ".active");
+				} else {
+					event.getBot()
+							.sendIRC()
+							.message(
+									"#doge-coin",
+									">> Only " + (tipOver - balance)
+											+ " Doge needed to soak! <<");
+				}
+
 			}
 		}
 	}
-	
-	
 
 	@Override
 	public void onInvite(final InviteEvent event) {
-		log("INFO", "INVITE", event.getUser() + " invited bot to "+ event.getChannel());
+		log("INFO", "INVITE",
+				event.getUser() + " invited bot to " + event.getChannel());
 		event.getBot().sendIRC().joinChannel(event.getChannel());
 	}
-	
+
 	@Override
-	public void onJoin(final JoinEvent event)
-	{
-		if(event.getUser().equals(event.getBot().getUserBot()))
-		{
+	public void onJoin(final JoinEvent event) {
+		if (event.getUser().equals(event.getBot().getUserBot())) {
 			channels.add(event.getChannel().getName());
-			log("INFO", "JOIN", "Joined channel "+event.getChannel().getName());
+			log("INFO", "JOIN", "Joined channel "
+					+ event.getChannel().getName());
 		}
-			
+
 	}
 
-	/**Record the message to the database
+	/**
+	 * Record the message to the database
+	 * 
 	 * @author Neil
 	 * **/
 	private void recordMessage(final MessageEvent event) throws SQLException {
@@ -159,8 +175,8 @@ public class UnacceptableBot extends ListenerAdapter {
 		int minutes = calendar.get(Calendar.MINUTE);
 		int date = calendar.get(Calendar.DATE);
 		int month = calendar.get(Calendar.MONTH);
-		final String[] months = new String[] { "Jan", "Feb", "Mar", "Apr", "May",
-				"Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+		final String[] months = new String[] { "Jan", "Feb", "Mar", "Apr",
+				"May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
 				"WHAT ARE YOU, A FUCKING WIZARD?!" };
 		String stringMonth = months[month];
 		String dateTime = date + " " + stringMonth + ", " + hours + ":"
@@ -168,10 +184,10 @@ public class UnacceptableBot extends ListenerAdapter {
 		config.createChannelTable(channel.getName());
 		config.setLog(dateTime, sender.getNick(), message, channel.getName());
 	}
-	
-	public static void log(String level, String origin, String message)
-	{
-		getConfigHandler().setLog(new Date().toString(), origin, "["+level+"]"+" "+message, "SYSTEM");
+
+	public static void log(String level, String origin, String message) {
+		getConfigHandler().setLog(new Date().toString(), origin,
+				"[" + level + "]" + " " + message, "SYSTEM");
 	}
 
 	public static InputStream getUrlContents(String surl) {
@@ -184,7 +200,8 @@ public class UnacceptableBot extends ListenerAdapter {
 
 			return is;
 		} catch (Exception e) {
-			log("ERROR", "getUrlContents", "Unable to connect to "+surl+": "+e.toString());
+			log("ERROR", "getUrlContents", "Unable to connect to " + surl
+					+ ": " + e.toString());
 			e.printStackTrace();
 		}
 		return null;
@@ -201,29 +218,26 @@ public class UnacceptableBot extends ListenerAdapter {
 			return is;
 
 		} catch (Exception e) {
-			log("ERROR", "getHTTPSUrlContents", "Unable to connect to "+surl+": "+e.toString());
+			log("ERROR", "getHTTPSUrlContents", "Unable to connect to " + surl
+					+ ": " + e.toString());
 			e.printStackTrace();
 		}
 		return null;
 	}
-	
-	private void loadSexQuotes()
-	{
-		try
-		{
-			BufferedReader br = new BufferedReader(new FileReader(new File("sexquotes.txt")));
+
+	private void loadSexQuotes() {
+		try {
+			BufferedReader br = new BufferedReader(new FileReader(new File(
+					"sexquotes.txt")));
 			String line = "missingno";
-			while((line = br.readLine()) != null)
-			{
+			while ((line = br.readLine()) != null) {
 				sexQuotes.add(line);
 			}
-		} catch (FileNotFoundException e)
-		{
-			
+		} catch (FileNotFoundException e) {
+
 			e.printStackTrace();
-		} catch (IOException e)
-		{
-			
+		} catch (IOException e) {
+
 			e.printStackTrace();
 		}
 	}
@@ -235,8 +249,12 @@ public class UnacceptableBot extends ListenerAdapter {
 	public static ConfigHandler getConfigHandler() {
 		return config;
 	}
-	
-	public static ArrayList<String> getChannels(){
+
+	public static ArrayList<String> getChannels() {
 		return channels;
+	}
+
+	public static SnapchatHandler getSnapchat() {
+		return snapchat;
 	}
 }
