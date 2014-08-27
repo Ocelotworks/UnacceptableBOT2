@@ -9,7 +9,8 @@ import java.util.Properties;
 
 import com.unacceptableuse.unacceptablebot.UnacceptableBot;
 
-public class MySQLConnection {
+public class MySQLConnection
+{
 	private static final String dbClassName = "com.mysql.jdbc.Driver";
 
 	private static final String CONNECTION = "jdbc:mysql://hp.matrixdevuk.pw/";
@@ -27,7 +28,7 @@ public class MySQLConnection {
 
 		Properties p = new Properties();
 		p.put("user", "unacceptablebot");
-		p.put("password",UnacceptableBot.getConfigHandler().getPassword("mysql"));
+		p.put("password", UnacceptableBot.getConfigHandler().getPassword("mysql"));
 
 		c = DriverManager.getConnection(CONNECTION, p);
 

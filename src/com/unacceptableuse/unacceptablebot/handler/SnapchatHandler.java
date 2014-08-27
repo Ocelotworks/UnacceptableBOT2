@@ -1,6 +1,5 @@
 package com.unacceptableuse.unacceptablebot.handler;
 
-import java.awt.Image;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -9,18 +8,15 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.PrintWriter;
 import java.net.URL;
+import java.sql.ResultSet;
 import java.util.Scanner;
-
-import javax.imageio.ImageIO;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.JSch;
-import com.jcraft.jsch.Random;
 import com.jcraft.jsch.Session;
 import com.unacceptableuse.unacceptablebot.UnacceptableBot;
 
@@ -29,13 +25,24 @@ public class SnapchatHandler {
 	private String user;
 	private String pass;
 	private boolean _loggedIn = false;
+	StringBuilder stb;
 
-	public void init() {
-		String user = "Stevie-BOT";
-		String loadpass = UnacceptableBot.getConfigHandler().getString(
-				"sc_password");
-		pass = loadpass;
-		try {
+	public void init() throws Exception
+	{
+		user = "stevieb.ot";
+		ResultSet rs = UnacceptableBot.getConfigHandler().sql.query("SELECT * FROM `teknogeek_settings`.`Global_Settings` WHERE setting = 'sc_password'");
+		while(rs.next())
+		{
+			stb = new StringBuilder();
+			for(int i = 1; i == rs.getMetaData().getColumnCount(); i++)
+			{
+				stb.append(rs.getString(i));
+			}
+		}
+		String pass = stb.toString();
+
+		try
+		{
 			login(user, pass);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -65,7 +72,7 @@ public class SnapchatHandler {
 		    FileOutputStream fos = new FileOutputStream("temp.jpg");
 		    fos.write(response);
 		    fos.close();
-		    this.upload(this, "temp.jgp", target);
+		    upload(this, "temp.jpg", target);
 		    new File("temp.jpg").delete();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -98,27 +105,21 @@ public class SnapchatHandler {
 
 	}
 
-	public void post(String imageName, String target) throws Exception {
-
-		String s = "http://boywanders.us:6969/snapapi.php?username=" + getUser()
-				+ "&password=" + pass + "&method=sendsnap&variables=target:"
-				+ target + ";;time:" + 10 + ";;image:" + imageName;
-		URL url = new URL(s);
-
-		// read from the URL
-		Scanner scan = new Scanner(url.openStream());
-		String str = new String();
-		while (scan.hasNext()) {
-			str += scan.nextLine();
-		}
-		scan.close();
-
-		// build a JSON object
-		JsonParser parser = new JsonParser();
-		JsonObject obj = (JsonObject) parser.parse(str);
-		String status = obj.get("status").toString();
-		System.out.println(status);
-	}
+	public void post(String imageName, String target, int time) throws Exception
+    {
+           
+        String s = "http://boywanders.us:6969/snapapi.php?username=" + user + "&password=" + pass + "&method=sendsnap&variables=target:" + target + ";;time:" + time + ";;image:" + imageName;
+	    URL url = new URL(s);
+	
+	    // read from the URL
+	    Scanner scan = new Scanner(url.openStream());
+	    String str = new String();
+	    while(scan.hasNext())
+	    {
+	            str += scan.nextLine();
+	    }
+	    scan.close();
+    }
 
 	public void upload(SnapchatHandler sc, String fileName, String target) throws FileNotFoundException {
 		String hostname = "boywanders.us";
@@ -146,7 +147,7 @@ public class SnapchatHandler {
 			File f = new File(fileName);
 			channelSFTP.put(new FileInputStream(f), f.getName());
 
-			sc.post(fileName, target);
+			post(fileName, target, 10);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}

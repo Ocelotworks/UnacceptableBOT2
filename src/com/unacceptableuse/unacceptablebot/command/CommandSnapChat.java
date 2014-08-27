@@ -17,24 +17,29 @@ public class CommandSnapChat extends Command {
 		String com = args[1];
 		switch (com) {
 		case ("test"): {
-			File f = new File("/api.pem");
+			File f = new File("api.pem");
 			if (!f.exists()) {
 				bot.sendIRC().message(channel.getName(),
 						"Cannot send snaps. Missing " + f.getAbsolutePath());
 			} else {
 				bot.sendIRC().message(channel.getName(), "Snapchat is ok!");
 			}
+			break;
 		}
 		case ("send"): {
-			try {
+			try
+			{
 				String url = args[2];
 				String target = args[3];
 				UnacceptableBot.getSnapchat().getImage(url, target);
 				bot.sendIRC().message(channel.getName(), "Snap sent.");
-			} catch (Exception e) {
-				bot.sendIRC().message(channel.getName(),
-						"Did you enter the correct number of arguments?");
 			}
+			catch(Exception e)
+			{
+				bot.sendIRC().message(channel.getName(), "Did you enter the correct number of arguments?");
+				e.printStackTrace();
+			}
+			break;
 		}
 		case ("getUser"): {
 			bot.sendIRC()
@@ -42,6 +47,7 @@ public class CommandSnapChat extends Command {
 							channel.getName(),
 							"Snapchating as "
 									+ UnacceptableBot.getSnapchat().getUser());
+			break;
 		}
 		default: {
 			bot.sendIRC().message(channel.getName(),
@@ -57,7 +63,7 @@ public class CommandSnapChat extends Command {
 
 	@Override
 	public Level getAccessLevel() {
-		return Level.SUPERADMIN;
+		return Level.USER;
 	}
 
 	@Override

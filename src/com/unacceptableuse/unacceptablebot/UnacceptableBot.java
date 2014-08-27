@@ -45,9 +45,17 @@ public class UnacceptableBot extends ListenerAdapter {
 	 * 
 	 * @author UnacceptableUse
 	 */
-	public UnacceptableBot() {
+	public UnacceptableBot()
+	{
 		handler.init();
-		getSnapchat().init();
+		try
+		{
+			getSnapchat().init();
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
 		config.init();
 		channels = new ArrayList<String>();
 		config.increment("stat:startups");

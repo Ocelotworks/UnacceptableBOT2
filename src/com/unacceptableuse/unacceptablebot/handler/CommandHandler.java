@@ -93,8 +93,9 @@ public class CommandHandler {
 			return; // These arn't the commands you are looking for...
 		} else {
 			if (chosenCommand.getAccessLevel() == Level.BANNED
-					|| UnacceptableBot.getConfigHandler().getUserLevel(sender) < Level
-							.levelToInt(chosenCommand.getAccessLevel())) {
+					|| UnacceptableBot.getConfigHandler().getUserLevel(sender) < Level.levelToInt(chosenCommand.getAccessLevel()))
+			{
+				event.respond("Needed Level: " + Level.levelToInt(chosenCommand.getAccessLevel()) + " | Your Level: " + UnacceptableBot.getConfigHandler().getUserLevel(sender));
 				event.respond("You do not have permission to perform this command");
 			} else {
 				if (chosenCommand.requiredArguments() > event.getMessage()

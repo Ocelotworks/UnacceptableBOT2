@@ -45,26 +45,30 @@ public class CommandSql extends Command
 				
 				e.printStackTrace();
 			}
-		}else if(args[1].equals("query"))
+		}
+		else if(args[1].equals("query"))
 		{
-			try{
-			ResultSet rs = UnacceptableBot.getConfigHandler().sql.query(message.split(args[2])[1].replace("&CHANNEL",channel.getName()));
-			while(rs.next())
+			try
 			{
-				StringBuilder stb = new StringBuilder();
-				for(int i = 1; i == rs.getMetaData().getColumnCount(); i++)
+				ResultSet rs = UnacceptableBot.getConfigHandler().sql.query(message.split(args[2])[1].replace("&CHANNEL",channel.getName()));
+				while(rs.next())
 				{
-					stb.append(rs.getString(i));
+					StringBuilder stb = new StringBuilder();
+					for(int i = 1; i == rs.getMetaData().getColumnCount(); i++)
+					{
+						stb.append(rs.getString(i));
+					}
+					sendMessage(bot, stb.toString(), channel);
+					
 				}
-				sendMessage(bot, stb.toString(), channel);
-				
 			}
-			}catch(Exception e)
+			catch(Exception e)
 			{
 				sendMessage(bot, e.getMessage(), channel);
 			}
 			
-		}else
+		}
+		else
 		{
 			sendMessage(bot, "Unrecoginized argument "+args[1], channel.getName());
 		}
@@ -86,7 +90,8 @@ public class CommandSql extends Command
 	}
 
 	@Override
-	public Level getAccessLevel() {
+	public Level getAccessLevel()
+	{
 		return Level.SUPERADMIN;
 	}
 	
