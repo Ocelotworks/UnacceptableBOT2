@@ -4,11 +4,15 @@
 package com.unacceptableuse.unacceptablebot.command;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -29,15 +33,20 @@ public class CommandSeuss extends Command {
 			String[] args, PircBotX bot) {
 		switch (args[1]) {
 		default: {
-			bot.sendIRC().message(channel.getName(), getLine(args[1]));
+			try {
+				bot.sendIRC().message(channel.getName(), getLine(args[1]));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 			break;
 		}
 		case ("list"): {
 			File folder = new File("books/");
 			File[] listOfFiles = folder.listFiles();
 			bot.sendIRC().message(channel.getName(), "Books:");
-			for(int i = 0; i < listOfFiles.length; i++){
-				bot.sendIRC().message(channel.getName(), (i+1) + ". " + listOfFiles[i] );
+			for (int i = 0; i < listOfFiles.length; i++) {
+				bot.sendIRC().message(channel.getName(),
+						(i + 1) + ". " + listOfFiles[i]);
 			}
 			break;
 		}
@@ -60,25 +69,33 @@ public class CommandSeuss extends Command {
 		return 1;
 	}
 
-	public static String getLine(String args) {
+	public static String getLine(String args) throws IOException {
 		File file = new File("books/", args);
-		try {
-			int maxLines = countLines("books/" + args);
-			int rand = new Random().nextInt(maxLines);
-			if (rand == maxLines) {
-				rand = rand + 1;
-			}
-			Scanner s = new Scanner(file);
-			ArrayList<String> list = new ArrayList<String>();
-			while (s.hasNext()) {
-				list.add(s.next());
-			}
-			s.close();
-			return list.get(rand);
-		} catch (IOException e) {
-			e.printStackTrace();
+		int maxLines = countLines("books/" + args);
+		int rand = new Random().nextInt(maxLines);
+		if (rand == maxLines) {
+			rand = rand + 1;
 		}
-		return args;
+
+		BufferedReader in = null;
+		List<String> fileList = new ArrayList<String>();
+		try {   
+		    in = new BufferedReader(new FileReader(file));
+		    String str;
+		    while ((str = in.readLine()) != null) {
+		        fileList.add(str);
+		    }
+		} catch (FileNotFoundException e) {
+		    e.printStackTrace();
+		} catch (IOException e) {
+		    e.printStackTrace();
+		} finally {
+		    if (in != null) {
+		        in.close();
+		    }
+		}
+		
+		return fileList.get(rand);
 	}
 
 	public static int countLines(String filename) throws IOException {

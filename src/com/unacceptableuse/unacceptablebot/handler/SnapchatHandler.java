@@ -30,7 +30,7 @@ public class SnapchatHandler {
 	public void init() throws Exception {
 		user = "stevieb.ot";
 		ResultSet rs = UnacceptableBot.getConfigHandler().sql
-				.query("SELECT * FROM `teknogeek_settings`.`Global_Settings` WHERE setting = 'sc_password'");
+				.query("SELECT * FROM `teknogeek_settings`.`Global_Settings` WHERE 'Setting' = 'sc_password'");
 		while (rs.next()) {
 			stb = new StringBuilder();
 			for (int i = 1; i == rs.getMetaData().getColumnCount(); i++) {
@@ -38,6 +38,7 @@ public class SnapchatHandler {
 			}
 		}
 		String pass = stb.toString();
+		System.out.println(pass);
 
 		try {
 			login(user, pass);
