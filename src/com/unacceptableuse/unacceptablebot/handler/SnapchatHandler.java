@@ -1,5 +1,7 @@
 package com.unacceptableuse.unacceptablebot.handler;
 
+import java.awt.Color;
+import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -9,8 +11,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.sql.ResultSet;
+import java.util.Random;
 import java.util.Scanner;
+
+import javax.imageio.ImageIO;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -24,24 +28,18 @@ public class SnapchatHandler {
 
 	private String user;
 	private String pass;
+	String fileName;
 	private boolean _loggedIn = false;
-	StringBuilder stb;
+	StringBuilder stb, sex;
 
-	public void init() throws Exception {
-		user = "stevieb.ot";
-		ResultSet rs = UnacceptableBot.getConfigHandler().sql
-				.query("SELECT * FROM `teknogeek_settings`.`Global_Settings` WHERE 'Setting' = 'sc_password'");
-		while (rs.next()) {
-			stb = new StringBuilder();
-			for (int i = 1; i == rs.getMetaData().getColumnCount(); i++) {
-				stb.append(rs.getString(i));
-			}
-		}
-		String pass = stb.toString();
-		this.pass = pass;
+	public void init() throws Exception
+	{
+		user = "Stevie-BOT";
+		this.pass = UnacceptableBot.getConfigHandler().getString("sc_password");
 		//System.out.println(pass);
 
-		try {
+		try
+		{
 			login(user, pass);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -54,26 +52,81 @@ public class SnapchatHandler {
 		}
 	}
 
-	public void getImage(String strURL, String target) {
-		try {
-			URL url = new URL(strURL);
+	public void getImage(String strURL, String target)
+	{
+		try
+		{
+			Random rn = new Random();
+			int number = rn.nextInt(9999 - 1 + 1) + 1;
+			fileName = "temp" + number;
+			if(strURL.substring(strURL.lastIndexOf(".")).equals(".png"))
+			{
+				convertToJPG(strURL);
+			}
+			else
+			{
+				URL url = new URL(strURL);
+				InputStream in = new BufferedInputStream(url.openStream());
+				ByteArrayOutputStream out = new ByteArrayOutputStream();
+				byte[] buf = new byte[8192];
+				int n = 0;
+				while(-1 != (n = in.read(buf)))
+				{
+					out.write(buf, 0, n);
+				}
+				out.close();
+				in.close();
+				byte[] response = out.toByteArray();
+				FileOutputStream fos = new FileOutputStream(fileName + ".jpg");
+				fos.write(response);
+				fos.close();
+			}
+			upload(fileName + ".jpg", target, user, pass);
+			if(new File(fileName + ".png").exists())
+			{
+				new File(fileName + ".png").delete();
+			}
+			new File(fileName + ".jpg").delete();
+		}
+		catch(IOException e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	public void convertToJPG(String pngURL)
+	{
+		BufferedImage bufferedImage;
+		try
+		{
+			URL url = new URL(pngURL);
 			InputStream in = new BufferedInputStream(url.openStream());
 			ByteArrayOutputStream out = new ByteArrayOutputStream();
-			byte[] buf = new byte[1024];
+			byte[] buf = new byte[8192];
 			int n = 0;
-			while (-1 != (n = in.read(buf))) {
+			while(-1 != (n = in.read(buf)))
+			{
 				out.write(buf, 0, n);
 			}
 			out.close();
 			in.close();
 			byte[] response = out.toByteArray();
-			FileOutputStream fos = new FileOutputStream("temp.jpg");
+			FileOutputStream fos = new FileOutputStream(fileName + ".png");
 			fos.write(response);
 			fos.close();
-			upload("temp.jpg", target, user, pass);
-			new File("temp.jpg").delete();
-		} catch (IOException e) {
-			e.printStackTrace();
+			//read image file
+			bufferedImage = ImageIO.read(new File(fileName + ".png"));
+ 
+			// create a blank, RGB, same width and height, and a white background
+			BufferedImage newBufferedImage = new BufferedImage(bufferedImage.getWidth(), bufferedImage.getHeight(), BufferedImage.TYPE_INT_RGB);
+			newBufferedImage.createGraphics().drawImage(bufferedImage, 0, 0, Color.WHITE, null);
+ 
+			// write to jpeg file
+			ImageIO.write(newBufferedImage, "jpg", new File(fileName + ".jpg"));
+		}
+		catch(IOException e)
+		{
+			e.printStackTrace();	 
 		}
 	}
 
@@ -161,5 +214,11 @@ public class SnapchatHandler {
 
 	public String getUser() {
 		return user;
+	}
+	
+	public String getPass()
+	{
+		String pass = UnacceptableBot.getConfigHandler().getString("sc_password");
+		return pass;
 	}
 }

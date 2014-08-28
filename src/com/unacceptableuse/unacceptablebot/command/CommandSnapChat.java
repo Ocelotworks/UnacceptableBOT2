@@ -52,10 +52,23 @@ public class CommandSnapChat extends Command {
 									+ UnacceptableBot.getSnapchat().getUser());
 			break;
 		}
+		case ("getpass"):
+		{
+			try
+			{
+				bot.sendIRC().message(channel.getName(),
+								"Password: " + UnacceptableBot.getSnapchat().getPass());
+			}
+			catch(Exception e)
+			{
+				e.printStackTrace();
+			}
+			break;
+		}
 		case("loggedin"): {
-			bot.sendIRC()
-			.message(
-					channel.getName(),"Logged in: " + UnacceptableBot.getSnapchat().logged());
+			bot.sendIRC().message(channel.getName(),
+					"Logged in: " + UnacceptableBot.getSnapchat().logged());
+			break;
 		}
 		case("fucked"):{
 			UnacceptableBot.setSnapchat(null);
@@ -66,6 +79,7 @@ public class CommandSnapChat extends Command {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+			break;
 		}
 		default: {
 			bot.sendIRC().message(channel.getName(),
