@@ -72,10 +72,14 @@ public class CommandSnapChat extends Command {
 		}
 		case("fucked"):{
 			UnacceptableBot.setSnapchat(null);
+			bot.sendIRC().message(channel.getName(), "Reseting handler..");
 			SnapchatHandler replacement = new SnapchatHandler();
+			bot.sendIRC().message(channel.getName(), "Creating new handler..");
 			UnacceptableBot.setSnapchat(replacement);
+			bot.sendIRC().message(channel.getName(), "Setting handler..");
 			try {
 				UnacceptableBot.getSnapchat().init();
+				bot.sendIRC().message(channel.getName(), "Handler Init..");
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

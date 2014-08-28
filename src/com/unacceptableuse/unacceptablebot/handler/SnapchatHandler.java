@@ -32,14 +32,12 @@ public class SnapchatHandler {
 	private boolean _loggedIn = false;
 	StringBuilder stb, sex;
 
-	public void init() throws Exception
-	{
+	public void init() throws Exception {
 		user = "Stevie-BOT";
 		this.pass = UnacceptableBot.getConfigHandler().getString("sc_password");
-		//System.out.println(pass);
+		// System.out.println(pass);
 
-		try
-		{
+		try {
 			login(user, pass);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -52,26 +50,20 @@ public class SnapchatHandler {
 		}
 	}
 
-	public void getImage(String strURL, String target)
-	{
-		try
-		{
+	public void getImage(String strURL, String target) {
+		try {
 			Random rn = new Random();
 			int number = rn.nextInt(9999 - 1 + 1) + 1;
 			fileName = "temp" + number;
-			if(strURL.substring(strURL.lastIndexOf(".")).equals(".png"))
-			{
+			if (strURL.substring(strURL.lastIndexOf(".")).equals(".png")) {
 				convertToJPG(strURL);
-			}
-			else
-			{
+			} else {
 				URL url = new URL(strURL);
 				InputStream in = new BufferedInputStream(url.openStream());
 				ByteArrayOutputStream out = new ByteArrayOutputStream();
 				byte[] buf = new byte[8192];
 				int n = 0;
-				while(-1 != (n = in.read(buf)))
-				{
+				while (-1 != (n = in.read(buf))) {
 					out.write(buf, 0, n);
 				}
 				out.close();
@@ -82,30 +74,24 @@ public class SnapchatHandler {
 				fos.close();
 			}
 			upload(fileName + ".jpg", target, user, pass);
-			if(new File(fileName + ".png").exists())
-			{
+			if (new File(fileName + ".png").exists()) {
 				new File(fileName + ".png").delete();
 			}
 			new File(fileName + ".jpg").delete();
-		}
-		catch(IOException e)
-		{
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-	
-	public void convertToJPG(String pngURL)
-	{
+
+	public void convertToJPG(String pngURL) {
 		BufferedImage bufferedImage;
-		try
-		{
+		try {
 			URL url = new URL(pngURL);
 			InputStream in = new BufferedInputStream(url.openStream());
 			ByteArrayOutputStream out = new ByteArrayOutputStream();
 			byte[] buf = new byte[8192];
 			int n = 0;
-			while(-1 != (n = in.read(buf)))
-			{
+			while (-1 != (n = in.read(buf))) {
 				out.write(buf, 0, n);
 			}
 			out.close();
@@ -114,19 +100,21 @@ public class SnapchatHandler {
 			FileOutputStream fos = new FileOutputStream(fileName + ".png");
 			fos.write(response);
 			fos.close();
-			//read image file
+			// read image file
 			bufferedImage = ImageIO.read(new File(fileName + ".png"));
- 
-			// create a blank, RGB, same width and height, and a white background
-			BufferedImage newBufferedImage = new BufferedImage(bufferedImage.getWidth(), bufferedImage.getHeight(), BufferedImage.TYPE_INT_RGB);
-			newBufferedImage.createGraphics().drawImage(bufferedImage, 0, 0, Color.WHITE, null);
- 
+
+			// create a blank, RGB, same width and height, and a white
+			// background
+			BufferedImage newBufferedImage = new BufferedImage(
+					bufferedImage.getWidth(), bufferedImage.getHeight(),
+					BufferedImage.TYPE_INT_RGB);
+			newBufferedImage.createGraphics().drawImage(bufferedImage, 0, 0,
+					Color.WHITE, null);
+
 			// write to jpeg file
 			ImageIO.write(newBufferedImage, "jpg", new File(fileName + ".jpg"));
-		}
-		catch(IOException e)
-		{
-			e.printStackTrace();	 
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -166,11 +154,14 @@ public class SnapchatHandler {
 
 		// read from the URL
 		Scanner scan = new Scanner(url.openStream());
+		@SuppressWarnings("unused")
 		String str = new String();
 		while (scan.hasNext()) {
 			str += scan.nextLine();
 		}
 		scan.close();
+
+		// GET SNAP COMPLETEION. LATER
 	}
 
 	public static void upload(String fileName, String target, String scUser,
@@ -215,10 +206,10 @@ public class SnapchatHandler {
 	public String getUser() {
 		return user;
 	}
-	
-	public String getPass()
-	{
-		String pass = UnacceptableBot.getConfigHandler().getString("sc_password");
+
+	public String getPass() {
+		String pass = UnacceptableBot.getConfigHandler().getString(
+				"sc_password");
 		return pass;
 	}
 }

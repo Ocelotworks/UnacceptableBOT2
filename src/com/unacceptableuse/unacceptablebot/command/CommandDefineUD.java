@@ -39,7 +39,7 @@ public class CommandDefineUD extends Command
 		
 		JsonParser json = new JsonParser();
 		//JsonObject udObject = json.parse(new InputStreamReader(is)).getAsJsonObject();
-		try
+	/*	try
 		{
 //			bot.sendIRC().message(channel.getName(), channel,
 //						String.format("%s: %s",
@@ -48,7 +48,7 @@ public class CommandDefineUD extends Command
 		} catch(IndexOutOfBoundsException e3)
 		{
 			//bot.sendIRC().message(channel.getName(),  word + ": " + definition);
-		}
+		}*/
 	}
 
 	@Override

@@ -6,7 +6,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 import java.sql.SQLException;
@@ -14,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
+import java.util.Timer;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -28,6 +28,7 @@ import org.pircbotx.hooks.events.PrivateMessageEvent;
 import com.unacceptableuse.unacceptablebot.handler.CommandHandler;
 import com.unacceptableuse.unacceptablebot.handler.ConfigHandler;
 import com.unacceptableuse.unacceptablebot.handler.SnapchatHandler;
+import com.unacceptableuse.unacceptablebot.threading.SnapchatThread;
 
 @SuppressWarnings("rawtypes")
 public class UnacceptableBot extends ListenerAdapter {
@@ -51,6 +52,8 @@ public class UnacceptableBot extends ListenerAdapter {
 		try
 		{
 			snapchat.init();
+	    	Timer timer = new Timer();
+	    	timer.schedule(new SnapchatThread(), 0, (30*1000));
 		}
 		catch(Exception e)
 		{
@@ -246,6 +249,7 @@ public class UnacceptableBot extends ListenerAdapter {
 			while ((line = br.readLine()) != null) {
 				sexQuotes.add(line);
 			}
+			br.close();
 		} catch (FileNotFoundException e) {
 
 			e.printStackTrace();

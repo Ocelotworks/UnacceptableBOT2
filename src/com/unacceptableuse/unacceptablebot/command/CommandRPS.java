@@ -46,7 +46,7 @@ public class CommandRPS extends Command
 			boolean playerWon = playerChoice == steveChoice ? false : playerChoice == 1 && steveChoice == 2 ? false : playerChoice == 3 && steveChoice == 1 ? false : playerChoice == 2 && steveChoice == 3 ? false :  true; 
 			sendMessage(bot, (playerWon ? "You WIN! " : steveChoice == playerChoice ? "You TIED! " : "You LOSE! ")+UnacceptableBot.getConfigHandler().getString("botName")+" chose "+getAction(steveChoice)+" and you chose "+getAction(playerChoice), channel);
 			if(playerWon && !UnacceptableBot.getConfigHandler().getBoolean("rpsBounty"))
-				sendMessage(bot, ".tip "+sender+" "+UnacceptableBot.rand.nextInt(UnacceptableBot.getConfigHandler().getInteger("faucetLimit"))+1, channel);
+				sendMessage(bot, ".tip "+sender+" "+UnacceptableBot.rand.nextInt((UnacceptableBot.getConfigHandler().getInteger("faucetLimit"))+1), channel);
 			
 			UnacceptableBot.getConfigHandler().setLong("faucetAt:"+sender.getUserId().toString(), new Date().getTime());
 		}
