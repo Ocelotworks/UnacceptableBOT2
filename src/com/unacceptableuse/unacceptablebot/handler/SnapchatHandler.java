@@ -38,7 +38,8 @@ public class SnapchatHandler {
 			}
 		}
 		String pass = stb.toString();
-		System.out.println(pass);
+		this.pass = pass;
+		//System.out.println(pass);
 
 		try {
 			login(user, pass);

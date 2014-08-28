@@ -270,4 +270,8 @@ public class UnacceptableBot extends ListenerAdapter {
 	public static SnapchatHandler getSnapchat() {
 		return snapchat;
 	}
+	
+	public static void setSnapchat(SnapchatHandler sc){
+		snapchat = sc;
+	}
 }

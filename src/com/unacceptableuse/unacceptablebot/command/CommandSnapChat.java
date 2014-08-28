@@ -7,6 +7,7 @@ import org.pircbotx.PircBotX;
 import org.pircbotx.User;
 
 import com.unacceptableuse.unacceptablebot.UnacceptableBot;
+import com.unacceptableuse.unacceptablebot.handler.SnapchatHandler;
 import com.unacceptableuse.unacceptablebot.variable.Level;
 
 public class CommandSnapChat extends Command {
@@ -43,13 +44,28 @@ public class CommandSnapChat extends Command {
 			}
 			break;
 		}
-		case ("getUser"): {
+		case ("getuser"): {
 			bot.sendIRC()
 					.message(
 							channel.getName(),
 							"Snapchating as "
 									+ UnacceptableBot.getSnapchat().getUser());
 			break;
+		}
+		case("loggedin"): {
+			bot.sendIRC()
+			.message(
+					channel.getName(),"Logged in: " + UnacceptableBot.getSnapchat().logged());
+		}
+		case("fucked"):{
+			UnacceptableBot.setSnapchat(null);
+			SnapchatHandler replacement = new SnapchatHandler();
+			UnacceptableBot.setSnapchat(replacement);
+			try {
+				UnacceptableBot.getSnapchat().init();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 		default: {
 			bot.sendIRC().message(channel.getName(),
