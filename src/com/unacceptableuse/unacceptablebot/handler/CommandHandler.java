@@ -108,6 +108,7 @@ public class CommandHandler {
 						chosenCommand.performCommand(sender, channel, message,
 								message.split(" "), bot);
 					} catch (Exception e) {
+						bot.sendIRC().message(channel.getName(), "Failed to execute command!");
 						event.respond("An error occurred. (" + e.toString()
 								+ ")");
 					}
