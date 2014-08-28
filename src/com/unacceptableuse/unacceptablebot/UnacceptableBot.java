@@ -50,7 +50,7 @@ public class UnacceptableBot extends ListenerAdapter {
 		handler.init();
 		try
 		{
-			getSnapchat().init();
+			snapchat.init();
 		}
 		catch(Exception e)
 		{

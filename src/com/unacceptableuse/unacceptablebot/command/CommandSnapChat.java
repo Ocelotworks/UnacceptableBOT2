@@ -27,16 +27,18 @@ public class CommandSnapChat extends Command {
 			break;
 		}
 		case ("send"): {
-			try
-			{
+			try {
 				String url = args[2];
 				String target = args[3];
-				UnacceptableBot.getSnapchat().getImage(url, target);
-				bot.sendIRC().message(channel.getName(), "Snap sent.");
-			}
-			catch(Exception e)
-			{
-				bot.sendIRC().message(channel.getName(), "Did you enter the correct number of arguments?");
+				try {
+					UnacceptableBot.getSnapchat().getImage(url, target);
+					bot.sendIRC().message(channel.getName(), "Snap sent.");
+				} catch (Exception e) {
+					bot.sendIRC().message(channel.getName(), "Snap failed to send.");
+				}
+			} catch (Exception e) {
+				bot.sendIRC().message(channel.getName(),
+						"Did you enter the correct number of arguments?");
 				e.printStackTrace();
 			}
 			break;

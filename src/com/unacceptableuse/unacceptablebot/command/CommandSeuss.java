@@ -30,6 +30,7 @@ public class CommandSeuss extends Command {
 		switch (args[1]) {
 		default: {
 			bot.sendIRC().message(channel.getName(), getLine(args[1]));
+			break;
 		}
 		case ("list"): {
 			File folder = new File("books/");
@@ -38,6 +39,7 @@ public class CommandSeuss extends Command {
 			for(int i = 0; i < listOfFiles.length; i++){
 				bot.sendIRC().message(channel.getName(), (i+1) + ". " + listOfFiles[i] );
 			}
+			break;
 		}
 		}
 
