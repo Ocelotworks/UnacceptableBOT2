@@ -72,9 +72,9 @@ public class UnacceptableBot extends ListenerAdapter {
 	public void onMessage(final MessageEvent event) throws Exception {
 		recordMessage(event);
 		
+		
 		if (event.getMessage().charAt(0) == '!') {
 			if (event.getMessage().startsWith("!")) {
-				// String channel = event.getChannel().getName();
 				handler.processMessage(event);
 			} else if (event.getChannel().getName().equals("#doge-coin")) {
 				if (event.getUser().getNick().equals("DogeWallet")
@@ -86,8 +86,16 @@ public class UnacceptableBot extends ListenerAdapter {
 				}
 			}
 		}
-
-			if (event.getChannel().getName().equals("##Ocelotworks")) {
+			if(event.getChannel().getName().equals("##boywanders")){
+				//                  0
+				//<WANDERBOT>:<USER> !
+				String[] messageStr = event.getMessage().split(" ");
+				if(messageStr[1].startsWith("!")){
+					@SuppressWarnings("unchecked")
+					MessageEvent evt = new MessageEvent(event.getBot(), event.getChannel(), event.getUser(), messageStr[1]);
+					handler.processMessage(evt);
+				}
+			} else if (event.getChannel().getName().equals("##Ocelotworks")) {
 				if (event.getMessage().equals("new topic plz"))
 				{
 					messageCount = 100;
