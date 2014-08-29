@@ -71,7 +71,7 @@ public class UnacceptableBot extends ListenerAdapter {
 	@Override
 	public void onMessage(final MessageEvent event) throws Exception {
 		recordMessage(event);
-		if (event.getMessage().startsWith("!")) {
+		if (event.getMessage().charAt(0) == '!') {
 			// String channel = event.getChannel().getName();
 			handler.processMessage(event);
 		} else if (event.getChannel().getName().equals("#doge-coin")) {

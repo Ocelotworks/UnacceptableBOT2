@@ -30,8 +30,7 @@ public class CommandMessageStats extends Command {
 			for (File f : files) {
 				if (f.isDirectory() || !f.canRead())
 					continue;
-				if (f.getName().startsWith("#")
-						&& !f.getName().contains("copy")) {
+				if (f.getName().charAt(0) == '#' && !f.getName().contains("copy")) {
 					logs.add(f);
 				}
 

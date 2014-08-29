@@ -21,7 +21,7 @@ public class CommandRand extends Command
 	{
 		String[] choice = message.replace("!rand","").replace("!choice","").split(",");
 		String chosen = choice[UnacceptableBot.rand.nextInt(choice.length)];
-		sendMessage(bot, chosen.startsWith("!") ? "&REDYou can't use !rand to perform commands!" : chosen, channel);
+		sendMessage(bot, chosen.charAt(0) == '!' ? "&REDYou can't use !rand to perform commands!" : chosen, channel);
 		
 	}
 
