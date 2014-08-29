@@ -12,6 +12,8 @@ import com.unacceptableuse.unacceptablebot.variable.Level;
 
 public class CommandSnapChat extends Command {
 
+	boolean canSnap = true;
+
 	@Override
 	public void performCommand(User sender, Channel channel, String message,
 			String[] args, PircBotX bot) {
@@ -32,10 +34,30 @@ public class CommandSnapChat extends Command {
 				String url = args[2];
 				String target = args[3];
 				try {
-					UnacceptableBot.getSnapchat().getImage(url, target);
-					bot.sendIRC().message(channel.getName(), "Snap sent.");
+					if (canSnap) {
+						canSnap = false;
+						UnacceptableBot.getSnapchat().getImage(url, target);
+						bot.sendIRC().message(channel.getName(), "Snap sent.");
+
+						float sysTime = System.currentTimeMillis();
+						float waitTime = (120 * 1000); // 120 seconds converted
+														// to milliseconds
+						final float waitedSysTime = (sysTime + waitTime);
+
+						new Thread() {
+							public void run() {
+								while ((System.currentTimeMillis() >= waitedSysTime)) {
+									// Just here to occupy the thread. Never
+									// mind me
+								}
+								canSnap = true;
+							}
+						}.start();
+						;
+					}
 				} catch (Exception e) {
-					bot.sendIRC().message(channel.getName(), "Snap failed to send.");
+					bot.sendIRC().message(channel.getName(),
+							"Snap failed to send.");
 				}
 			} catch (Exception e) {
 				bot.sendIRC().message(channel.getName(),
@@ -52,25 +74,21 @@ public class CommandSnapChat extends Command {
 									+ UnacceptableBot.getSnapchat().getUser());
 			break;
 		}
-		case ("getpass"):
-		{
-			try
-			{
+		case ("getpass"): {
+			try {
 				bot.sendIRC().message(channel.getName(),
-								"Password: " + UnacceptableBot.getSnapchat().getPass());
-			}
-			catch(Exception e)
-			{
+						"Password: " + UnacceptableBot.getSnapchat().getPass());
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 			break;
 		}
-		case("loggedin"): {
+		case ("loggedin"): {
 			bot.sendIRC().message(channel.getName(),
 					"Logged in: " + UnacceptableBot.getSnapchat().logged());
 			break;
 		}
-		case("fucked"):{
+		case ("fucked"): {
 			UnacceptableBot.setSnapchat(null);
 			bot.sendIRC().message(channel.getName(), "Reseting handler..");
 			SnapchatHandler replacement = new SnapchatHandler();
