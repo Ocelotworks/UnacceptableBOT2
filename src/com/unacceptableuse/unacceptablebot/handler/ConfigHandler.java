@@ -66,7 +66,8 @@ public class ConfigHandler {
 	}
 
 	public boolean getBoolean(String key) {
-		return Boolean.parseBoolean(sql.getSetting(key));
+		String result = sql.getSetting(key);
+		return result == null ? false : Boolean.parseBoolean(result);
 	}
 
 	public Integer getInteger(String key) {
