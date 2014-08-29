@@ -1,9 +1,11 @@
 package com.unacceptableuse.unacceptablebot.command;
 
 import org.pircbotx.Channel;
+import org.pircbotx.Colors;
 import org.pircbotx.PircBotX;
 import org.pircbotx.User;
 
+import com.unacceptableuse.unacceptablebot.handler.CommandHandler;
 import com.unacceptableuse.unacceptablebot.variable.Level;
 
 public abstract class Command
@@ -23,7 +25,19 @@ public abstract class Command
 	
 	public void sendMessage(PircBotX ub, String message, String target)
 	{
-		ub.sendIRC().message(target, message);
+		ub.sendIRC().message(target, message
+				.replace("&BOLD", Colors.BOLD)
+				.replace("&UNDERLINE", Colors.UNDERLINE)
+				.replace("&REVERSE", Colors.REVERSE)
+				.replace("&PURPLE", Colors.PURPLE)
+				.replace("&RED", Colors.RED)
+				.replace("&GREEN", Colors.GREEN)
+				.replace("&BLUE", Colors.BLUE)
+				.replace("&YELLOW", Colors.YELLOW)
+				.replace("&BLACK", Colors.BLACK)
+				.replace("&CYAN", Colors.CYAN)
+				.replace("&WHITE", Colors.WHITE)				
+				.replace("&RESET", Colors.NORMAL));
 	}
 	
 	public void sendMessage(PircBotX ub, String message, Channel channel)
