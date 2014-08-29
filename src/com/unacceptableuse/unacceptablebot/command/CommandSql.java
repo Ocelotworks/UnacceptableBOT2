@@ -44,13 +44,16 @@ public class CommandSql extends Command
 			{
 				
 				e.printStackTrace();
-			}
+			}		
+		}else if(args[1].equals("health"))
+		{
+			sendMessage(bot,UnacceptableBot.getConfigHandler().sql.getConnectionHealth(), channel);
 		}
 		else if(args[1].equals("query"))
 		{
 			try
 			{
-				ResultSet rs = UnacceptableBot.getConfigHandler().sql.query(message.split(args[2])[1].replace("&CHANNEL",channel.getName()));
+				ResultSet rs = UnacceptableBot.getConfigHandler().sql.query(message.split(args[1])[1].replace("&CHANNEL",channel.getName()).replace("&FQ","`"));
 				while(rs.next())
 				{
 					StringBuilder stb = new StringBuilder();
@@ -59,7 +62,6 @@ public class CommandSql extends Command
 						stb.append(rs.getString(i));
 					}
 					sendMessage(bot, stb.toString(), channel);
-					
 				}
 			}
 			catch(Exception e)

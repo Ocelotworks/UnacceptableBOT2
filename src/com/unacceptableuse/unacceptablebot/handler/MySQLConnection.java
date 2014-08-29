@@ -33,6 +33,18 @@ public class MySQLConnection
 		c = DriverManager.getConnection(CONNECTION, p);
 
 	}
+	
+	public String getConnectionHealth()
+	{
+		try
+		{
+			return 	"Connection: "+(c.isClosed() ? "&REDCLOSED&RESET" : "&GREENGOOD&RESET")+" Access: "+(c.isReadOnly() ? "&REDREAD-ONLY&RESET" : "&GREENREAD/WRITE&RESET"+" Validility: "+(c.isValid(10) ? "&GREENVALID&RESET" : "&REDTIMEOUT&RESET"));
+		} catch (SQLException e)
+		{
+			e.printStackTrace();
+			return "Very, very bad. bad stuff is going on here. oh LORD JESUS SOMEONE SAVE US";
+		}
+	}
 
 	public String getSetting(String setting) {
 		try {
