@@ -90,7 +90,7 @@ public class UnacceptableBot extends ListenerAdapter {
 				//                  0
 				//<WANDERBOT>:<USER> !
 				String[] messageStr = event.getMessage().split(" ");
-				if(messageStr[1].startsWith("!")){
+				if(messageStr[1].startsWith(".")){
 					@SuppressWarnings("unchecked")
 					MessageEvent evt = new MessageEvent(event.getBot(), event.getChannel(), event.getUser(), messageStr[1]);
 					handler.processMessage(evt);
