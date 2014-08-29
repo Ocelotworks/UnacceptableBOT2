@@ -71,7 +71,7 @@ public class UnacceptableBot extends ListenerAdapter {
 	@Override
 	public void onMessage(final MessageEvent event) throws Exception {
 		recordMessage(event);
-		doReddit(event.getMessage(), event.getChannel().getName(),event.getUser(), event.getBot());
+		
 		if (event.getMessage().charAt(0) == '!') {
 			if (event.getMessage().startsWith("!")) {
 				// String channel = event.getChannel().getName();
@@ -85,27 +85,26 @@ public class UnacceptableBot extends ListenerAdapter {
 					event.getBot().sendIRC().message("DogeWallet", ".balance");
 				}
 			}
+		}
 
 			if (event.getChannel().getName().equals("##Ocelotworks")) {
 				if (event.getMessage().equals("new topic plz"))
+				{
 					messageCount = 100;
-				if (event.getMessage().equals(
-						"reload those sweet sex phrases bro")) {
+				}
+				if (event.getMessage().equals("reload those sweet sex phrases bro")) {
 					sexQuotes.clear();
 					loadSexQuotes();
+					event.respond("Doneski");
 				}
 				messageCount++;
 				if (messageCount > 100) {
-					event.getBot()
-							.sendRaw()
-							.rawLine(
-									"TOPIC ##Ocelotworks "
-											+ sexQuotes.get(rand
-													.nextInt(sexQuotes.size())));
+					event.getBot().sendRaw().rawLine("TOPIC ##Ocelotworks "+ sexQuotes.get(rand.nextInt(sexQuotes.size())));
 					messageCount = 0;
 				}
 			}
-		}
+		
+		doReddit(event.getMessage(), event.getChannel().getName(),event.getUser(), event.getBot());
 	}
 
 	@Override

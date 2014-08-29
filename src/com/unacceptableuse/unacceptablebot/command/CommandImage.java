@@ -49,20 +49,24 @@ public class CommandImage extends Command
 			is.close();
 			
 
-		return imageURL.contains("imgur") ?  imageURL + (isNSFW ? "&RED&BOLD[NSFW]&RESET" : ""): "Could not find image in that sub!" ;
+		return imageURL.contains("imgur") ?  imageURL + (isNSFW ? " &RED&BOLD[NSFW]&RESET" : ""): "Could not find image in that sub!" ;
 		}catch(IllegalStateException e)
 		{
-			return getRandomImage(subreddit);
+			return "Reddit returned nothing, try again later.";
 		}
 		catch(IndexOutOfBoundsException e)
 		{
 			return "That subreddit does not exist or does not contain enough images.";
 		}
+		catch(NullPointerException e)
+		{
+			return "That subreddit is banned, private or invalid.";
+		}
 		catch(Exception e)
 		{
 			UnacceptableBot.log("ERROR", "!image", "Unhandled Exception: "+e.toString());
 			e.printStackTrace();
-			return "You crashed the bot, so have a gif of two kittens crashing into eachother: http://stream1.gifsoup.com/view6/2612041/kitty-crash-test-no-3-o.gif  %RED"+e.getMessage();
+			return "You crashed the bot, so have a gif of two kittens crashing into eachother: http://stream1.gifsoup.com/view6/2612041/kitty-crash-test-no-3-o.gif  &RED"+e.toString();
 		}
 	}
 
