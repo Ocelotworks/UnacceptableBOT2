@@ -46,7 +46,7 @@ public class CommandSnapChat extends Command {
 
 						new Thread() {
 							public void run() {
-								while ((System.currentTimeMillis() >= waitedSysTime)) {
+								while ((System.currentTimeMillis() < waitedSysTime)) {
 									// Just here to occupy the thread. Never
 									// mind me
 								}

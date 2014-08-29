@@ -71,8 +71,7 @@ public class UnacceptableBot extends ListenerAdapter {
 	@Override
 	public void onMessage(final MessageEvent event) throws Exception {
 		recordMessage(event);
-		doReddit(event.getMessage(), event.getChannel().getName(),
-				event.getUser(), event.getBot());
+		doReddit(event.getMessage(), event.getChannel().getName(),event.getUser(), event.getBot());
 		if (event.getMessage().charAt(0) == '!') {
 			if (event.getMessage().startsWith("!")) {
 				// String channel = event.getChannel().getName();
@@ -203,12 +202,11 @@ public class UnacceptableBot extends ListenerAdapter {
 		config.setLog(dateTime, sender.getNick(), message, channel.getName());
 	}
 
-	private void doReddit(String message, String channel, User sender,
-			PircBotX bot) {
-		// TODO: fancy regex for this
+	private static void doReddit(String message, String channel, User sender, PircBotX bot) {
+		// TODO: fancy regex for this lol still not done it 
 		try {
 			if (message.contains("/r/") && !message.contains("reddit.com")
-					&& config.getUserLevel(sender) > 0) {
+					&& config.getUserLevel(sender) >= 0) {
 				String subreddit = message.split("/r/")[1].split(" ")[0];
 				InputStream is = getUrlContents("http://api.reddit.com/r/"
 						+ subreddit.replace(",", "").replace(".", "")
@@ -224,8 +222,7 @@ public class UnacceptableBot extends ListenerAdapter {
 								+ " - " + subredditDesc);
 			}
 
-			if (message.contains("/u/") && !message.contains("reddit.com")
-					&& config.getUserLevel(sender) > 0) {
+			if (message.contains("/u/") && !message.contains("reddit.com")&& config.getUserLevel(sender) >= 0) {
 				String user = message.split("/u/")[1].split(" ")[0];
 				InputStream is = getUrlContents("http://api.reddit.com/u/"
 						+ user.replace(",", "").replace(".", "") + "/about");
@@ -293,8 +290,7 @@ public class UnacceptableBot extends ListenerAdapter {
 
 	private void loadSexQuotes() {
 		try {
-			BufferedReader br = new BufferedReader(new FileReader(new File(
-					"sexquotes.txt")));
+			BufferedReader br = new BufferedReader(new FileReader(new File("sexquotes.txt")));
 			String line = "missingno";
 			while ((line = br.readLine()) != null) {
 				sexQuotes.add(line);
