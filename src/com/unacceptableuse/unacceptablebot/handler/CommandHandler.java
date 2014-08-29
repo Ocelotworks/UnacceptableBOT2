@@ -18,6 +18,7 @@ import com.unacceptableuse.unacceptablebot.command.CommandFillMeIn;
 import com.unacceptableuse.unacceptablebot.command.CommandFucksGiven;
 import com.unacceptableuse.unacceptablebot.command.CommandGoogle;
 import com.unacceptableuse.unacceptablebot.command.CommandHelp;
+import com.unacceptableuse.unacceptablebot.command.CommandImage;
 import com.unacceptableuse.unacceptablebot.command.CommandImport;
 import com.unacceptableuse.unacceptablebot.command.CommandInsult;
 import com.unacceptableuse.unacceptablebot.command.CommandListChans;
@@ -67,6 +68,7 @@ public class CommandHandler {
 		addCommand(new CommandSetAccessLevel());
 		addCommand(new CommandSnapChat());
 		addCommand(new CommandSeuss());
+		addCommand(new CommandImage());
 		System.out.println("Registered " + getCommands().size()
 				+ " commands successfully!");
 	}
