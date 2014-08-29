@@ -71,39 +71,40 @@ public class UnacceptableBot extends ListenerAdapter {
 	@Override
 	public void onMessage(final MessageEvent event) throws Exception {
 		recordMessage(event);
-<<<<<<< Updated upstream
-		if (event.getMessage().charAt(0) == '!') {
-=======
 		doReddit(event.getMessage(), event.getChannel().getName(),
 				event.getUser(), event.getBot());
-		if (event.getMessage().startsWith("!")) {
->>>>>>> Stashed changes
-			// String channel = event.getChannel().getName();
-			handler.processMessage(event);
-		} else if (event.getChannel().getName().equals("#doge-coin")) {
-			if (event.getUser().getNick().equals("DogeWallet")
-					&& event.getMessage().contains(
-							"sent " + getConfigHandler().getString("botName"))) {
-				event.getBot().sendIRC().message("DogeWallet", ".balance");
+		if (event.getMessage().charAt(0) == '!') {
+			if (event.getMessage().startsWith("!")) {
+				// String channel = event.getChannel().getName();
+				handler.processMessage(event);
+			} else if (event.getChannel().getName().equals("#doge-coin")) {
+				if (event.getUser().getNick().equals("DogeWallet")
+						&& event.getMessage().contains(
+								"sent "
+										+ getConfigHandler().getString(
+												"botName"))) {
+					event.getBot().sendIRC().message("DogeWallet", ".balance");
+				}
 			}
-		}
 
-		if (event.getChannel().getName().equals("##Ocelotworks")) {
-			if (event.getMessage().equals("new topic plz"))
-				messageCount = 100;
-			if (event.getMessage().equals("reload those sweet sex phrases bro")) {
-				sexQuotes.clear();
-				loadSexQuotes();
-			}
-			messageCount++;
-			if (messageCount > 100) {
-				event.getBot()
-						.sendRaw()
-						.rawLine(
-								"TOPIC ##Ocelotworks "
-										+ sexQuotes.get(rand.nextInt(sexQuotes
-												.size())));
-				messageCount = 0;
+			if (event.getChannel().getName().equals("##Ocelotworks")) {
+				if (event.getMessage().equals("new topic plz"))
+					messageCount = 100;
+				if (event.getMessage().equals(
+						"reload those sweet sex phrases bro")) {
+					sexQuotes.clear();
+					loadSexQuotes();
+				}
+				messageCount++;
+				if (messageCount > 100) {
+					event.getBot()
+							.sendRaw()
+							.rawLine(
+									"TOPIC ##Ocelotworks "
+											+ sexQuotes.get(rand
+													.nextInt(sexQuotes.size())));
+					messageCount = 0;
+				}
 			}
 		}
 	}
