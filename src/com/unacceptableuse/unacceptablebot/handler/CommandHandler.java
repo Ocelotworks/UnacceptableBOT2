@@ -26,6 +26,7 @@ import com.unacceptableuse.unacceptablebot.command.CommandLive;
 import com.unacceptableuse.unacceptablebot.command.CommandMessageStats;
 import com.unacceptableuse.unacceptablebot.command.CommandQuote;
 import com.unacceptableuse.unacceptablebot.command.CommandRand;
+import com.unacceptableuse.unacceptablebot.command.CommandSentence;
 import com.unacceptableuse.unacceptablebot.command.CommandSetAccessLevel;
 import com.unacceptableuse.unacceptablebot.command.CommandSeuss;
 import com.unacceptableuse.unacceptablebot.command.CommandSnapChat;
@@ -69,8 +70,8 @@ public class CommandHandler {
 		addCommand(new CommandSnapChat());
 		addCommand(new CommandSeuss());
 		addCommand(new CommandImage());
-		System.out.println("Registered " + getCommands().size()
-				+ " commands successfully!");
+		addCommand(new CommandSentence());
+		UnacceptableBot.log("DEBUG", "CMDREG", "Registered " + getCommands().size() + " commands successfully!");
 	}
 
 	/**
@@ -88,31 +89,25 @@ public class CommandHandler {
 		User sender = event.getUser();
 		PircBotX bot = event.getBot();
 
-		Command chosenCommand = getCommand(message.replaceFirst("!", "").split(
-				" ")[0]);
+		Command chosenCommand = getCommand(message.replaceFirst("!", "").split(" ")[0]);
 
 		if (chosenCommand == null) {
 			return; // These arn't the commands you are looking for...
 		} else {
-			if (chosenCommand.getAccessLevel() == Level.BANNED
-					|| UnacceptableBot.getConfigHandler().getUserLevel(sender) < Level.levelToInt(chosenCommand.getAccessLevel()))
+			if (chosenCommand.getAccessLevel() == Level.BANNED|| UnacceptableBot.getConfigHandler().getUserLevel(sender) < Level.levelToInt(chosenCommand.getAccessLevel()))
 			{
 				event.respond("Needed Level: " + Level.levelToInt(chosenCommand.getAccessLevel()) + " | Your Level: " + UnacceptableBot.getConfigHandler().getUserLevel(sender));
 				event.respond("You do not have permission to perform this command");
 			} else {
-				if (chosenCommand.requiredArguments() > event.getMessage()
-						.split(" ").length) {
+				if (chosenCommand.requiredArguments() > event.getMessage().split(" ").length) {
 					event.respond("Insufficent Arguments. There should be help here but I havn't gotten around to it.");
 				} else {
-					UnacceptableBot.getConfigHandler().increment(
-							"stat:commandsPerformed");
+					UnacceptableBot.getConfigHandler().increment("stat:commandsPerformed");
 					try {
-						chosenCommand.performCommand(sender, channel, message,
-								message.split(" "), bot);
+						chosenCommand.performCommand(sender, channel, message,message.split(" "), bot);
 					} catch (Exception e) {
-						bot.sendIRC().message(channel.getName(), "Failed to execute command!");
-						event.respond("An error occurred. (" + e.toString()
-								+ ")");
+						UnacceptableBot.log("ERROR", "CMDPRC", "Exception performing "+chosenCommand.getAliases()[0]+": "+e.toString());
+						event.respond("An error occurred. ("+e.toString()+")");
 					}
 				}
 
