@@ -5,11 +5,20 @@ import java.io.IOException;
 import java.util.Calendar;
 import java.util.TimerTask;
 
+import org.pircbotx.PircBotX;
+
 import com.unacceptableuse.unacceptablebot.UnacceptableBot;
 
 public class SnapchatThread extends TimerTask {
 
+	PircBotX bot = null;
+
 	public void run() {
+		// brokenGetSnaps();
+		UnacceptableBot.getSnapchat().doOneInQueue(bot, UnacceptableBot.getChannels().get(1));
+	}
+
+	private void brokenGetSnaps() {
 		Calendar calendar = Calendar.getInstance();
 		int hours = calendar.get(Calendar.HOUR_OF_DAY);
 		int minutes = calendar.get(Calendar.MINUTE);
@@ -26,6 +35,7 @@ public class SnapchatThread extends TimerTask {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+
 	}
 
 }

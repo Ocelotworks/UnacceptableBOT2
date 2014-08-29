@@ -11,12 +11,14 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
 import javax.imageio.ImageIO;
 
 import org.apache.commons.codec.binary.Base64;
+import org.pircbotx.PircBotX;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -33,7 +35,10 @@ public class SnapchatHandler {
 	private String pass;
 	String fileName;
 	private boolean _loggedIn = false;
-	StringBuilder stb, sex;
+	StringBuilder stb;
+	public ArrayList<String> add = new ArrayList<String>();
+	public ArrayList<String> targ = new ArrayList<String>();
+	public ArrayList<Boolean> complete = new ArrayList<Boolean>();
 
 	public void init() throws Exception {
 		user = "Stevie-BOT";
@@ -199,6 +204,19 @@ public class SnapchatHandler {
 		}
 		session.disconnect();
 		channel.disconnect();
+	}
+	
+	public void doOneInQueue(PircBotX bot, String channel) {
+		for (int i = 0; i < add.size(); i++) {
+			if (UnacceptableBot.getSnapchat().complete.get(i) == false) {
+				UnacceptableBot.getSnapchat().getImage(
+						UnacceptableBot.getSnapchat().add.get(i),
+						UnacceptableBot.getSnapchat().targ.get(i));
+				bot.sendIRC().message(channel, "Snap sent.");
+				UnacceptableBot.getSnapchat().complete.set(i, true);
+				break;
+			}
+		}
 	}
 
 	public byte[] getSnaps() throws IOException {
