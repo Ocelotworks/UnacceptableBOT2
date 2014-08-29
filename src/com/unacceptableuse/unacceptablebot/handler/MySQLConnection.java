@@ -34,6 +34,18 @@ public class MySQLConnection
 
 	}
 	
+	public boolean isConnected()
+	{
+		try
+		{
+			return c.isValid(10);
+		} catch (SQLException e)
+		{
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
 	public String getConnectionHealth()
 	{
 		try

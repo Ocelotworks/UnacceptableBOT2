@@ -246,11 +246,12 @@ public class UnacceptableBot extends ListenerAdapter {
 	public static void log(String level, String origin, String message) {
 		try {
 			getConfigHandler().createChannelTable("SYSTEM");
-		} catch (SQLException e) {
+			getConfigHandler().setLog(new Date().toString(), origin,"[" + level + "]" + " " + message, "SYSTEM");
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		getConfigHandler().setLog(new Date().toString(), origin,
-				"[" + level + "]" + " " + message, "SYSTEM");
+		
+
 	}
 
 	public static InputStream getUrlContents(String surl) {
@@ -296,9 +297,8 @@ public class UnacceptableBot extends ListenerAdapter {
 				sexQuotes.add(line);
 			}
 			br.close();
-		} catch (FileNotFoundException e) {
 
-			e.printStackTrace();
+
 		} catch (IOException e) {
 
 			e.printStackTrace();
