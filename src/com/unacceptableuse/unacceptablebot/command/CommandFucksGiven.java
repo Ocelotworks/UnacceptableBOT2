@@ -3,6 +3,7 @@ package com.unacceptableuse.unacceptablebot.command;
 import java.util.Random;
 
 import org.pircbotx.Channel;
+import org.pircbotx.Colors;
 import org.pircbotx.PircBotX;
 import org.pircbotx.User;
 
@@ -21,7 +22,8 @@ public class CommandFucksGiven extends Command {
 		bot.sendIRC()
 				.message(
 						channel.getName(),
-						"Fucks given: &BOLD"
+						"Fucks given: "
+								+ Colors.BOLD
 								+ (((int) Math.signum(new Random().nextInt())) - (sender
 										.getNick().length() * channel.getName()
 										.length())));

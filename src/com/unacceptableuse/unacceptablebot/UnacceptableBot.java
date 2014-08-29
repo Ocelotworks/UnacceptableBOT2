@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 import java.sql.SQLException;
@@ -18,6 +19,8 @@ import java.util.Timer;
 import javax.net.ssl.HttpsURLConnection;
 
 import org.pircbotx.Channel;
+import org.pircbotx.Colors;
+import org.pircbotx.PircBotX;
 import org.pircbotx.User;
 import org.pircbotx.hooks.ListenerAdapter;
 import org.pircbotx.hooks.events.InviteEvent;
@@ -25,6 +28,7 @@ import org.pircbotx.hooks.events.JoinEvent;
 import org.pircbotx.hooks.events.MessageEvent;
 import org.pircbotx.hooks.events.PrivateMessageEvent;
 
+import com.google.gson.JsonObject;
 import com.unacceptableuse.unacceptablebot.handler.CommandHandler;
 import com.unacceptableuse.unacceptablebot.handler.ConfigHandler;
 import com.unacceptableuse.unacceptablebot.handler.SnapchatHandler;
@@ -46,17 +50,13 @@ public class UnacceptableBot extends ListenerAdapter {
 	 * 
 	 * @author UnacceptableUse
 	 */
-	public UnacceptableBot()
-	{
+	public UnacceptableBot() {
 		handler.init();
-		try
-		{
+		try {
 			snapchat.init();
-	    	Timer timer = new Timer();
-	    	timer.schedule(new SnapchatThread(), 0, (30*1000));
-		}
-		catch(Exception e)
-		{
+			Timer timer = new Timer();
+			timer.schedule(new SnapchatThread(), 0, (30 * 1000));
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		config.init();
@@ -71,7 +71,13 @@ public class UnacceptableBot extends ListenerAdapter {
 	@Override
 	public void onMessage(final MessageEvent event) throws Exception {
 		recordMessage(event);
+<<<<<<< Updated upstream
 		if (event.getMessage().charAt(0) == '!') {
+=======
+		doReddit(event.getMessage(), event.getChannel().getName(),
+				event.getUser(), event.getBot());
+		if (event.getMessage().startsWith("!")) {
+>>>>>>> Stashed changes
 			// String channel = event.getChannel().getName();
 			handler.processMessage(event);
 		} else if (event.getChannel().getName().equals("#doge-coin")) {
@@ -196,6 +202,49 @@ public class UnacceptableBot extends ListenerAdapter {
 		config.setLog(dateTime, sender.getNick(), message, channel.getName());
 	}
 
+	private void doReddit(String message, String channel, User sender,
+			PircBotX bot) {
+		// TODO: fancy regex for this
+		try {
+			if (message.contains("/r/") && !message.contains("reddit.com")
+					&& config.getUserLevel(sender) > 0) {
+				String subreddit = message.split("/r/")[1].split(" ")[0];
+				InputStream is = getUrlContents("http://api.reddit.com/r/"
+						+ subreddit.replace(",", "").replace(".", "")
+						+ "/about");
+				com.google.gson.JsonParser parser = new com.google.gson.JsonParser();
+
+				String subredditDesc = parser.parse(new InputStreamReader(is))
+						.getAsJsonObject().get("data").getAsJsonObject()
+						.get("public_description").getAsString();
+				bot.sendIRC().message(
+						channel,
+						Colors.BOLD + "http://reddit.com/r/" + subreddit
+								+ " - " + subredditDesc);
+			}
+
+			if (message.contains("/u/") && !message.contains("reddit.com")
+					&& config.getUserLevel(sender) > 0) {
+				String user = message.split("/u/")[1].split(" ")[0];
+				InputStream is = getUrlContents("http://api.reddit.com/u/"
+						+ user.replace(",", "").replace(".", "") + "/about");
+				com.google.gson.JsonParser parser = new com.google.gson.JsonParser();
+
+				JsonObject jo = parser.parse(new InputStreamReader(is))
+						.getAsJsonObject().get("data").getAsJsonObject();
+
+				int linkKarma = jo.get("link_karma").getAsInt();
+				int commentKarma = jo.get("comment_karma").getAsInt();
+				bot.sendIRC().message(
+						channel,
+						Colors.NORMAL + Colors.BOLD + "http://reddit.com/u/"
+								+ user + " - " + linkKarma + " Link Karma. "
+								+ commentKarma + " Comment Karma.");
+			}
+		} catch (Exception e) {
+		}
+	}
+
 	public static void log(String level, String origin, String message) {
 		try {
 			getConfigHandler().createChannelTable("SYSTEM");
@@ -274,8 +323,8 @@ public class UnacceptableBot extends ListenerAdapter {
 	public static SnapchatHandler getSnapchat() {
 		return snapchat;
 	}
-	
-	public static void setSnapchat(SnapchatHandler sc){
+
+	public static void setSnapchat(SnapchatHandler sc) {
 		snapchat = sc;
 	}
 }

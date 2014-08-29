@@ -11,5 +11,10 @@
 	<classpathentry kind="lib" path="slf4j-simple-1.7.7.jar"/>
 	<classpathentry kind="lib" path="guava-17.0.jar"/>
 	<classpathentry kind="lib" path="jsch-0.1.51.jar"/>
+	<classpathentry kind="lib" path="commons-codec-1.9-javadoc.jar"/>
+	<classpathentry kind="lib" path="commons-codec-1.9-sources.jar"/>
+	<classpathentry kind="lib" path="commons-codec-1.9-test-sources.jar"/>
+	<classpathentry kind="lib" path="commons-codec-1.9-tests.jar"/>
+	<classpathentry kind="lib" path="commons-codec-1.9.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -16,6 +16,9 @@ import java.util.Scanner;
 
 import javax.imageio.ImageIO;
 
+import org.apache.commons.codec.binary.Base64;
+
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.jcraft.jsch.Channel;
@@ -35,7 +38,6 @@ public class SnapchatHandler {
 	public void init() throws Exception {
 		user = "Stevie-BOT";
 		this.pass = UnacceptableBot.getConfigHandler().getString("sc_password");
-		// System.out.println(pass);
 
 		try {
 			login(user, pass);
@@ -197,6 +199,33 @@ public class SnapchatHandler {
 		}
 		session.disconnect();
 		channel.disconnect();
+	}
+
+	public byte[] getSnaps() throws IOException {
+		// build a URL
+		String s = " http://boywanders.us:6969/snapapi.php?username=" + user
+				+ "&password=" + pass + "&method=getsnaps";
+		URL url = new URL(s);
+
+		// read from the URL
+		Scanner scan = new Scanner(url.openStream());
+		String str = new String();
+		while (scan.hasNext())
+			str += scan.nextLine();
+		scan.close();
+
+		// build a JSON object
+		JsonParser parser = new JsonParser();
+		JsonObject obj = (JsonObject) parser.parse(str);
+		if (obj.get("received_snaps") != null) {
+			for (int i = 0; i < obj.get("received_snaps").getAsJsonArray()
+					.size(); i++) {
+				JsonArray objArray = obj.get("received_snaps").getAsJsonArray();
+				JsonObject snapObj = (JsonObject) objArray.get(i);
+				return Base64.decodeBase64(snapObj.toString());
+			}
+		}
+		return new byte[]{0};
 	}
 
 	public boolean logged() {
