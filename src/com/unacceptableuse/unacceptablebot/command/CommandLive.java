@@ -100,4 +100,9 @@ public class CommandLive extends Command {
 		return Level.USER;
 	}
 
+	@Override
+	public String getHelp() {
+		return "Usage: live <twitch user>  | Result: Checks if the specified twitch streamer is live ";
+	}
+
 }

@@ -24,9 +24,9 @@ public class CommandFucksGiven extends Command {
 						channel.getName(),
 						"Fucks given: "
 								+ Colors.BOLD
-								+ (((int) Math.signum(new Random().nextInt())) - (sender
+								+ ((((int) Math.signum(new Random().nextInt())) - (sender
 										.getNick().length() * channel.getName()
-										.length())));
+										.length()))));
 
 	}
 
@@ -38,6 +38,11 @@ public class CommandFucksGiven extends Command {
 	@Override
 	public Level getAccessLevel() {
 		return Level.USER;
+	}
+
+	@Override
+	public String getHelp() {
+		return "Usage: fucksgiven | Result: Shows how many fucks you give";
 	}
 
 }

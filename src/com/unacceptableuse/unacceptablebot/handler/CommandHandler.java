@@ -34,6 +34,7 @@ import com.unacceptableuse.unacceptablebot.command.CommandSnapChat;
 import com.unacceptableuse.unacceptablebot.command.CommandSql;
 import com.unacceptableuse.unacceptablebot.command.CommandStevie;
 import com.unacceptableuse.unacceptablebot.command.CommandTime;
+import com.unacceptableuse.unacceptablebot.command.CommandTwat;
 import com.unacceptableuse.unacceptablebot.command.CommandWhoami;
 import com.unacceptableuse.unacceptablebot.variable.Level;
 
@@ -73,6 +74,7 @@ public class CommandHandler {
 		addCommand(new CommandImage());
 		addCommand(new CommandSentence());
 		addCommand(new CommandFunction());
+		addCommand(new CommandTwat());
 		UnacceptableBot.log("DEBUG", "CMDREG", "Registered " + getCommands().size() + " commands successfully!");
 	}
 

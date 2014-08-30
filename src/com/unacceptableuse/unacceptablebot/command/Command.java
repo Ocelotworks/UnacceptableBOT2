@@ -54,6 +54,8 @@ public abstract class Command
 	
 	public abstract Level getAccessLevel();
 	
+	public abstract String getHelp();
+	
 	/**
 	 * Override this if a command has any arguments, forcing the {@link CommandHandler} to throw an error if there are no arguments
 	 * @author UnacceptableUse

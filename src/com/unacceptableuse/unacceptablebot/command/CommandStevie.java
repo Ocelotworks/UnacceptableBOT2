@@ -55,4 +55,9 @@ public class CommandStevie extends Command
 		return Level.USER;
 	}
 
+	@Override
+	public String getHelp() {
+		return "Usage: stevie <credits|source|about|help> | Result: Produces information on the selected topic";
+	}
+
 }

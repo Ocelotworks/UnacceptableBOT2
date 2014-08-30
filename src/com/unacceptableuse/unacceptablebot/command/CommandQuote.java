@@ -38,13 +38,20 @@ public class CommandQuote extends Command {
 		}
 
 		try {
+			PreparedStatement idPS = UnacceptableBot.getConfigHandler().sql
+					.getPreparedStatement("SELECT ID FROM `teknogeek_unacceptablebot`.`"
+							+ channel.getName() + "WHERE Username = '" + args[1].replace(" ", "") + " ORDER BY RAND() LIMIT 1");
+		} catch (Exception e) {
+		}
+
+		try {
 			for (int i = 0; i < count; i++) {
 				PreparedStatement ps = UnacceptableBot.getConfigHandler().sql
 						.getPreparedStatement("SELECT Message FROM `teknogeek_unacceptablebot`.`"
 								+ channel.getName()
 								+ "` WHERE Username = '"
 								+ args[1].replace(" ", "")
-								+ "' ORDER BY RAND() LIMIT " + count);
+								+ "' ORDER BY RAND() LIMIT 1");
 				/*
 				 * ps.setString(1, args.length == 3 ? args[2].startsWith("#") ?
 				 * args[2] : "#" + args[2] : channel.getName()); Like, what the
@@ -74,6 +81,11 @@ public class CommandQuote extends Command {
 	@Override
 	public Level getAccessLevel() {
 		return Level.USER;
+	}
+
+	@Override
+	public String getHelp() {
+		return "Usage: quote <user> [-c|--count <number>] | Result: Returns a message or number of messages said by the specifed user";
 	}
 
 }

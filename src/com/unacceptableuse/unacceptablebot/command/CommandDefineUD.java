@@ -68,4 +68,10 @@ public class CommandDefineUD extends Command
 		// TODO Auto-generated method stub
 		return Level.USER;
 	}
+
+	@Override
+	public String getHelp() {
+		// TODO Auto-generated method stub
+		return "See define";
+	}
 }

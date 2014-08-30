@@ -14,6 +14,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
 import org.pircbotx.Channel;
 import org.pircbotx.PircBotX;
 import org.pircbotx.User;
@@ -115,6 +116,11 @@ public class CommandSeuss extends Command {
 		} finally {
 			is.close();
 		}
+	}
+
+	@Override
+	public String getHelp() {
+		return "Usage: seuss <bookName|list> | Result: Either pick a line of a Dr. Seuss book at random, or list all availble Dr. Seuss books ";
 	}
 
 }

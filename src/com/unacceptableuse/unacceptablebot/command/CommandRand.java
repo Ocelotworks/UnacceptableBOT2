@@ -42,4 +42,9 @@ public class CommandRand extends Command
 		return Level.USER;
 	}
 
+	@Override
+	public String getHelp() {
+		return "Usage: rand <choice 1, choice 2, choice ...> | Result: Picks a supplied string at random";
+	}
+
 }

@@ -98,4 +98,9 @@ public class CommandDefine extends Command
 		// TODO Auto-generated method stub
 		return Level.USER;
 	}
+
+	@Override
+	public String getHelp() {
+		return "Usage: define <word> | Result: Returns the lookup for the word ";
+	}
 }

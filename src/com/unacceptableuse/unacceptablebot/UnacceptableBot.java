@@ -8,10 +8,12 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 import java.util.Random;
 import java.util.Timer;
 
@@ -46,6 +48,7 @@ public class UnacceptableBot extends ListenerAdapter {
 	private ArrayList<String> sexQuotes = new ArrayList<String>();
 	public static PircBotX bot = null;
 	private boolean loadChansFromDB = false; //When using VNC this should be false to avoid dual entries in the database!
+	public static boolean twatMode = true;
 
 	/**
 	 * Starts the init process of everything
@@ -79,10 +82,7 @@ public class UnacceptableBot extends ListenerAdapter {
 
 	@Override
 	public void onMessage(final MessageEvent event) throws Exception {
-		recordMessage(event);
-		if(bot != null){
-			doTimer();
-		}
+		
 		if (event.getMessage().charAt(0) == '!') {
 			if (event.getMessage().startsWith("!")) {
 				handler.processMessage(event);
@@ -117,18 +117,17 @@ public class UnacceptableBot extends ListenerAdapter {
 			}
 			messageCount++;
 			if (messageCount > 100) {
-				event.getBot()
-						.sendRaw()
-						.rawLine(
-								"TOPIC ##Ocelotworks "
-										+ sexQuotes.get(rand.nextInt(sexQuotes
-												.size())));
+				event.getBot().sendRaw().rawLine("TOPIC ##Ocelotworks " + sexQuotes.get(rand.nextInt(sexQuotes.size())));
 				messageCount = 0;
 			}
 		}
 
 		doReddit(event.getMessage(), event.getChannel().getName(),
 				event.getUser(), event.getBot());
+		recordMessage(event);
+		if(bot != null){doTimer();}
+		if(twatMode == true){stopBeingATwat(event.getMessage(), event.getChannel().getName(),
+				event.getUser(), event.getBot());}
 	}
 
 	@Override
@@ -295,6 +294,19 @@ public class UnacceptableBot extends ListenerAdapter {
 								+ commentKarma + " Comment Karma.");
 			}
 		} catch (Exception e) {
+		}
+	}
+	
+	public void stopBeingATwat(String message, String channel, User sender,
+			PircBotX bot) throws SQLException{
+		if(message.toLowerCase(Locale.ENGLISH).equals("what")){
+			ConfigHandler config = UnacceptableBot.getConfigHandler();
+			ResultSet rs = config.logQuery(channel);
+			rs.next();
+			String id = rs.getString(1);
+			ResultSet logRS = UnacceptableBot.getConfigHandler().getLog(channel, Integer.parseInt(id)-1);
+			logRS.next();
+			bot.sendIRC().message(channel, logRS.getString(3).toUpperCase(Locale.ENGLISH));
 		}
 	}
 

@@ -34,4 +34,9 @@ public class CommandWhoami extends Command
 		return Level.USER;
 	}
 
+	@Override
+	public String getHelp() {
+		return "Usage: whoami | Result: Returns user info";
+	}
+
 }

@@ -88,4 +88,9 @@ public class CommandImport extends Command {
 		bufferedReader.close();
 		return lines.toArray(new String[lines.size()]);
 	}
+
+	@Override
+	public String getHelp() {
+		return "System command";
+	}
 }

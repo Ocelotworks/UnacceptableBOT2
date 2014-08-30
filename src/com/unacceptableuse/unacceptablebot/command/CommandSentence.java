@@ -79,4 +79,9 @@ public class CommandSentence extends Command
 		return Level.USER;
 	}
 
+	@Override
+	public String getHelp() {
+		return "Unfinished";
+	}
+
 }

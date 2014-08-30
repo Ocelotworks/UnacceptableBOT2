@@ -68,4 +68,11 @@ public class CommandDynamic extends Command
 		return Level.USER;
 	}
 
+
+
+	@Override
+	public String getHelp() {
+		return "System command";
+	}
+
 }
