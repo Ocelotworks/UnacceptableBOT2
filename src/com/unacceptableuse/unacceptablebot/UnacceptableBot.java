@@ -304,7 +304,7 @@ public class UnacceptableBot extends ListenerAdapter {
 			ResultSet rs = config.logQuery(channel);
 			rs.next();
 			String id = rs.getString(1);
-			ResultSet logRS = UnacceptableBot.getConfigHandler().getLog(channel, Integer.parseInt(id)-1);
+			ResultSet logRS = UnacceptableBot.getConfigHandler().getLog(channel, Integer.parseInt(id)-2);
 			logRS.next();
 			bot.sendIRC().message(channel, logRS.getString(3).toUpperCase(Locale.ENGLISH));
 		}
