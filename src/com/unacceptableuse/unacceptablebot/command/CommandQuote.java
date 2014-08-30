@@ -25,32 +25,40 @@ public class CommandQuote extends Command {
 		int count = 1;
 
 		for (int i = 0; i < args.length; i++) {
-			if (args[i].contains("--count".toLowerCase())
-					|| args[i].contains("-c".toLowerCase())) {
+			if (args[i].toLowerCase().contains("--count")
+					|| args[i].toLowerCase().contains("-c")) {
 				try {
-					count = Integer.parseInt(args[i+1]);
+					count = Integer.parseInt(args[i + 1]);
 				} catch (ArrayIndexOutOfBoundsException | NumberFormatException e) {
-					bot.sendIRC().message(channel.getName(), "Something went wrong here");
+					bot.sendIRC().message(channel.getName(),
+							"Something went wrong here");
 					e.printStackTrace();
 				}
 			}
 		}
 
 		try {
-			PreparedStatement ps = UnacceptableBot.getConfigHandler().sql
-					.getPreparedStatement("SELECT Message FROM `teknogeek_unacceptablebot`.`"+ channel.getName()+ "` WHERE Username = '"+ args[1].replace(" ", "")+ "' ORDER BY RAND() LIMIT " + count);
-			/*
-			 * ps.setString(1, args.length == 3 ? args[2].startsWith("#") ?
-			 * args[2] : "#" + args[2] : channel.getName()); Like, what the fuck
-			 * are these even here for? ps.setString(2, args[1]);
-			 */
-			ResultSet rs = ps.executeQuery();
-			bot.sendIRC().message(channel.getName(),
-					"<" + args[1] + "> " + rs.getString(1));
+			for (int i = 0; i < count; i++) {
+				PreparedStatement ps = UnacceptableBot.getConfigHandler().sql
+						.getPreparedStatement("SELECT Message FROM `teknogeek_unacceptablebot`.`"
+								+ channel.getName()
+								+ "` WHERE Username = '"
+								+ args[1].replace(" ", "")
+								+ "' ORDER BY RAND() LIMIT " + count);
+				/*
+				 * ps.setString(1, args.length == 3 ? args[2].startsWith("#") ?
+				 * args[2] : "#" + args[2] : channel.getName()); Like, what the
+				 * fuck are these even here for? ps.setString(2, args[1]);
+				 */
+				ResultSet rs = ps.executeQuery();
+				if (rs.next()) {
+					bot.sendIRC().message(channel.getName(),
+							"<" + args[1] + "> " + rs.getString(1));
+				}
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-
 	}
 
 	@Override

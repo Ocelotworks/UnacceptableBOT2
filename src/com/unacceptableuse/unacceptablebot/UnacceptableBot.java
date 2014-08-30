@@ -62,7 +62,7 @@ public class UnacceptableBot extends ListenerAdapter {
 		config.init();
 		config.increment("stat:startups");
 		config.setLong("startupTime", new Date().getTime());
-
+		
 		loadSexQuotes();
 		
 		if(loadChansFromDB){
@@ -80,8 +80,7 @@ public class UnacceptableBot extends ListenerAdapter {
 	@Override
 	public void onMessage(final MessageEvent event) throws Exception {
 		recordMessage(event);
-		if (bot == null) {
-			bot = event.getBot();
+		if(bot != null){
 			doTimer();
 		}
 		if (event.getMessage().charAt(0) == '!') {
