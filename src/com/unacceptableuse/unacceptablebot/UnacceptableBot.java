@@ -55,7 +55,7 @@ public class UnacceptableBot extends ListenerAdapter {
 		try {
 			snapchat.init();
 			Timer timer = new Timer();
-			timer.schedule(new SnapchatThread(), 0, (30 * 1000));
+			timer.schedule(new SnapchatThread(), 0, (40 * 1000));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

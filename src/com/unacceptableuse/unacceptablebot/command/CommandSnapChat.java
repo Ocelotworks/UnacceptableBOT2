@@ -1,7 +1,6 @@
 package com.unacceptableuse.unacceptablebot.command;
 
 import java.io.File;
-
 import org.pircbotx.Channel;
 import org.pircbotx.PircBotX;
 import org.pircbotx.User;
@@ -33,32 +32,9 @@ public class CommandSnapChat extends Command {
 			try {
 				String url = args[2];
 				String target = args[3];
-				try {
-					if (canSnap) {
-						canSnap = false;
-						UnacceptableBot.getSnapchat().getImage(url, target);
-						bot.sendIRC().message(channel.getName(), "Snap sent.");
-
-						float sysTime = System.currentTimeMillis();
-						float waitTime = (120 * 1000); // 120 seconds converted
-														// to milliseconds
-						final float waitedSysTime = (sysTime + waitTime);
-
-						new Thread() {
-							public void run() {
-								while ((System.currentTimeMillis() < waitedSysTime)) {
-									// Just here to occupy the thread. Never
-									// mind me
-								}
-								canSnap = true;
-							}
-						}.start();
-						;
-					}
-				} catch (Exception e) {
-					bot.sendIRC().message(channel.getName(),
-							"Snap failed to send.");
-				}
+				UnacceptableBot.getSnapchat().add.add(url);
+				UnacceptableBot.getSnapchat().targ.add(target);
+				UnacceptableBot.getSnapchat().complete.add(false);
 			} catch (Exception e) {
 				bot.sendIRC().message(channel.getName(),
 						"Did you enter the correct number of arguments?");
