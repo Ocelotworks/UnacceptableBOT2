@@ -219,6 +219,7 @@ public class SnapchatHandler {
 		}
 	}
 
+	@SuppressWarnings("unused")
 	public byte[] getSnaps() throws IOException {
 		// build a URL
 		String s = " http://boywanders.us:6969/snapapi.php?username=" + user

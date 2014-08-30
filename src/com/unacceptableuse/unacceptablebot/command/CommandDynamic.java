@@ -26,6 +26,7 @@ public class CommandDynamic extends Command
 
 	
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public void performCommand(User sender, Channel channel, String message,
 			String[] args, PircBotX bot)

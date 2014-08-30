@@ -11,13 +11,14 @@ import com.unacceptableuse.unacceptablebot.UnacceptableBot;
 
 public class SnapchatThread extends TimerTask {
 
-	PircBotX bot = null;
+	public PircBotX bot = null;
 
 	public void run() {
 		// brokenGetSnaps();
 		UnacceptableBot.getSnapchat().doOneInQueue(bot, UnacceptableBot.getChannels().get(1));
 	}
 
+	@SuppressWarnings("unused")
 	private void brokenGetSnaps() {
 		Calendar calendar = Calendar.getInstance();
 		int hours = calendar.get(Calendar.HOUR_OF_DAY);
