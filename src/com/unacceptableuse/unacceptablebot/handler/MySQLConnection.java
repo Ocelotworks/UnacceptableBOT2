@@ -105,6 +105,15 @@ public class MySQLConnection
 		}
 	}
 	
+	public boolean setChannels(String setting, String value) {
+		try {
+			return excecute("INSERT INTO `teknogeek_settings`.`Channels` (`Setting`, `Value`) VALUES ('"+ setting + "', '" + value + "') ON DUPLICATE KEY UPDATE Setting=VALUES(Setting);");
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
 	public PreparedStatement getPreparedStatement(String sql) throws SQLException
 	{
 		return c.prepareStatement(sql);

@@ -26,6 +26,7 @@ import org.pircbotx.hooks.events.InviteEvent;
 import org.pircbotx.hooks.events.JoinEvent;
 import org.pircbotx.hooks.events.MessageEvent;
 import org.pircbotx.hooks.events.PrivateMessageEvent;
+import org.pircbotx.hooks.events.QuitEvent;
 
 import com.google.gson.JsonObject;
 import com.unacceptableuse.unacceptablebot.handler.CommandHandler;
@@ -40,7 +41,7 @@ public class UnacceptableBot extends ListenerAdapter {
 	private static ConfigHandler config = new ConfigHandler();
 	private static SnapchatHandler snapchat = new SnapchatHandler();
 	public static Random rand = new Random();
-	public static ArrayList<String> channels = null;
+	public static ArrayList<String> channels = new ArrayList<String>();
 	private int messageCount = 0;
 	private ArrayList<String> sexQuotes = new ArrayList<String>();
 	public static PircBotX bot = null;
@@ -58,7 +59,6 @@ public class UnacceptableBot extends ListenerAdapter {
 			e.printStackTrace();
 		}
 		config.init();
-		channels = new ArrayList<String>();
 		config.increment("stat:startups");
 		config.setLong("startupTime", new Date().getTime());
 
@@ -187,6 +187,21 @@ public class UnacceptableBot extends ListenerAdapter {
 			channels.add(event.getChannel().getName());
 			log("INFO", "JOIN", "Joined channel "
 					+ event.getChannel().getName());
+		}
+
+	}
+	
+	@Override
+	public void onQuit(final QuitEvent event) {
+		if (event.getUser().equals(event.getBot().getUserBot())) {
+			log("INFO", "JOIN", "Quiting.");
+			String chanStr = "";
+			for(int i = 0; i < channels.size(); i++){
+				chanStr.concat(",".concat(channels.get(i)));
+			}
+			if(chanStr != ""){
+				config.setChannels(chanStr);
+			}
 		}
 
 	}

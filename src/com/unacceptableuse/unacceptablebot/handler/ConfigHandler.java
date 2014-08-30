@@ -158,6 +158,10 @@ public class ConfigHandler {
 		}
 		return null;
 	}
+	
+	public void setChannels(String chans){
+		sql.setChannels("Channel_list", chans);
+	}
 
 	/**
 	 * @author Neil - dvd604
