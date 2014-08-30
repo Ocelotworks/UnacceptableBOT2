@@ -24,6 +24,8 @@ public class CommandDynamic extends Command
 		this.format = format;
 	}
 
+	
+
 	@Override
 	public void performCommand(User sender, Channel channel, String message,
 			String[] args, PircBotX bot)
@@ -56,15 +58,13 @@ public class CommandDynamic extends Command
 	@Override
 	public String[] getAliases()
 	{
-		// TODO Auto-generated method stub
-		return null;
+		return new String[]{alias};
 	}
 
 	@Override
 	public Level getAccessLevel()
 	{
-		// TODO Auto-generated method stub
-		return null;
+		return Level.USER;
 	}
 
 }
