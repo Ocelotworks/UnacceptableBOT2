@@ -114,6 +114,16 @@ public class MySQLConnection
 		}
 	}
 	
+	public String getChannels(String setting) {
+		try {
+			ResultSet rs = query("SELECT * FROM  `teknogeek_settings`.`Channels` WHERE  `Setting` =  '"+ setting + "' LIMIT 1");
+			return rs.next() ? rs.getString(2) : null;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return "Error " + e.getErrorCode() + " " + e.getLocalizedMessage();
+		}
+	}
+	
 	public PreparedStatement getPreparedStatement(String sql) throws SQLException
 	{
 		return c.prepareStatement(sql);

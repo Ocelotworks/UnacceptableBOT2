@@ -162,6 +162,10 @@ public class ConfigHandler {
 	public void setChannels(String chans){
 		sql.setChannels("Channel_list", chans);
 	}
+	
+	public String getChannels(){
+		return sql.getChannels("Channel_list");
+	}
 
 	/**
 	 * @author Neil - dvd604

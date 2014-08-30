@@ -45,6 +45,7 @@ public class UnacceptableBot extends ListenerAdapter {
 	private int messageCount = 0;
 	private ArrayList<String> sexQuotes = new ArrayList<String>();
 	public static PircBotX bot = null;
+	private boolean loadChansFromDB = false; //When using VNC this should be false to avoid dual entries in the database!
 
 	/**
 	 * Starts the init process of everything
@@ -63,13 +64,22 @@ public class UnacceptableBot extends ListenerAdapter {
 		config.setLong("startupTime", new Date().getTime());
 
 		loadSexQuotes();
+		
+		if(loadChansFromDB){
+			String channelsStr = config.getChannels();
+			String[] channels = channelsStr.split(",");
+			config.setLong("connectedChannels", channels.length);
+			for(int i = 0; i < channels.length; i++){
+				String currentChannel = channels[i].replace(",", "");
+				UnacceptableBot.channels.add(currentChannel);
+			}
+		}
 
 	}
 
 	@Override
 	public void onMessage(final MessageEvent event) throws Exception {
 		recordMessage(event);
-
 		if (bot == null) {
 			bot = event.getBot();
 			doTimer();
@@ -195,6 +205,11 @@ public class UnacceptableBot extends ListenerAdapter {
 	public void onQuit(final QuitEvent event) {
 		if (event.getUser().equals(event.getBot().getUserBot())) {
 			log("INFO", "JOIN", "Quiting.");
+			doChannelSave();
+		}
+	}
+
+	public void doChannelSave() {
 			String chanStr = "";
 			for(int i = 0; i < channels.size(); i++){
 				chanStr.concat(",".concat(channels.get(i)));
@@ -202,8 +217,6 @@ public class UnacceptableBot extends ListenerAdapter {
 			if(chanStr != ""){
 				config.setChannels(chanStr);
 			}
-		}
-
 	}
 
 	private void doTimer() {
