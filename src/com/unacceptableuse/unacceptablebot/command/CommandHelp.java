@@ -18,17 +18,26 @@ public class CommandHelp extends Command {
 	public void performCommand(User sender, Channel channel, String message,
 			String[] args, PircBotX bot) {
 		sendMessage(bot, "Help:", channel);
-		
+
 		for (int i = 0; i < UnacceptableBot.getCommandHandler().getCommands()
 				.size(); i++) {
-			
-			//Message: command : command help
-			
-			sendMessage(bot, UnacceptableBot.getCommandHandler().getCommands()
-					.get(i).getAliases()[0]
-					+ " : "
-					+ UnacceptableBot.getCommandHandler().getCommands().get(i)
-							.getHelp(), channel);
+
+			// Message: command : command help
+
+			if (!UnacceptableBot.getCommandHandler().getCommands().get(i)
+					.getHelp().toLowerCase().equals("system command")
+					|| !UnacceptableBot.getCommandHandler().getCommands()
+							.get(i).getHelp().toLowerCase()
+							.equals("unfinished")
+					|| !UnacceptableBot.getCommandHandler().getCommands()
+							.get(i).getHelp().toLowerCase().equals("")) {
+				
+				sendMessage(bot, UnacceptableBot.getCommandHandler()
+						.getCommands().get(i).getAliases()[0]
+						+ " : "
+						+ UnacceptableBot.getCommandHandler().getCommands()
+								.get(i).getHelp(), channel);
+			}
 		}
 
 	}
