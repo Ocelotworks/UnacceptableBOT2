@@ -305,7 +305,11 @@ public class UnacceptableBot extends ListenerAdapter {
 			String id = rs.getString(1);
 			ResultSet logRS = UnacceptableBot.getConfigHandler().getLog(channel, Integer.parseInt(id)-2);
 			logRS.next();
-			bot.sendIRC().message(channel, logRS.getString(3).toUpperCase(Locale.ENGLISH));
+			if((!(logRS.getString(3).charAt(0) == '.'))||(!(logRS.getString(3).charAt(0) == '!'))){
+				bot.sendIRC().message(channel, logRS.getString(3).toUpperCase(Locale.ENGLISH));
+			} else {
+				bot.sendIRC().message(channel, sender.getNick() + " is a bad boy :(");
+			}
 		}
 	}
 
