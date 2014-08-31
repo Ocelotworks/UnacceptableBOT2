@@ -36,8 +36,8 @@ public class Initializer
 			is.close();
 			 
 			PircBotX bot = new PircBotX(config);
+			UnacceptableBot.setBot(bot);
 			bot.startBot();
-			UnacceptableBot.bot = bot;
 			
 			
 		} 

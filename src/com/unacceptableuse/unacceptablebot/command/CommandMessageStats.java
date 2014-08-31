@@ -36,7 +36,7 @@ public class CommandMessageStats extends Command {
 
 			}
 
-			sendMessage(bot, "Processing " + logs.size()
+			sendMessage("Processing " + logs.size()
 					+ " logs... This might take a while", channel);
 			for (File log : logs) {
 				int icount = 0;
@@ -60,7 +60,6 @@ public class CommandMessageStats extends Command {
 			}
 
 			sendMessage(
-					bot,
 					"&BOLD"
 							+ target
 							+ "&RESET has sent &BOLD"
@@ -72,7 +71,6 @@ public class CommandMessageStats extends Command {
 									.get(channel + ".log")[1])
 							+ "&RESET% of all messages.", channel);
 			sendMessage(
-					bot,
 					"&BOLD"
 							+ target
 							+ "&RESET has sent &BOLD"
@@ -84,7 +82,6 @@ public class CommandMessageStats extends Command {
 
 		} catch (Exception e) {
 			sendMessage(
-					bot,
 					"&REDSHIT!&RESET: " + e.getMessage() + " "
 							+ e.getStackTrace()[0], channel);
 		}

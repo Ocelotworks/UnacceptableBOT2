@@ -15,7 +15,7 @@ public class CommandFunction extends Command
 			String[] args, PircBotX bot)
 	{
 		UnacceptableBot.getCommandHandler().addCommand(new CommandDynamic(args[1], message.substring(message.indexOf(args[1]))));
-		sendMessage(bot, "Command added succesfully.", channel);
+		sendMessage("Command added succesfully.", channel);
 	}
 
 	@Override

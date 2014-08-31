@@ -17,7 +17,7 @@ public class CommandImage extends Command
 	public void performCommand(User sender, Channel channel, String message,
 			String[] args, PircBotX bot)
 	{
-		sendMessage(bot, getRandomImage(args[1]), channel);
+		sendMessage(getRandomImage(args[1]), channel);
 	}
 	
 	private String getRandomImage(String subreddit)

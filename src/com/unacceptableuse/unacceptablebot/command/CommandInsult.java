@@ -34,11 +34,11 @@ public class CommandInsult extends Command
 			doc.getDocumentElement().normalize();
 			
 			Node nNode = doc.getElementsByTagName("result").item(0);
-			sendMessage(bot, args.length > 1 ? nNode.getAttributes().getNamedItem("title").getNodeValue().replace("You're", args[1]+" is") : nNode.getAttributes().getNamedItem("title").getNodeValue().replace("UnacceptableBOT", "I'm"), channel);
+			sendMessage(args.length > 1 ? nNode.getAttributes().getNamedItem("title").getNodeValue().replace("You're", args[1]+" is") : nNode.getAttributes().getNamedItem("title").getNodeValue().replace("UnacceptableBOT", "I'm"), channel);
 		
 		}catch(Exception e)
 		{
-			sendMessage(bot, "ERROR: You're a bot crashing "+e.getMessage(), channel);
+			sendMessage("ERROR: You're a bot crashing "+e.getMessage(), channel);
 			e.printStackTrace();
 		}
 	}

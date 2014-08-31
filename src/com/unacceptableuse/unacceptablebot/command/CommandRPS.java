@@ -28,7 +28,7 @@ public class CommandRPS extends Command
 		{
 			if(new Date().getTime()-lastFaucet < faucetTimeout)
 			{
-				sendMessage(bot, "You must wait another "+(faucetTimeout-(new Date().getTime()-lastFaucet))+" seconds until you can receive doge!", channel.getName());
+				sendMessage("You must wait another "+(faucetTimeout-(new Date().getTime()-lastFaucet))+" seconds until you can receive doge!", channel.getName());
 				return;
 			}
 		}	
@@ -38,15 +38,15 @@ public class CommandRPS extends Command
 		int playerChoice = args[1].equalsIgnoreCase("rock") ? 1 : args[1].equalsIgnoreCase("paper") ? 2 : args[1].equalsIgnoreCase("scissors") ? 3 : 0;
 		if(playerChoice == 0)
 		{
-			sendMessage(bot, "Unknown choice. Try rock, paper or scissors.", channel);
+			sendMessage("Unknown choice. Try rock, paper or scissors.", channel);
 			return;
 		}else
 		{
 			int steveChoice = (UnacceptableBot.rand.nextInt(300)/100)+1;
 			boolean playerWon = playerChoice == steveChoice ? false : playerChoice == 1 && steveChoice == 2 ? false : playerChoice == 3 && steveChoice == 1 ? false : playerChoice == 2 && steveChoice == 3 ? false :  true; 
-			sendMessage(bot, (playerWon ? "You WIN! " : steveChoice == playerChoice ? "You TIED! " : "You LOSE! ")+UnacceptableBot.getConfigHandler().getString("botName")+" chose "+getAction(steveChoice)+" and you chose "+getAction(playerChoice), channel);
+			sendMessage((playerWon ? "You WIN! " : steveChoice == playerChoice ? "You TIED! " : "You LOSE! ")+UnacceptableBot.getConfigHandler().getString("botName")+" chose "+getAction(steveChoice)+" and you chose "+getAction(playerChoice), channel);
 			if(playerWon && !UnacceptableBot.getConfigHandler().getBoolean("rpsBounty"))
-				sendMessage(bot, ".tip "+sender+" "+UnacceptableBot.rand.nextInt((UnacceptableBot.getConfigHandler().getInteger("faucetLimit"))+1), channel);
+				sendMessage(".tip "+sender+" "+UnacceptableBot.rand.nextInt((UnacceptableBot.getConfigHandler().getInteger("faucetLimit"))+1), channel);
 			
 			UnacceptableBot.getConfigHandler().setLong("faucetAt:"+sender.getUserId().toString(), new Date().getTime());
 		}

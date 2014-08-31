@@ -5,6 +5,7 @@ import org.pircbotx.Colors;
 import org.pircbotx.PircBotX;
 import org.pircbotx.User;
 
+import com.unacceptableuse.unacceptablebot.UnacceptableBot;
 import com.unacceptableuse.unacceptablebot.handler.CommandHandler;
 import com.unacceptableuse.unacceptablebot.variable.Level;
 
@@ -23,9 +24,9 @@ public abstract class Command
 	public abstract void performCommand(User sender, Channel channel, String message, String[] args, PircBotX bot);
 	
 	
-	public void sendMessage(PircBotX ub, String message, String target)
+	public void sendMessage(String message, String target)
 	{
-		ub.sendIRC().message(target, message
+		UnacceptableBot.getBot().sendIRC().message(target, message
 				.replace("&BOLD", Colors.BOLD)
 				.replace("&UNDERLINE", Colors.UNDERLINE)
 				.replace("&REVERSE", Colors.REVERSE)
@@ -40,14 +41,27 @@ public abstract class Command
 				.replace("&RESET", Colors.NORMAL));
 	}
 	
-	public void sendMessage(PircBotX ub, String message, Channel channel)
+	public void sendMessage(String message, Channel channel)
 	{
-		sendMessage(ub, message, channel.getName());
+		sendMessage(message, channel.getName());
 	}
 	
-	public void sendMessage(PircBotX ub, String message, User user)
+	public void sendMessage(String message, User user)
 	{
-		sendMessage(ub, message, user.getNick());
+		sendMessage(message, user.getNick());
+	}
+	
+	
+	//Legacy sendmessage
+	public void sendMessage(PircBotX ub, String message, Channel channel)
+	{
+		sendMessage(message, channel.getName());
+	}
+	
+	//Legacy sendmessage
+	public void sendMessage(PircBotX ub, String message, String channel)
+	{
+		sendMessage(message, channel);
 	}
 	
 	public abstract String[] getAliases();

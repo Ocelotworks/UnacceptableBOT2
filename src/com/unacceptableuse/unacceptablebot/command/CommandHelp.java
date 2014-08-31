@@ -17,7 +17,7 @@ public class CommandHelp extends Command {
 	@Override
 	public void performCommand(User sender, Channel channel, String message,
 			String[] args, PircBotX bot) {
-		sendMessage(bot, "Help:", channel);
+		sendMessage("Help:", channel);
 
 		for (int i = 0; i < UnacceptableBot.getCommandHandler().getCommands()
 				.size(); i++) {
@@ -32,7 +32,7 @@ public class CommandHelp extends Command {
 					|| !UnacceptableBot.getCommandHandler().getCommands()
 							.get(i).getHelp().toLowerCase().equals("")) {
 
-				sendMessage(bot, "&GREEN"
+				sendMessage("&GREEN"
 						+ UnacceptableBot.getCommandHandler().getCommands()
 								.get(i).getAliases()[0]
 						+ " &RESET - &RED"

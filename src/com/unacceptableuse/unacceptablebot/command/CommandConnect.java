@@ -19,7 +19,7 @@ public class CommandConnect extends Command
 			String[] args, PircBotX bot)
 	{
 		bot.sendIRC().joinChannel(args[1]);
-		sendMessage(bot, "Connecting to channel "+args[1], channel);
+		sendMessage("Connecting to channel "+args[1], channel);
 	}
 
 	@Override

@@ -46,7 +46,7 @@ public class UnacceptableBot extends ListenerAdapter {
 	public static ArrayList<String> channels = new ArrayList<String>();
 	private int messageCount = 0;
 	private ArrayList<String> sexQuotes = new ArrayList<String>();
-	public static PircBotX bot = null;
+	private static PircBotX bot = null;
 	private boolean loadChansFromDB = false; //When using VNC this should be false to avoid dual entries in the database!
 	public static boolean twatMode = true;
 
@@ -125,7 +125,7 @@ public class UnacceptableBot extends ListenerAdapter {
 		doReddit(event.getMessage(), event.getChannel().getName(),
 				event.getUser(), event.getBot());
 		recordMessage(event);
-		if(bot != null){doTimer();}
+		if(getBot() != null){doTimer();}
 		if(twatMode == true){stopBeingATwat(event.getMessage(), event.getChannel().getName(),
 				event.getUser(), event.getBot());}
 	}
@@ -217,15 +217,10 @@ public class UnacceptableBot extends ListenerAdapter {
 	}
 
 	private void doTimer() {
-		if (bot != null) {
 			Timer timer = new Timer();
 			SnapchatThread sct = new SnapchatThread();
-			sct.bot = bot;
+			sct.bot = getBot();
 			timer.schedule(sct, 0, (40 * 1000));
-		} else {
-			log("WARN", "SNAPCHAT", 
-					"Timer tried to start before bot was set!");
-		}
 	}
 
 	/**
@@ -393,5 +388,13 @@ public class UnacceptableBot extends ListenerAdapter {
 
 	public static void setSnapchat(SnapchatHandler sc) {
 		snapchat = sc;
+	}
+
+	public static PircBotX getBot() {
+		return bot;
+	}
+
+	public static void setBot(PircBotX bot) {
+		UnacceptableBot.bot = bot;
 	}
 }

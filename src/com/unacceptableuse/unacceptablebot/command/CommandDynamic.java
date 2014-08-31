@@ -45,18 +45,18 @@ public class CommandDynamic extends Command
 		
 		for(JsonElement je : ja)
 		{
-			sendMessage(bot, "JSON Element: "+ja.toString(), channel);
+			sendMessage("JSON Element: "+ja.toString(), channel);
 			JsonObject jo = je.getAsJsonObject();
 			for(Entry e : jo.entrySet())
 			{
-				sendMessage(bot, "JSON Entry: "+e.getKey()+" "+e.getValue(), channel);
+				sendMessage("JSON Entry: "+e.getKey()+" "+e.getValue(), channel);
 				switch(e.getKey().toString())
 				{
-					case "text": sendMessage(bot, e.getValue().toString(), channel); break;
+					case "text": sendMessage(e.getValue().toString(), channel); break;
 					case "performCommand": UnacceptableBot.getCommandHandler().getCommand(e.getValue().toString().split(" ")[0].replaceFirst("!","")).performCommand(sender, channel,e.getValue().toString(),e.getValue().toString().split(" "), bot); break;
-					case "args": sendMessage(bot, args[Integer.parseInt(e.getValue().toString())] , channel); break;
+					case "args": sendMessage(args[Integer.parseInt(e.getValue().toString())] , channel); break;
 					case "choose": JsonArray cja = parser.parse(e.getValue().toString()).getAsJsonArray(); cja.get(UnacceptableBot.rand.nextInt(cja.size()));
-					default: sendMessage(bot, "&REDUnknown value "+e.getKey().toString(), channel); break;
+					default: sendMessage("&REDUnknown value "+e.getKey().toString(), channel); break;
 				};
 			}
 		}
