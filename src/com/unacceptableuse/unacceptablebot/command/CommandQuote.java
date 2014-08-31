@@ -3,7 +3,6 @@ package com.unacceptableuse.unacceptablebot.command;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Random;
 
 import org.pircbotx.Channel;
 import org.pircbotx.PircBotX;
@@ -24,8 +23,6 @@ public class CommandQuote extends Command {
 			String[] args, PircBotX bot) {
 
 		int count = 1;
-		int messageID = 0;
-		int randInt;
 
 		for (int i = 0; i < args.length; i++) {
 			if (args[i].toLowerCase().contains("--count")
@@ -41,24 +38,18 @@ public class CommandQuote extends Command {
 		}
 
 		try {
-			PreparedStatement idPS = UnacceptableBot.getConfigHandler().sql
-					.getPreparedStatement("SELECT ID FROM `teknogeek_unacceptablebot`.`"
-							+ channel.getName() + "WHERE Username = '" + args[1].replace(" ", "") + " ORDER BY RAND() LIMIT 1");
-			ResultSet rs = idPS.executeQuery();
-			rs.next();
-			messageID = rs.getInt(1);
-		} catch (Exception e) {}
-
-		randInt = new Random().nextInt(messageID+1);
-		
-		try {
 			for (int i = 0; i < count; i++) {
 				PreparedStatement ps = UnacceptableBot.getConfigHandler().sql
 						.getPreparedStatement("SELECT Message FROM `teknogeek_unacceptablebot`.`"
 								+ channel.getName()
 								+ "` WHERE Username = '"
 								+ args[1].replace(" ", "")
-								+ "' AND ID = '".concat(String.valueOf(randInt - i).concat("'")));
+								+ "' ORDER BY RAND() LIMIT " + count);
+				/*
+				 * ps.setString(1, args.length == 3 ? args[2].startsWith("#") ?
+				 * args[2] : "#" + args[2] : channel.getName()); Like, what the
+				 * fuck are these even here for? ps.setString(2, args[1]);
+				 */
 				ResultSet rs = ps.executeQuery();
 				if (rs.next()) {
 					bot.sendIRC().message(channel.getName(),
@@ -87,7 +78,7 @@ public class CommandQuote extends Command {
 
 	@Override
 	public String getHelp() {
-		return "Usage: quote <user> [-c|--count <number>] | Result: Returns a message or number of messages said by the specifed user";
+		return "Usage: quote <user> [-c <number> | --count <number>]";
 	}
 
 }
