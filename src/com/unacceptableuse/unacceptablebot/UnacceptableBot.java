@@ -16,6 +16,8 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Random;
 import java.util.Timer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -122,8 +124,8 @@ public class UnacceptableBot extends ListenerAdapter {
 			}
 		}
 
-		doReddit(event.getMessage(), event.getChannel().getName(),
-				event.getUser(), event.getBot());
+		doReddit(event.getMessage(), event.getChannel().getName(),event.getUser());
+		doYoutube(event.getMessage(), event.getChannel().getName());
 		recordMessage(event);
 		if(getBot() != null){doTimer();}
 		if(twatMode == true){stopBeingATwat(event.getMessage(), event.getChannel().getName(),
@@ -247,9 +249,33 @@ public class UnacceptableBot extends ListenerAdapter {
 		config.createChannelTable(channel.getName());
 		config.setLog(dateTime, sender.getNick(), message, channel.getName());
 	}
+	
+	private static void doYoutube(String message, String channel)
+	{
+		String pattern = "(?<=watch\\?v=|/videos/|embed\\/)[^#\\&\\?]*";
 
-	private static void doReddit(String message, String channel, User sender,
-			PircBotX bot) {
+	    Pattern compiledPattern = Pattern.compile(pattern);
+	    Matcher matcher = compiledPattern.matcher(message);
+
+	    if(matcher.find()){
+	    	try{
+			  InputStream is = getHTTPSUrlContents("https://gdata.youtube.com/feeds/api/videos/"+matcher.group().replace("","").replace(",","").replace(".","").split(" ")[0]+"?v=2&alt=json");
+			  com.google.gson.JsonParser parser = new com.google.gson.JsonParser();
+			  
+			  
+			  JsonObject jo = parser.parse(new InputStreamReader(is)).getAsJsonObject().get("entry").getAsJsonObject();
+			  String title = jo.get("title").getAsJsonObject().get("$t").getAsString();
+			  float mins = Float.parseFloat(jo.get("media$group").getAsJsonObject().get("yt$duration").getAsString())/60;
+			  bot.sendIRC().message(channel, Colors.BOLD+"Youtube link: "+title+" ["+mins+"]");
+			  is.close();
+	    	}catch(Exception e)
+	    	{
+	    		e.printStackTrace();
+	    	}
+	    }
+	}
+
+	private static void doReddit(String message, String channel, User sender) {
 		// TODO: fancy regex for this lol still not done it
 		try {
 			if (message.contains("/r/") && !message.contains("reddit.com")
