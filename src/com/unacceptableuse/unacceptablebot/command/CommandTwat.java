@@ -12,28 +12,12 @@ public class CommandTwat extends Command {
 	@Override
 	public void performCommand(User sender, Channel channel, String message,
 			String[] args, PircBotX bot) {
-		boolean toBool = false;
-		try {
-			toBool = Boolean.parseBoolean(args[1]);
-		} catch (Exception e) {
-			bot.sendIRC()
-					.message(
-							channel.getName(),
-							sender.getNick()
-									+ ": Trying to switch twat mode, and you being a twat. *Makes tutting sounds**");
-		}
-		
-		if(toBool != UnacceptableBot.twatMode){
-			UnacceptableBot.twatMode = toBool;
-			bot.sendIRC().message(channel.getName(),"Twat mode: " + toBool);
-		} else {
-			bot.sendIRC().message(channel.getName(),"Twat mode: " + toBool);	
-		}
+		UnacceptableBot.twatMode = !UnacceptableBot.twatMode;
+		bot.sendIRC().message(channel.getName(), "Twat mode: " + UnacceptableBot.twatMode);
 	}
 
 	@Override
 	public String[] getAliases() {
-		// TODO Auto-generated method stub
 		return new String[] { "twat" };
 	}
 

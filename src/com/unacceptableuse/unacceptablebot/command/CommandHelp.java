@@ -31,10 +31,11 @@ public class CommandHelp extends Command {
 							.equals("unfinished")
 					|| !UnacceptableBot.getCommandHandler().getCommands()
 							.get(i).getHelp().toLowerCase().equals("")) {
-				
-				sendMessage(bot, UnacceptableBot.getCommandHandler()
-						.getCommands().get(i).getAliases()[0]
-						+ " : "
+
+				sendMessage(bot, "&GREEN"
+						+ UnacceptableBot.getCommandHandler().getCommands()
+								.get(i).getAliases()[0]
+						+ " &RESET - &RED"
 						+ UnacceptableBot.getCommandHandler().getCommands()
 								.get(i).getHelp(), channel);
 			}
