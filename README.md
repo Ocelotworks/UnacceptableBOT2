@@ -1,15 +1,16 @@
 UnacceptableBOT2
 ===================
 
-	Steve II
+	Stevie, Java IRC bot full of useful features.
 
-	Snapchat
 ===================
-		Ask teknogeek or dvd604 for the pem to package into the JAR so that shit will work.
+	Snapchat
+	
+		Snapchat no longer works, and probably will not again.
 
-
-	Database
 ====================
+	Database
+	
 	The database will be processed by `ConfigHandler.class` and managed by `MySQLConnection.class`.  
 	Every variable will be managed by `ConfigHandler.class` for example Disabled commands, banned users etc
 	

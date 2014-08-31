@@ -149,23 +149,22 @@ public class UnacceptableBot extends ListenerAdapter {
 							.message("#doge-coin",
 									">> There are no active users, so soak cannot happen :( <<");
 				} else {
-					long amtToSoak = (getConfigHandler().getLong(
+					long amtToSoak = ((getConfigHandler().getLong(
 							"dogeWalletBalance") - (getConfigHandler()
 							.getInteger("faucetReserve") + getConfigHandler()
 							.getInteger("profitReserve")))
-							/ activeUsers;
+							/ activeUsers);
 					event.getBot().sendIRC()
 							.message("#doge-coin", ".soak " + amtToSoak);
 					getConfigHandler().increment("stat:totalSoaked",
 							(int) amtToSoak);
 				}
 			} else {
-				long balance = Long.parseLong(event.getMessage().split(".")[0]);
-				final int tipOver = getConfigHandler().getInteger(
-						"faucetReserve")
+				float balance = Float.parseFloat(event.getMessage());
+				final int tipOver = getConfigHandler().getInteger("faucetReserve")
 						+ getConfigHandler().getInteger("profitReserve")
 						+ getConfigHandler().getInteger("soakThreshold");
-				getConfigHandler().setLong("dogeWalletBalance", balance);
+				getConfigHandler().setFloat("dogeWalletBalance", balance);
 
 				if (balance > tipOver) {
 					event.getBot().sendIRC().message("DogeWallet", ".active");

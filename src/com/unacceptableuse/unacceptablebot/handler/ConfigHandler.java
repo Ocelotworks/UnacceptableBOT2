@@ -90,6 +90,14 @@ public class ConfigHandler {
 	public void setLong(String key, long val) {
 		sql.setSetting(key, String.valueOf(val));
 	}
+	
+	public void setFloat(String key, float val){
+		sql.setSetting(key, String.valueOf(val));
+	}
+	
+	public float getFloat(String key){
+		return Float.parseFloat(sql.getSetting(key));
+	}
 
 	public void setBoolean(String key, boolean bool) {
 		sql.setSetting(key, String.valueOf(bool));
