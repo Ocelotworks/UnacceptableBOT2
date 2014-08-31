@@ -73,7 +73,11 @@ public class MySQLConnection
 
 	public boolean setSetting(String setting, String value) {
 		try {
-			return excecute("INSERT INTO `teknogeek_settings`.`Global_Settings` (`Setting`, `Value`) VALUES ('"+ setting + "', '" + value + "') ON DUPLICATE KEY UPDATE Setting=VALUES(Setting);");
+			if(!excecute("SELECT EXISTS(SELECT * FROM `teknogeek_settings`.`Global_Settings` WHERE Value =".concat(value).concat(";"))){
+				return excecute("INSERT INTO `teknogeek_settings`.`Global_Settings` (`Setting`, `Value`) VALUES ('"+ setting + "', '" + value + "');"); //ON DUPLICATE KEY UPDATE Setting=VALUES(Setting);");
+			} else {
+				return excecute("UPDATE `teknogeek_settings`.`Global_Settings` SET Value='".concat(value).concat("' WHERE 'Setting' = ".concat(setting)));
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 			attemptReconnect();
