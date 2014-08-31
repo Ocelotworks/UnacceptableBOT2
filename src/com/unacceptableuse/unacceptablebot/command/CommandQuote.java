@@ -3,6 +3,7 @@ package com.unacceptableuse.unacceptablebot.command;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Random;
 
 import org.pircbotx.Channel;
 import org.pircbotx.PircBotX;
@@ -23,6 +24,8 @@ public class CommandQuote extends Command {
 			String[] args, PircBotX bot) {
 
 		int count = 1;
+		int messageID = 0;
+		int randInt;
 
 		for (int i = 0; i < args.length; i++) {
 			if (args[i].toLowerCase().contains("--count")
@@ -41,9 +44,13 @@ public class CommandQuote extends Command {
 			PreparedStatement idPS = UnacceptableBot.getConfigHandler().sql
 					.getPreparedStatement("SELECT ID FROM `teknogeek_unacceptablebot`.`"
 							+ channel.getName() + "WHERE Username = '" + args[1].replace(" ", "") + " ORDER BY RAND() LIMIT 1");
-		} catch (Exception e) {
-		}
+			ResultSet rs = idPS.executeQuery();
+			rs.next();
+			messageID = rs.getInt(1);
+		} catch (Exception e) {}
 
+		randInt = new Random().nextInt(messageID+1);
+		
 		try {
 			for (int i = 0; i < count; i++) {
 				PreparedStatement ps = UnacceptableBot.getConfigHandler().sql
@@ -51,12 +58,7 @@ public class CommandQuote extends Command {
 								+ channel.getName()
 								+ "` WHERE Username = '"
 								+ args[1].replace(" ", "")
-								+ "' ORDER BY RAND() LIMIT 1");
-				/*
-				 * ps.setString(1, args.length == 3 ? args[2].startsWith("#") ?
-				 * args[2] : "#" + args[2] : channel.getName()); Like, what the
-				 * fuck are these even here for? ps.setString(2, args[1]);
-				 */
+								+ "' AND ID = '".concat(String.valueOf(randInt - i).concat("'")));
 				ResultSet rs = ps.executeQuery();
 				if (rs.next()) {
 					bot.sendIRC().message(channel.getName(),
