@@ -28,6 +28,7 @@ public class CommandDynamic extends Command
 
 	
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public void performCommand(User sender, Channel channel, String message,
 			String[] args, PircBotX bot)
@@ -73,6 +74,13 @@ public class CommandDynamic extends Command
 	public Level getAccessLevel()
 	{
 		return Level.USER;
+	}
+
+
+
+	@Override
+	public String getHelp() {
+		return "System command";
 	}
 
 }

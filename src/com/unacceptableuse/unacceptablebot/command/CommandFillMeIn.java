@@ -60,4 +60,9 @@ public class CommandFillMeIn extends Command {
 		return Level.USER;
 	}
 
+	@Override
+	public String getHelp() {
+		return "Usage: fmi <number> | Result: Shows you the last specified number of messages";
+	}
+
 }

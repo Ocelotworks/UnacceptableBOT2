@@ -81,4 +81,9 @@ public class CommandRPS extends Command
 		return Level.USER;
 	}
 
+	@Override
+	public String getHelp() {
+		return "Usage: rps <rock|paper|scissors> | Result: Play a game of rock paper scissors!";
+	}
+
 }

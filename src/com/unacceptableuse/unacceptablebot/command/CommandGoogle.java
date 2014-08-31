@@ -43,4 +43,9 @@ public class CommandGoogle extends Command
 		return Level.USER;
 	}
 
+	@Override
+	public String getHelp() {
+		return "Usage: google <terms> | Result: Produces a LMGTFY link using the specified terms";
+	}
+
 }

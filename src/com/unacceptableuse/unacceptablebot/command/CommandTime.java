@@ -22,11 +22,16 @@ public class CommandTime extends Command{
 	@Override
 	public int requiredArguments()
 	{
-		return 1;
+		return 0;
 	}
 
 	@Override
 	public Level getAccessLevel() {
 		return Level.USER;
+	}
+
+	@Override
+	public String getHelp() {
+		return "Usage: time | Result: Returns the current system time";
 	}
 }

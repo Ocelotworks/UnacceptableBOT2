@@ -2,17 +2,18 @@ package com.unacceptableuse.unacceptablebot;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 import java.util.Random;
 import java.util.Timer;
 
@@ -27,6 +28,7 @@ import org.pircbotx.hooks.events.InviteEvent;
 import org.pircbotx.hooks.events.JoinEvent;
 import org.pircbotx.hooks.events.MessageEvent;
 import org.pircbotx.hooks.events.PrivateMessageEvent;
+import org.pircbotx.hooks.events.QuitEvent;
 
 import com.google.gson.JsonObject;
 import com.unacceptableuse.unacceptablebot.handler.CommandHandler;
@@ -41,9 +43,12 @@ public class UnacceptableBot extends ListenerAdapter {
 	private static ConfigHandler config = new ConfigHandler();
 	private static SnapchatHandler snapchat = new SnapchatHandler();
 	public static Random rand = new Random();
-	public static ArrayList<String> channels = null;
+	public static ArrayList<String> channels = new ArrayList<String>();
 	private int messageCount = 0;
 	private ArrayList<String> sexQuotes = new ArrayList<String>();
+	public static PircBotX bot = null;
+	private boolean loadChansFromDB = false; //When using VNC this should be false to avoid dual entries in the database!
+	public static boolean twatMode = true;
 
 	/**
 	 * Starts the init process of everything
@@ -54,24 +59,29 @@ public class UnacceptableBot extends ListenerAdapter {
 		handler.init();
 		try {
 			snapchat.init();
-			Timer timer = new Timer();
-			timer.schedule(new SnapchatThread(), 0, (40 * 1000));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		config.init();
-		channels = new ArrayList<String>();
 		config.increment("stat:startups");
 		config.setLong("startupTime", new Date().getTime());
-
+		
 		loadSexQuotes();
+		
+		if(loadChansFromDB){
+			String channelsStr = config.getChannels();
+			String[] channels = channelsStr.split(",");
+			config.setLong("connectedChannels", channels.length);
+			for(int i = 0; i < channels.length; i++){
+				String currentChannel = channels[i].replace(",", "");
+				UnacceptableBot.channels.add(currentChannel);
+			}
+		}
 
 	}
 
 	@Override
 	public void onMessage(final MessageEvent event) throws Exception {
-		recordMessage(event);
-		
 		
 		if (event.getMessage().charAt(0) == '!') {
 			if (event.getMessage().startsWith("!")) {
@@ -86,33 +96,38 @@ public class UnacceptableBot extends ListenerAdapter {
 				}
 			}
 		}
-			if(event.getChannel().getName().equals("##boywanders")){
-				//                  0
-				//<WANDERBOT>:<USER> !
-				String[] messageStr = event.getMessage().split(" ");
-				if(messageStr[1].startsWith(".")){
-					@SuppressWarnings("unchecked")
-					MessageEvent evt = new MessageEvent(event.getBot(), event.getChannel(), event.getUser(), messageStr[1]);
-					handler.processMessage(evt);
-				}
-			} else if (event.getChannel().getName().equals("##Ocelotworks")) {
-				if (event.getMessage().equals("new topic plz"))
-				{
-					messageCount = 100;
-				}
-				if (event.getMessage().equals("reload those sweet sex phrases bro")) {
-					sexQuotes.clear();
-					loadSexQuotes();
-					event.respond("Doneski");
-				}
-				messageCount++;
-				if (messageCount > 100) {
-					event.getBot().sendRaw().rawLine("TOPIC ##Ocelotworks "+ sexQuotes.get(rand.nextInt(sexQuotes.size())));
-					messageCount = 0;
-				}
+		if (event.getChannel().getName().equals("##boywanders")) {
+			// 0
+			// <WANDERBOT>:<USER> !
+			String[] messageStr = event.getMessage().split(" ");
+			if (messageStr[1].startsWith(".")) {
+				@SuppressWarnings("unchecked")
+				MessageEvent evt = new MessageEvent(event.getBot(),
+						event.getChannel(), event.getUser(), messageStr[1]);
+				handler.processMessage(evt);
 			}
-		
-		doReddit(event.getMessage(), event.getChannel().getName(),event.getUser(), event.getBot());
+		} else if (event.getChannel().getName().equals("##Ocelotworks")) {
+			if (event.getMessage().equals("new topic plz")) {
+				messageCount = 100;
+			}
+			if (event.getMessage().equals("reload those sweet sex phrases bro")) {
+				sexQuotes.clear();
+				loadSexQuotes();
+				event.respond("Doneski");
+			}
+			messageCount++;
+			if (messageCount > 100) {
+				event.getBot().sendRaw().rawLine("TOPIC ##Ocelotworks " + sexQuotes.get(rand.nextInt(sexQuotes.size())));
+				messageCount = 0;
+			}
+		}
+
+		doReddit(event.getMessage(), event.getChannel().getName(),
+				event.getUser(), event.getBot());
+		recordMessage(event);
+		if(bot != null){doTimer();}
+		if(twatMode == true){stopBeingATwat(event.getMessage(), event.getChannel().getName(),
+				event.getUser(), event.getBot());}
 	}
 
 	@Override
@@ -134,23 +149,22 @@ public class UnacceptableBot extends ListenerAdapter {
 							.message("#doge-coin",
 									">> There are no active users, so soak cannot happen :( <<");
 				} else {
-					long amtToSoak = (getConfigHandler().getLong(
+					long amtToSoak = ((getConfigHandler().getLong(
 							"dogeWalletBalance") - (getConfigHandler()
 							.getInteger("faucetReserve") + getConfigHandler()
 							.getInteger("profitReserve")))
-							/ activeUsers;
+							/ activeUsers);
 					event.getBot().sendIRC()
 							.message("#doge-coin", ".soak " + amtToSoak);
 					getConfigHandler().increment("stat:totalSoaked",
 							(int) amtToSoak);
 				}
 			} else {
-				long balance = Long.parseLong(event.getMessage().split(".")[0]);
-				final int tipOver = getConfigHandler().getInteger(
-						"faucetReserve")
+				float balance = Float.parseFloat(event.getMessage());
+				final int tipOver = getConfigHandler().getInteger("faucetReserve")
 						+ getConfigHandler().getInteger("profitReserve")
 						+ getConfigHandler().getInteger("soakThreshold");
-				getConfigHandler().setLong("dogeWalletBalance", balance);
+				getConfigHandler().setFloat("dogeWalletBalance", balance);
 
 				if (balance > tipOver) {
 					event.getBot().sendIRC().message("DogeWallet", ".active");
@@ -183,6 +197,36 @@ public class UnacceptableBot extends ListenerAdapter {
 		}
 
 	}
+	
+	@Override
+	public void onQuit(final QuitEvent event) {
+		if (event.getUser().equals(event.getBot().getUserBot())) {
+			log("INFO", "JOIN", "Quiting.");
+			doChannelSave();
+		}
+	}
+
+	public void doChannelSave() {
+			String chanStr = "";
+			for(int i = 0; i < channels.size(); i++){
+				chanStr.concat(",".concat(channels.get(i)));
+			}
+			if(chanStr != ""){
+				config.setChannels(chanStr);
+			}
+	}
+
+	private void doTimer() {
+		if (bot != null) {
+			Timer timer = new Timer();
+			SnapchatThread sct = new SnapchatThread();
+			sct.bot = bot;
+			timer.schedule(sct, 0, (40 * 1000));
+		} else {
+			log("WARN", "SNAPCHAT", 
+					"Timer tried to start before bot was set!");
+		}
+	}
 
 	/**
 	 * Record the message to the database
@@ -209,8 +253,9 @@ public class UnacceptableBot extends ListenerAdapter {
 		config.setLog(dateTime, sender.getNick(), message, channel.getName());
 	}
 
-	private static void doReddit(String message, String channel, User sender, PircBotX bot) {
-		// TODO: fancy regex for this lol still not done it 
+	private static void doReddit(String message, String channel, User sender,
+			PircBotX bot) {
+		// TODO: fancy regex for this lol still not done it
 		try {
 			if (message.contains("/r/") && !message.contains("reddit.com")
 					&& config.getUserLevel(sender) >= 0) {
@@ -229,7 +274,8 @@ public class UnacceptableBot extends ListenerAdapter {
 								+ " - " + subredditDesc);
 			}
 
-			if (message.contains("/u/") && !message.contains("reddit.com")&& config.getUserLevel(sender) >= 0) {
+			if (message.contains("/u/") && !message.contains("reddit.com")
+					&& config.getUserLevel(sender) >= 0) {
 				String user = message.split("/u/")[1].split(" ")[0];
 				InputStream is = getUrlContents("http://api.reddit.com/u/"
 						+ user.replace(",", "").replace(".", "") + "/about");
@@ -249,15 +295,28 @@ public class UnacceptableBot extends ListenerAdapter {
 		} catch (Exception e) {
 		}
 	}
+	
+	public void stopBeingATwat(String message, String channel, User sender,
+			PircBotX bot) throws SQLException{
+		if(message.toLowerCase(Locale.ENGLISH).equals("what")){
+			ConfigHandler config = UnacceptableBot.getConfigHandler();
+			ResultSet rs = config.logQuery(channel);
+			rs.next();
+			String id = rs.getString(1);
+			ResultSet logRS = UnacceptableBot.getConfigHandler().getLog(channel, Integer.parseInt(id)-2);
+			logRS.next();
+			bot.sendIRC().message(channel, logRS.getString(3).toUpperCase(Locale.ENGLISH));
+		}
+	}
 
 	public static void log(String level, String origin, String message) {
 		try {
 			getConfigHandler().createChannelTable("SYSTEM");
-			getConfigHandler().setLog(new Date().toString(), origin,"[" + level + "]" + " " + message, "SYSTEM");
+			getConfigHandler().setLog(new Date().toString(), origin,
+					"[" + level + "]" + " " + message, "SYSTEM");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
 
 	}
 
@@ -298,13 +357,13 @@ public class UnacceptableBot extends ListenerAdapter {
 
 	private void loadSexQuotes() {
 		try {
-			BufferedReader br = new BufferedReader(new FileReader(new File("sexquotes.txt")));
+			BufferedReader br = new BufferedReader(new FileReader(new File(
+					"sexquotes.txt")));
 			String line = "missingno";
 			while ((line = br.readLine()) != null) {
 				sexQuotes.add(line);
 			}
 			br.close();
-
 
 		} catch (IOException e) {
 

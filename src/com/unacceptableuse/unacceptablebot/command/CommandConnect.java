@@ -4,7 +4,6 @@ import org.pircbotx.Channel;
 import org.pircbotx.PircBotX;
 import org.pircbotx.User;
 
-import com.unacceptableuse.unacceptablebot.UnacceptableBot;
 import com.unacceptableuse.unacceptablebot.variable.Level;
 
 /**
@@ -20,7 +19,6 @@ public class CommandConnect extends Command
 			String[] args, PircBotX bot)
 	{
 		bot.sendIRC().joinChannel(args[1]);
-		UnacceptableBot.channels.add(args[1]);
 		sendMessage(bot, "Connecting to channel "+args[1], channel);
 	}
 
@@ -39,6 +37,11 @@ public class CommandConnect extends Command
 	@Override
 	public Level getAccessLevel() {
 		return Level.ADMIN;
+	}
+
+	@Override
+	public String getHelp() {
+		return "Usage: join <channel> | Result: Joins the bot to the specified channel";
 	}
 
 }

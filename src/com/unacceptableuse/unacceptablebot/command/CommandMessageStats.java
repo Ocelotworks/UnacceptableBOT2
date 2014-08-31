@@ -101,4 +101,9 @@ public class CommandMessageStats extends Command {
 		return Level.USER;
 	}
 
+	@Override
+	public String getHelp() {
+		return "Usage: messagestats | Result: Grades the channel of several recorded stats";
+	}
+
 }

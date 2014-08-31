@@ -55,4 +55,9 @@ public class CommandInsult extends Command
 		return Level.USER;
 	}
 
+	@Override
+	public String getHelp() {
+		return "Usage: insult [user] | Result: Generates an insult";
+	}
+
 }

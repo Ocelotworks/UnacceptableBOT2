@@ -1,6 +1,7 @@
 package com.unacceptableuse.unacceptablebot.command;
 
 import java.io.File;
+
 import org.pircbotx.Channel;
 import org.pircbotx.PircBotX;
 import org.pircbotx.User;
@@ -99,6 +100,11 @@ public class CommandSnapChat extends Command {
 	@Override
 	public int requiredArguments() {
 		return 1;
+	}
+
+	@Override
+	public String getHelp() {
+		return "System command";
 	}
 
 }

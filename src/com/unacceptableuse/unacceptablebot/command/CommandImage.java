@@ -82,4 +82,9 @@ public class CommandImage extends Command
 		return Level.USER;
 	}
 
+	@Override
+	public String getHelp() {
+		return "Usage: image <subreddit>  | Result: Returns a link of a picture from the desired subreddit";
+	}
+
 }
