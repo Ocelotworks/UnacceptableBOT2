@@ -1,5 +1,6 @@
 package com.unacceptableuse.unacceptablebot.command;
 
+import java.io.StringReader;
 import java.util.Map.Entry;
 
 import org.pircbotx.Channel;
@@ -10,6 +11,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.gson.stream.JsonReader;
 import com.unacceptableuse.unacceptablebot.UnacceptableBot;
 import com.unacceptableuse.unacceptablebot.variable.Level;
 
@@ -32,15 +34,21 @@ public class CommandDynamic extends Command
 	{
 		JsonParser parser = new JsonParser();
 		
-		JsonArray ja = parser.parse(format).getAsJsonArray();
+		JsonReader jr = new JsonReader(new StringReader(format));
+		jr.setLenient(true);
+		JsonArray ja  = parser.parse(jr).getAsJsonArray();
+		
+		
 		
 		//[{text:"This is an example of a text thing"}, {text:"You can add two together too", performCommand:"!image this could probably be done better"}]
 		
 		for(JsonElement je : ja)
 		{
+			sendMessage(bot, "JSON Element: "+ja.toString(), channel);
 			JsonObject jo = je.getAsJsonObject();
 			for(Entry e : jo.entrySet())
 			{
+				sendMessage(bot, "JSON Entry: "+e.getKey()+" "+e.getValue(), channel);
 				switch(e.getKey().toString())
 				{
 					case "text": sendMessage(bot, e.getValue().toString(), channel); break;
