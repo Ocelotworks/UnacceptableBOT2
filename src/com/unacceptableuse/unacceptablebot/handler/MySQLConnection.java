@@ -54,9 +54,11 @@ public class MySQLConnection
 		} catch (SQLException e)
 		{
 			e.printStackTrace();
+			attemptReconnect();
 			return "Very, very bad. bad stuff is going on here. oh LORD JESUS SOMEONE SAVE US";
 		}
 	}
+
 
 	public String getSetting(String setting) {
 		try {
@@ -64,6 +66,7 @@ public class MySQLConnection
 			return rs.next() ? rs.getString(2) : null;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			attemptReconnect();
 			return "Error " + e.getErrorCode() + " " + e.getLocalizedMessage();
 		}
 	}
@@ -73,6 +76,7 @@ public class MySQLConnection
 			return excecute("INSERT INTO `teknogeek_settings`.`Global_Settings` (`Setting`, `Value`) VALUES ('"+ setting + "', '" + value + "') ON DUPLICATE KEY UPDATE Setting=VALUES(Setting);");
 		} catch (SQLException e) {
 			e.printStackTrace();
+			attemptReconnect();
 			return false;
 		}
 	}
@@ -83,6 +87,7 @@ public class MySQLConnection
 			return rs.next() ? rs.getInt(2) : 0;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			attemptReconnect();
 			return 0;
 		}
 	}
@@ -92,6 +97,7 @@ public class MySQLConnection
 			return excecute("INSERT INTO `teknogeek_settings`.`Access_Levels` (`Username`, `Level`) VALUES ('"+ user + "', '" + level + "') ON DUPLICATE KEY UPDATE Username=VALUES(Username);");
 		} catch (SQLException e) {
 			e.printStackTrace();
+			attemptReconnect();
 			return false;
 		}
 	}
@@ -101,6 +107,7 @@ public class MySQLConnection
 			return excecute("UPDATE `teknogeek_settings`.`Global_Settings` SET `Value` = `Value`+"+amt+" WHERE `Setting` = '"+setting+"';");
 		} catch (SQLException e) {
 			e.printStackTrace();
+			attemptReconnect();
 			return false;
 		}
 	}
@@ -110,6 +117,7 @@ public class MySQLConnection
 			return excecute("INSERT INTO `teknogeek_settings`.`Channels` (`Setting`, `Value`) VALUES ('"+ setting + "', '" + value + "') ON DUPLICATE KEY UPDATE Setting=VALUES(Setting);");
 		} catch (SQLException e) {
 			e.printStackTrace();
+			attemptReconnect();
 			return false;
 		}
 	}
@@ -120,6 +128,7 @@ public class MySQLConnection
 			return rs.next() ? rs.getString(2) : null;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			attemptReconnect();
 			return "Error " + e.getErrorCode() + " " + e.getLocalizedMessage();
 		}
 	}
@@ -139,5 +148,16 @@ public class MySQLConnection
 
 	public void disconnect() throws SQLException {
 		c.close();
+	}
+	
+	private void attemptReconnect() {
+		if(!isConnected()){
+			try {
+				disconnect();
+				connect();
+			} catch (ClassNotFoundException | SQLException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 }
