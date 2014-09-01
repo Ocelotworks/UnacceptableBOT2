@@ -62,7 +62,9 @@ public class MySQLConnection
 
 	public String getSetting(String setting) {
 		try {
-			ResultSet rs = query("SELECT * FROM  teknogeek_settings.Global_Settings WHERE  `Setting` =  '"+ setting + "' LIMIT 1");
+			PreparedStatement ps = getPreparedStatement("SELECT * FROM  teknogeek_settings.Global_Settings WHERE  `Setting` =  '?' LIMIT 1");
+			ps.setString(1, setting);
+			ResultSet rs = ps.executeQuery();
 			return rs.next() ? rs.getString(2) : null;
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -78,6 +80,8 @@ public class MySQLConnection
 			} else {
 				return excecute("UPDATE `teknogeek_settings`.`Global_Settings` SET Value='".concat(value).concat("' WHERE 'Setting' = ".concat(setting)));
 			}
+			
+			//XXX: This seems inefficient. Poor database :(
 		} catch (SQLException e) {
 			e.printStackTrace();
 			attemptReconnect();
