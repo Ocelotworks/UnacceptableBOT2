@@ -4,6 +4,7 @@ import org.pircbotx.Channel;
 import org.pircbotx.PircBotX;
 import org.pircbotx.User;
 
+import com.unacceptableuse.unacceptablebot.UnacceptableBot;
 import com.unacceptableuse.unacceptablebot.variable.Level;
 
 /**
@@ -15,10 +16,9 @@ public class CommandConnect extends Command
 {
 
 	@Override
-	public void performCommand(User sender, Channel channel, String message,
-			String[] args, PircBotX bot)
+	public void performCommand(User sender, Channel channel, String message,String[] args)
 	{
-		bot.sendIRC().joinChannel(args[1]);
+		UnacceptableBot.getBot().sendIRC().joinChannel(args[1]);
 		sendMessage("Connecting to channel "+args[1], channel);
 	}
 

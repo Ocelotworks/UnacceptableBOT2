@@ -16,7 +16,7 @@ public class CommandHelp extends Command {
 
 	@Override
 	public void performCommand(User sender, Channel channel, String message,
-			String[] args, PircBotX bot) {
+			String[] args) {
 		sendMessage("Help:", channel);
 
 		for (int i = 0; i < UnacceptableBot.getCommandHandler().getCommands()
@@ -30,7 +30,7 @@ public class CommandHelp extends Command {
 							.get(i).getHelp().toLowerCase()
 							.equals("unfinished")
 					|| !UnacceptableBot.getCommandHandler().getCommands()
-							.get(i).getHelp().toLowerCase().equals("")) {
+							.get(i).getHelp().toLowerCase().equals("")) { //Holy indent batman
 
 				sendMessage("&GREEN"
 						+ UnacceptableBot.getCommandHandler().getCommands()

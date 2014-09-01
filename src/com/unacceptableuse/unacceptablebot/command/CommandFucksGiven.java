@@ -17,16 +17,8 @@ import com.unacceptableuse.unacceptablebot.variable.Level;
 public class CommandFucksGiven extends Command {
 
 	@Override
-	public void performCommand(User sender, Channel channel, String message,
-			String[] args, PircBotX bot) {
-		bot.sendIRC()
-				.message(
-						channel.getName(),
-						"Fucks given: "
-								+ Colors.BOLD
-								+ ((((int) Math.signum(new Random().nextInt())) - (sender
-										.getNick().length() * channel.getName()
-										.length()))));
+	public void performCommand(User sender, Channel channel, String message,String[] args) {
+		sendMessage("Fucks given: "+ Colors.BOLD+ ((((int) Math.signum(new Random().nextInt())) - (sender.getNick().length() * channel.getName().length()))), channel);
 
 	}
 

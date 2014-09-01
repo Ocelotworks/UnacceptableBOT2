@@ -10,10 +10,9 @@ import com.unacceptableuse.unacceptablebot.variable.Level;
 public class CommandTwat extends Command {
 
 	@Override
-	public void performCommand(User sender, Channel channel, String message,
-			String[] args, PircBotX bot) {
+	public void performCommand(User sender, Channel channel, String message,String[] args) {
 		UnacceptableBot.twatMode = !UnacceptableBot.twatMode;
-		bot.sendIRC().message(channel.getName(), "Twat mode: " + UnacceptableBot.twatMode);
+		sendMessage("Twat mode: " + UnacceptableBot.twatMode, channel);
 	}
 
 	@Override

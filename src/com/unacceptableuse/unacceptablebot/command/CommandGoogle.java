@@ -15,15 +15,15 @@ public class CommandGoogle extends Command
 {
 
 	@Override
-	public void performCommand(User sender, Channel channel, String message, String[] args, PircBotX bot)
+	public void performCommand(User sender, Channel channel, String message, String[] args)
 	{
 		String add = "http://www.lmgtfy.com/?q=";
 		for(int i = 1; i < args.length; i++)
 		{
 			add += args[i] + "+";
 		}
-		add = add.substring(0, add.length() - 1);
-		bot.sendIRC().message(channel.getName(), add);
+		add = add.substring(0, add.length() - 1); //Wouldn't it be better to use StringBuilder here? - Peter
+		sendMessage(add, channel);
 	}
 
 	@Override

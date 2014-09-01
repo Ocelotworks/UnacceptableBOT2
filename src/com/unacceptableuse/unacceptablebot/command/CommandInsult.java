@@ -24,7 +24,7 @@ public class CommandInsult extends Command
 
 	@Override
 	public void performCommand(User sender, Channel channel, String message,
-			String[] args, PircBotX bot)
+			String[] args)
 	{
 		InputStream is = UnacceptableBot.getUrlContents("http://www.insultme.co/scripts/insult.php");
 		try{

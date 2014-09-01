@@ -21,7 +21,7 @@ public abstract class Command
 	 * @param bot The {@link PircBotX} instance that performed the command
 	 * @author UnacceptableUse
 	 */
-	public abstract void performCommand(User sender, Channel channel, String message, String[] args, PircBotX bot);
+	public abstract void performCommand(User sender, Channel channel, String message, String[] args);
 	
 	
 	public void sendMessage(String message, String target)
@@ -51,18 +51,6 @@ public abstract class Command
 		sendMessage(message, user.getNick());
 	}
 	
-	
-	//Legacy sendmessage
-	public void sendMessage(PircBotX ub, String message, Channel channel)
-	{
-		sendMessage(message, channel.getName());
-	}
-	
-	//Legacy sendmessage
-	public void sendMessage(PircBotX ub, String message, String channel)
-	{
-		sendMessage(message, channel);
-	}
 	
 	public abstract String[] getAliases();
 	

@@ -18,8 +18,7 @@ public class CommandRPS extends Command
 {
 
 	@Override
-	public void performCommand(User sender, Channel channel, String message,
-			String[] args, PircBotX bot)
+	public void performCommand(User sender, Channel channel, String message,String[] args)
 	{
 		
 		long lastFaucet = UnacceptableBot.getConfigHandler().getLong("faucetAt:"+sender.getUserId().toString());
@@ -28,7 +27,7 @@ public class CommandRPS extends Command
 		{
 			if(new Date().getTime()-lastFaucet < faucetTimeout)
 			{
-				sendMessage("You must wait another "+(faucetTimeout-(new Date().getTime()-lastFaucet))+" seconds until you can receive doge!", channel.getName());
+				sendMessage("You must wait another "+(faucetTimeout-(new Date().getTime()-lastFaucet))+" seconds until you can receive doge!", channel);
 				return;
 			}
 		}	

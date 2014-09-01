@@ -9,9 +9,9 @@ import com.unacceptableuse.unacceptablebot.variable.Level;
 public class CommandTime extends Command{
 
 	@Override
-	public void performCommand(User sender, Channel channel, String message, String[] args, PircBotX bot)
+	public void performCommand(User sender, Channel channel, String message, String[] args)
 	{
-		bot.sendIRC().message(channel.getName(), "The time is now " + new java.util.Date().toString());
+		sendMessage("The time is now " + new java.util.Date().toString(), channel);
 	}
 
 	@Override

@@ -30,8 +30,7 @@ public class CommandDynamic extends Command
 
 	@SuppressWarnings("rawtypes")
 	@Override
-	public void performCommand(User sender, Channel channel, String message,
-			String[] args, PircBotX bot)
+	public void performCommand(User sender, Channel channel, String message,String[] args)
 	{
 		JsonParser parser = new JsonParser();
 		
@@ -59,7 +58,7 @@ public class CommandDynamic extends Command
 					
 					case "performCommand":
 					{
-						UnacceptableBot.getCommandHandler().getCommand(e.getValue().toString().split(" ")[0].replaceFirst("!", "")).performCommand(sender, channel, e.getValue().toString(), e.getValue().toString().split(" "), bot); break;
+						UnacceptableBot.getCommandHandler().getCommand(e.getValue().toString().split(" ")[0].replaceFirst("!", "")).performCommand(sender, channel, e.getValue().toString(), e.getValue().toString().split(" ")); break;
 					}
 					
 					case "args":

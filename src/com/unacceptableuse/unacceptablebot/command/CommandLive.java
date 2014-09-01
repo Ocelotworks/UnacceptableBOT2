@@ -22,11 +22,11 @@ public class CommandLive extends Command {
 
 	@Override
 	public void performCommand(User sender, Channel channel, String message,
-			String[] args, PircBotX bot) {
+			String[] args) {
 		
 		String result = null;
 		
-		bot.sendIRC().message(channel.getName(), "Checking live status...");
+		sendMessage("Checking live status...", channel);
 		String liveUsername = message.substring(6);
 		
 		try
@@ -70,11 +70,11 @@ public class CommandLive extends Command {
 			    result = JObject.toString();
 			} catch (ClassCastException e)
 			{
-				bot.sendIRC().message(channel.getName(), liveUsername + " is offline.");
+				sendMessage(liveUsername + " is offline.", channel);
 			}
 			if(result != null)
 			{
-				bot.sendIRC().message(channel.getName(), liveUsername + " is live! http://twitch.tv/" + liveUsername);				
+				sendMessage(liveUsername + " is live! http://twitch.tv/" + liveUsername, channel);				
 			}
 		} catch (Exception e)
 		{

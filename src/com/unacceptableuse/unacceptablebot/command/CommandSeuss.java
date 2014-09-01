@@ -29,11 +29,11 @@ public class CommandSeuss extends Command {
 
 	@Override
 	public void performCommand(User sender, Channel channel, String message,
-			String[] args, PircBotX bot) {
+			String[] args) {
 		switch (args[1]) {
 		default: {
 			try {
-				bot.sendIRC().message(channel.getName(), getLine(args[1]));
+				sendMessage(getLine(args[1]), channel);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -42,10 +42,9 @@ public class CommandSeuss extends Command {
 		case ("list"): {
 			File folder = new File("books/");
 			File[] listOfFiles = folder.listFiles();
-			bot.sendIRC().message(channel.getName(), "Books:");
+			sendMessage("Books:", channel);
 			for (int i = 0; i < listOfFiles.length; i++) {
-				bot.sendIRC().message(channel.getName(),
-						(i + 1) + ". " + listOfFiles[i]);
+						sendMessage((i + 1) + ". " + listOfFiles[i], channel);
 			}
 			break;
 		}

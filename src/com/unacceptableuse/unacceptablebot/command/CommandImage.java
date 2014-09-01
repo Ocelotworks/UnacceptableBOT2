@@ -14,8 +14,7 @@ public class CommandImage extends Command
 {
 
 	@Override
-	public void performCommand(User sender, Channel channel, String message,
-			String[] args, PircBotX bot)
+	public void performCommand(User sender, Channel channel, String message,String[] args)
 	{
 		sendMessage(getRandomImage(args[1]), channel);
 	}

@@ -12,7 +12,7 @@ public class CommandSetAccessLevel extends Command
 
 	@Override
 	public void performCommand(User sender, Channel channel, String message,
-			String[] args, PircBotX bot)
+			String[] args)
 	{
 		
 		User theUser = null;
@@ -22,7 +22,7 @@ public class CommandSetAccessLevel extends Command
 			newLevel = Integer.parseInt(args[2]);
 		}catch(NumberFormatException e)
 		{
-			sendMessage(bot, "Invalid access level", channel);
+			sendMessage("Invalid access level", channel);
 		}
 		
 		for(User u : channel.getUsers())
@@ -36,27 +36,27 @@ public class CommandSetAccessLevel extends Command
 		
 		if(theUser == null)
 		{
-			sendMessage(bot, "The user could not be found, are they in this channel?", channel);
+			sendMessage("The user could not be found, are they in this channel?", channel);
 			return;
 		}
 		if(!theUser.isVerified())
 		{
-			sendMessage(bot, "The user must be verified with nickserv!", channel);
+			sendMessage("The user must be verified with nickserv!", channel);
 			return;
 		}
-		if(channel.getOps().contains(theUser))
-		{
-			sendMessage(bot, "You cannot change the access level of ops", channel);
-			return;
-		}
+//		if(channel.getOps().contains(theUser))
+//		{
+//			sendMessage("You cannot change the access level of ops", channel); //Not Fully Implemented
+//			return;
+//		}
 		if(UnacceptableBot.getConfigHandler().getUserLevel(sender) < newLevel)
 		{
-			sendMessage(bot, "You cannot set someones access level higher than your own!", channel);
+			sendMessage("You cannot set someones access level higher than your own!", channel);
 			return;
 		}
 		
 		UnacceptableBot.getConfigHandler().setUserLevel(theUser, newLevel);
-		sendMessage(bot, args[1]+"'s access level is now "+newLevel, channel);
+		sendMessage(args[1]+"'s access level is now "+newLevel, channel);
 		
 		
 		

@@ -15,12 +15,11 @@ import com.unacceptableuse.unacceptablebot.variable.Level;
 public class CommandListChans extends Command{
 
 	@Override
-	public void performCommand(User sender, Channel channel, String message,
-			String[] args, PircBotX bot) {
+	public void performCommand(User sender, Channel channel, String message,String[] args) {
 		
-		bot.sendIRC().message(channel.getName(), "Channels:");
+		sendMessage("Channels:", channel);
 		for(int i = 0; i < UnacceptableBot.getChannels().size(); i++){
-			bot.sendIRC().message(channel.getName(), UnacceptableBot.getChannels().get(i));
+			sendMessage(UnacceptableBot.getChannels().get(i), channel);
 		}
 		
 	}

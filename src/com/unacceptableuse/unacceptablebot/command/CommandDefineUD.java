@@ -21,7 +21,7 @@ public class CommandDefineUD extends Command
 
 	@SuppressWarnings("unused")
 	@Override
-	public void performCommand(User sender, Channel channel, String message, String[] args, PircBotX bot) 
+	public void performCommand(User sender, Channel channel, String message, String[] args) 
 	{
 		InputStream is;
 		String word = args[1];
@@ -65,13 +65,11 @@ public class CommandDefineUD extends Command
 
 	@Override
 	public Level getAccessLevel() {
-		// TODO Auto-generated method stub
 		return Level.USER;
 	}
 
 	@Override
 	public String getHelp() {
-		// TODO Auto-generated method stub
 		return "See define";
 	}
 }

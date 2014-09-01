@@ -22,7 +22,7 @@ public class CommandSentence extends Command
 	@SuppressWarnings("unused")
 	@Override
 	public void performCommand(User sender, Channel channel, String message,
-			String[] args, PircBotX bot)
+			String[] args)
 	{
 		int limit = message.contains("--amount=") ? Integer.parseInt(message.split("amount=")[1].split(" ")[0]) : 1;
 		int context = message.contains("--context=") ? Integer.parseInt(message.split("context=")[1].split(" ")[0]) : 0;
@@ -46,9 +46,10 @@ public class CommandSentence extends Command
 						PreparedStatement cps = UnacceptableBot.getConfigHandler().sql.getPreparedStatement("SELECT Message FROM `teknogeek_unacceptablebot`.`"+channel.getName()+"` WHERE Id = '?' LIMIT 1");
 						cps.setInt(1, id-i);
 						ResultSet crs = cps.executeQuery();
+						//TODO: fix this
 						
 					}
-					sendMessage(bot, "----", channel);
+					sendMessage("----", channel);
 				}
 			}
 			

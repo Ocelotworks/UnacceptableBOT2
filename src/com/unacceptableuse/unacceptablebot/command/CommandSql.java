@@ -23,14 +23,14 @@ public class CommandSql extends Command
 	}
 	
 	@Override
-	public void performCommand(User sender, Channel channel, String message, String[] args, PircBotX bot)
+	public void performCommand(User sender, Channel channel, String message, String[] args)
 	{
 		if(args[1].equals("set"))
 		{
 			UnacceptableBot.getConfigHandler().setString(args[2], args[3]);
 		}else if(args[1].equals("get")) 
 		{
-			sendMessage(bot, UnacceptableBot.getConfigHandler().getString(args[2]), channel.getName());
+			sendMessage(UnacceptableBot.getConfigHandler().getString(args[2]), channel);
 		}else if(args[1].equals("connect"))
 		{
 			try
@@ -47,7 +47,7 @@ public class CommandSql extends Command
 			}		
 		}else if(args[1].equals("health"))
 		{
-			sendMessage(bot,UnacceptableBot.getConfigHandler().sql.getConnectionHealth(), channel);
+			sendMessage(UnacceptableBot.getConfigHandler().sql.getConnectionHealth(), channel);
 		}
 		else if(args[1].equals("query"))
 		{
@@ -61,18 +61,18 @@ public class CommandSql extends Command
 					{
 						stb.append(rs.getString(i));
 					}
-					sendMessage(bot, stb.toString(), channel);
+					sendMessage(stb.toString(), channel);
 				}
 			}
 			catch(Exception e)
 			{
-				sendMessage(bot, e.getMessage(), channel);
+				sendMessage(e.getMessage(), channel);
 			}
 			
 		}
 		else
 		{
-			sendMessage(bot, "Unrecoginized argument "+args[1], channel.getName());
+			sendMessage("Unrecoginized argument "+args[1], channel.getName());
 		}
 		
 	}

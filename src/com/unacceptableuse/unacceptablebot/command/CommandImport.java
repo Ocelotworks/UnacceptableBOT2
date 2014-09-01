@@ -24,20 +24,20 @@ public class CommandImport extends Command {
 
 	@Override
 	public void performCommand(User sender, Channel channel, String message,
-			String[] args, PircBotX bot) {
+			String[] args) {
 		// 0 1 2 3 4 5 6 split.length()-1
 		// format: [Wed Jan 29 21:28:27 GMT 2014] <teknogeek> i cant ssh in
 		// args: logFile, table
 		int lastPercent = 0;
 		int currentPercent = 0;
 		try {
-			bot.sendIRC().message(channel.getName(), "Starting import!");
+			sendMessage("Starting import!", channel);
 			String[] log = readLog(args[1]);
 			ConfigHandler config = UnacceptableBot.getConfigHandler();
 			for (int i = 0; i < log.length; i++) {
 				currentPercent = (i / log.length) * 100;
 				if (currentPercent != lastPercent) {
-					bot.sendIRC().message(channel.getName(), "Import " + currentPercent + "% complete");
+					sendMessage("Import " + currentPercent + "% complete", channel);
 				}
 				String[] split = log[i].split(" ");
 				String time = split[1] + " " + split[2] + ", " + split[3];
@@ -54,11 +54,11 @@ public class CommandImport extends Command {
 			}
 		} catch (IOException | SQLException e) {
 			e.printStackTrace();
-			bot.sendIRC().message(channel.getName(), "Import failed!");
+			sendMessage("Import failed!", channel);
 			return;
 		}
 
-		bot.sendIRC().message(channel.getName(), "Import complete!");
+		sendMessage("Import complete!", channel);
 
 	}
 

@@ -19,8 +19,7 @@ import com.unacceptableuse.unacceptablebot.variable.Level;
 public class CommandQuote extends Command {
 
 	@Override
-	public void performCommand(User sender, Channel channel, String message,
-			String[] args, PircBotX bot) {
+	public void performCommand(User sender, Channel channel, String message,String[] args) {
 
 		int count = 1;
 
@@ -30,8 +29,8 @@ public class CommandQuote extends Command {
 				try {
 					count = Integer.parseInt(args[i + 1]);
 				} catch (ArrayIndexOutOfBoundsException | NumberFormatException e) {
-					bot.sendIRC().message(channel.getName(),
-							"Something went wrong here");
+							sendMessage("Something went wrong here", channel);
+							UnacceptableBot.log("ERROR", "!quote", e.toString());
 					e.printStackTrace();
 				}
 			}
@@ -52,8 +51,7 @@ public class CommandQuote extends Command {
 				 */
 				ResultSet rs = ps.executeQuery();
 				if (rs.next()) {
-					bot.sendIRC().message(channel.getName(),
-							"<" + args[1] + "> " + rs.getString(1));
+					sendMessage("<" + args[1] + "> " + rs.getString(1), channel);
 				}
 			}
 		} catch (SQLException e) {

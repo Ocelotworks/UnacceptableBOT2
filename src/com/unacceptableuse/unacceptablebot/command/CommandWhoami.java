@@ -17,9 +17,9 @@ public class CommandWhoami extends Command
 
 	@Override
 	public void performCommand(User sender, Channel channel, String message,
-			String[] args, PircBotX bot)
+			String[] args)
 	{
-		sendMessage(bot, sender.getNick()+" has UUID "+sender.getUserId()+" Level "+UnacceptableBot.getConfigHandler().getUserLevel(sender), channel);
+		sendMessage(sender.getNick()+" has UUID "+sender.getUserId()+" Level "+UnacceptableBot.getConfigHandler().getUserLevel(sender), channel);
 	}
 
 	@Override

@@ -15,25 +15,24 @@ public class CommandStevie extends Command
 {
 
 	@Override
-	public void performCommand(User sender, Channel channel, String message,
-			String[] args, PircBotX bot)
+	public void performCommand(User sender, Channel channel, String message,String[] args)
 	{
 		if(args[1].equalsIgnoreCase("credits"))
 		{
-			sendMessage(bot,UnacceptableBot.getConfigHandler().getString("botName")+" uses PircBotX. Made by Peter, Jool, Neil. (unacceptableuse.com)", channel);
-			sendMessage(bot,"Special thanks to irc.matrixdevuk.pw for hosting the bot's website/database. Special thanks to Atmalik for hosting the bot!", channel);
+			sendMessage(UnacceptableBot.getConfigHandler().getString("botName")+" uses PircBotX. Made by Peter, Jool, Neil. (unacceptableuse.com)", channel);
+			sendMessage("Special thanks to irc.matrixdevuk.pw for hosting the bot's website/database. Special thanks to Atmalik for hosting the bot!", channel);
 		}else if(args[1].equalsIgnoreCase("source"))
 		{
-			sendMessage(bot,"Source can be found here: https://github.com/UnacceptableUse/UnacceptableBot2", channel);
+			sendMessage("Source can be found here: https://github.com/UnacceptableUse/UnacceptableBot2", channel);
 		}else if(args[1].equalsIgnoreCase("about"))
 		{
-			sendMessage(bot, UnacceptableBot.getConfigHandler().getString("botName")+" is a utility/logging bot originally designed for ##Ocelotworks", channel);	
+			sendMessage(UnacceptableBot.getConfigHandler().getString("botName")+" is a utility/logging bot originally designed for ##Ocelotworks", channel);	
 		}else if(args[1].equalsIgnoreCase("help"))
 		{
-			sendMessage(bot,"Help can be found here: https://unacceptableuse.com/bot/help.html", channel);
+			sendMessage("Help can be found here: https://unacceptableuse.com/bot/help.html", channel);
 		}else
 		{
-			sendMessage(bot,"I literally can't even hold all these feels.", channel);
+			sendMessage("I literally can't even hold all these feels.", channel);
 		}
 	}
 

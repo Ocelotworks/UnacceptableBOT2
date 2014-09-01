@@ -18,13 +18,13 @@ public class CommandFaucet extends Command
 {
 
 	@Override
-	public void performCommand(User sender, Channel channel, String message,String[] args, PircBotX bot)
+	public void performCommand(User sender, Channel channel, String message,String[] args)
 	{
 		String tipbotFormat = UnacceptableBot.getConfigHandler().getString("tipbot:"+channel.getName());
 		
 		if(tipbotFormat == null)
 		{
-			sendMessage(bot, "No tipbot defined for "+channel.getName()+".", channel.getName());
+			sendMessage("No tipbot defined for "+channel.getName()+".", channel);
 		}else
 		{
 			long lastFaucet = UnacceptableBot.getConfigHandler().getLong("faucetAt:"+sender.getUserId().toString());
@@ -33,11 +33,11 @@ public class CommandFaucet extends Command
 			{
 				if(new Date().getTime()-lastFaucet < faucetTimeout)
 				{
-					sendMessage(bot, "You must wait another "+(faucetTimeout-(new Date().getTime()-lastFaucet))+" seconds until you can receive doge!", channel.getName());
+					sendMessage("You must wait another "+(faucetTimeout-(new Date().getTime()-lastFaucet))+" seconds until you can receive doge!", channel);
 				}
 			}
 			
-			sendMessage(bot, String.format(tipbotFormat, UnacceptableBot.rand.nextInt(UnacceptableBot.getConfigHandler().getInteger("faucetLimit")), sender.getNick()), channel.getName());
+			sendMessage(String.format(tipbotFormat, UnacceptableBot.rand.nextInt(UnacceptableBot.getConfigHandler().getInteger("faucetLimit")), sender.getNick()), channel);
 			UnacceptableBot.getConfigHandler().setLong("faucetAt:"+sender.getUserId().toString(), new Date().getTime());
 		}
 	}

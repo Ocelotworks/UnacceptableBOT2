@@ -19,8 +19,7 @@ import com.unacceptableuse.unacceptablebot.variable.Level;
 public class CommandFillMeIn extends Command {
 
 	@Override
-	public void performCommand(User sender, Channel channel, String message,
-			String[] args, PircBotX bot) {
+	public void performCommand(User sender, Channel channel, String message,String[] args) {
 		String id = "";
 		try {
 			ConfigHandler config = UnacceptableBot.getConfigHandler();
@@ -36,7 +35,7 @@ public class CommandFillMeIn extends Command {
 		for(int i = 0; i < Integer.parseInt(args[1]);i++){
 			ResultSet rs = UnacceptableBot.getConfigHandler().getLog(channel.getName(), Integer.parseInt(id)-i);
 			rs.next();
-			bot.sendIRC().notice(sender.getNick(), "["+rs.getString(1)+"] <"+rs.getString(2)+"> "+rs.getString(3));
+			UnacceptableBot.getBot().sendIRC().notice(sender.getNick(), "["+rs.getString(1)+"] <"+rs.getString(2)+"> "+rs.getString(3));
 		}
 		}
 		catch (SQLException e){

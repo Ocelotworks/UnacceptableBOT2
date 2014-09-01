@@ -24,7 +24,7 @@ public class CommandDefine extends Command
 
 	//http://api.wordnik.com:80/v4/word.json/hello/definitions?limit=1&includeRelated=false&sourceDictionaries=webster&useCanonical=false&includeTags=false&api_key=a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5
 	@Override
-	public void performCommand(User sender, Channel channel, String message, String[] args, PircBotX bot) 
+	public void performCommand(User sender, Channel channel, String message, String[] args) 
 	{
 		String definition = null;
 		String word = null;
@@ -67,12 +67,12 @@ public class CommandDefine extends Command
 			}
 			catch (ClassCastException e)
 			{
-				bot.sendIRC().message(channel.getName(), word + " not found.");
+				sendMessage(word + " not found.", channel);
 			}
 			
 			if(definition != null)
 			{
-				bot.sendIRC().message(channel.getName(), word + ": " + definition);
+				sendMessage(word + ": " + definition, channel);
 			}
 		}
 		catch (Exception e)

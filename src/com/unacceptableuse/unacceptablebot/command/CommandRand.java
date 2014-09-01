@@ -16,12 +16,11 @@ public class CommandRand extends Command
 {
 
 	@Override
-	public void performCommand(User sender, Channel channel, String message,
-			String[] args, PircBotX bot)
+	public void performCommand(User sender, Channel channel, String message,String[] args)
 	{
 		String[] choice = message.replace("!rand","").replace("!choice","").split(",");
 		String chosen = choice[UnacceptableBot.rand.nextInt(choice.length)];
-		sendMessage(bot, chosen.charAt(0) == '!' ? "&REDYou can't use !rand to perform commands!" : chosen, channel);
+		sendMessage(chosen.charAt(0) == '!' ? "&REDYou can't use !rand to perform commands!" : chosen, channel);
 		
 	}
 

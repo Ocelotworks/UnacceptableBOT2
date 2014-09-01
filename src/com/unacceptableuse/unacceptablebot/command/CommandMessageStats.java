@@ -16,7 +16,7 @@ public class CommandMessageStats extends Command {
 
 	@Override
 	public void performCommand(User sender, Channel channel, String message,
-			String[] args, PircBotX bot) {
+			String[] args) {
 		final String target = args.length > 1 ? args[1] : sender.getNick();
 
 		try {

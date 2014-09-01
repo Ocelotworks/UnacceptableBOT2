@@ -8,6 +8,7 @@ import org.pircbotx.Channel;
 import org.pircbotx.PircBotX;
 import org.pircbotx.User;
 
+import com.unacceptableuse.unacceptablebot.UnacceptableBot;
 import com.unacceptableuse.unacceptablebot.variable.Level;
 
 /**
@@ -19,11 +20,11 @@ public class CommandCommand extends Command{
 
 	@SuppressWarnings("unused")
 	@Override
-	public void performCommand(User sender, Channel channel, String message, String[] args, PircBotX bot)
+	public void performCommand(User sender, Channel channel, String message, String[] args)
 	{
 		if(message.contains("rm"))
 		{
-			bot.sendIRC().message(channel.getName(), "Nice try, you are now banned from using " + bot.getNick() + " ever.");
+			sendMessage( "Nice try, you are now banned from using " + UnacceptableBot.getBot().getNick() + " ever.", channel);
 			//ub.accessLevels.put(sender, -1);
 			return;
 		}
@@ -47,7 +48,7 @@ public class CommandCommand extends Command{
 			while((line = br.readLine()) != null)
 			{
 				lineCount++;
-				bot.sendIRC().message(channel.getName(), line);
+				sendMessage(line, channel);
 				
 				/*
 				if(ub.disabledCommands.contains("consoleOutput")) return;
@@ -63,7 +64,7 @@ public class CommandCommand extends Command{
 		}
 		catch(IOException e)
 		{
-			bot.sendIRC().message(channel.getName(), "The command " + args[1] + " was not recognized.");
+			sendMessage("The command " + args[1] + " was not recognized.", channel);
 		}
 		
 	}

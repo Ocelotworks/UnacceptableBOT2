@@ -16,16 +16,15 @@ public class CommandSnapChat extends Command {
 
 	@Override
 	public void performCommand(User sender, Channel channel, String message,
-			String[] args, PircBotX bot) {
+			String[] args) {
 		String com = args[1];
 		switch (com) {
 		case ("test"): {
 			File f = new File("api.pem");
 			if (!f.exists()) {
-				bot.sendIRC().message(channel.getName(),
-						"Cannot send snaps. Missing " + f.getAbsolutePath());
+				sendMessage("Cannot send snaps. Missing " + f.getAbsolutePath(), channel);
 			} else {
-				bot.sendIRC().message(channel.getName(), "Snapchat is ok!");
+				sendMessage("Snapchat is ok!", channel);
 			}
 			break;
 		}
@@ -37,52 +36,44 @@ public class CommandSnapChat extends Command {
 				UnacceptableBot.getSnapchat().targ.add(target);
 				UnacceptableBot.getSnapchat().complete.add(false);
 			} catch (Exception e) {
-				bot.sendIRC().message(channel.getName(),
-						"Did you enter the correct number of arguments?");
+				sendMessage("Did you enter the correct number of arguments?", channel);
 				e.printStackTrace();
 			}
 			break;
 		}
 		case ("getuser"): {
-			bot.sendIRC()
-					.message(
-							channel.getName(),
-							"Snapchating as "
-									+ UnacceptableBot.getSnapchat().getUser());
+			sendMessage("Snapchating as "+ UnacceptableBot.getSnapchat().getUser(), channel);
 			break;
 		}
 		case ("getpass"): {
 			try {
-				bot.sendIRC().message(channel.getName(),
-						"Password: " + UnacceptableBot.getSnapchat().getPass());
+				sendMessage("Password: " + UnacceptableBot.getSnapchat().getPass(), channel);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 			break;
 		}
 		case ("loggedin"): {
-			bot.sendIRC().message(channel.getName(),
-					"Logged in: " + UnacceptableBot.getSnapchat().logged());
+			sendMessage("Logged in: " + UnacceptableBot.getSnapchat().logged(), channel);
 			break;
 		}
 		case ("fucked"): {
 			UnacceptableBot.setSnapchat(null);
-			bot.sendIRC().message(channel.getName(), "Reseting handler..");
+			sendMessage("Reseting handler..", channel);
 			SnapchatHandler replacement = new SnapchatHandler();
-			bot.sendIRC().message(channel.getName(), "Creating new handler..");
+			sendMessage("Creating new handler..", channel);
 			UnacceptableBot.setSnapchat(replacement);
-			bot.sendIRC().message(channel.getName(), "Setting handler..");
+			sendMessage("Setting handler..", channel);
 			try {
 				UnacceptableBot.getSnapchat().init();
-				bot.sendIRC().message(channel.getName(), "Handler Init..");
+				sendMessage("Handler Init..", channel);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 			break;
 		}
 		default: {
-			bot.sendIRC().message(channel.getName(),
-					"Unknown Snapchat API command!");
+			sendMessage("Unknown Snapchat API command!", channel);
 		}
 		}
 	}

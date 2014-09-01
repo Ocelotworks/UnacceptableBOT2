@@ -16,10 +16,10 @@ public class CommandBroadcast extends Command{
 
 	@Override
 	public void performCommand(User sender, Channel channel, String message,
-			String[] args, PircBotX bot) {
+			String[] args) {
 		
 		for(int i = 0; i < UnacceptableBot.getChannels().size(); i++) {
-			bot.sendIRC().message(UnacceptableBot.getChannels().get(i), "BROADCAST FROM " + sender.getNick() + ": " + message.replace("!broadcast ", ""));
+			sendMessage("BROADCAST FROM " + sender.getNick() + ": " + message.replace("!broadcast ", ""), UnacceptableBot.getChannels().get(i));
 		}
 		
 	}
