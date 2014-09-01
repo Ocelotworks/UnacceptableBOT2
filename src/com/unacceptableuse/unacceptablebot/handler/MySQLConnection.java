@@ -157,9 +157,11 @@ public class MySQLConnection
 	private void attemptReconnect() {
 		if(!isConnected()){
 			try {
+				UnacceptableBot.log("SEVERE", "SQL", "SQL Connection lost. Reconnecting...");
 				disconnect();
 				connect();
 			} catch (ClassNotFoundException | SQLException e) {
+				UnacceptableBot.log("SEVERE", "SQL", "Unable to reconnect to SQL: "+e.toString());
 				e.printStackTrace();
 			}
 		}

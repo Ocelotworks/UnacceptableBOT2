@@ -47,6 +47,11 @@ public class ConfigHandler {
 			e1.printStackTrace();
 		}
 	}
+	
+	public boolean isConnected()
+	{
+		return sql.isConnected();
+	}
 
 	public boolean isCommandDisabled(String command, String channel) {
 		return getBoolean("cd:" + command + ":" + channel);
