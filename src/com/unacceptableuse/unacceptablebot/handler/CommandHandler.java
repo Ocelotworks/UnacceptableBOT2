@@ -108,7 +108,7 @@ public class CommandHandler {
 				} else {
 					UnacceptableBot.getConfigHandler().increment("stat:commandsPerformed");
 					try {
-						chosenCommand.performCommand(sender, channel, message,message.split(" "), bot);
+						chosenCommand.performCommand(sender, channel, message,message.split(" "));
 					} catch (Exception e) {
 						UnacceptableBot.log("ERROR", "CMDPRC", "Exception performing "+chosenCommand.getAliases()[0]+": "+e.toString());
 						event.respond("An error occurred. ("+e.toString()+")");
