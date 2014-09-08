@@ -34,6 +34,7 @@ import com.unacceptableuse.unacceptablebot.command.CommandSnapChat;
 import com.unacceptableuse.unacceptablebot.command.CommandSql;
 import com.unacceptableuse.unacceptablebot.command.CommandStevie;
 import com.unacceptableuse.unacceptablebot.command.CommandTime;
+import com.unacceptableuse.unacceptablebot.command.CommandTopic;
 import com.unacceptableuse.unacceptablebot.command.CommandTwat;
 import com.unacceptableuse.unacceptablebot.command.CommandWhoami;
 import com.unacceptableuse.unacceptablebot.variable.Level;
@@ -75,6 +76,7 @@ public class CommandHandler {
 		addCommand(new CommandSentence());
 		addCommand(new CommandFunction());
 		addCommand(new CommandTwat());
+		addCommand(new CommandTopic());
 		UnacceptableBot.log("DEBUG", "CMDREG", "Registered " + getCommands().size() + " commands successfully!");
 	}
 
@@ -107,6 +109,7 @@ public class CommandHandler {
 					event.respond("Insufficent Arguments. There should be help here but I havn't gotten around to it.");
 				} else {
 					UnacceptableBot.getConfigHandler().increment("stat:commandsPerformed");
+					UnacceptableBot.log("INFO", "CMDPRF", "Command "+chosenCommand.getAliases()[0]+" performed by "+sender.getNick());
 					try {
 						chosenCommand.performCommand(sender, channel, message,message.split(" "));
 					} catch (Exception e) {
