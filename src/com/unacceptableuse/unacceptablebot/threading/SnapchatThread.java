@@ -11,11 +11,11 @@ import com.unacceptableuse.unacceptablebot.UnacceptableBot;
 
 public class SnapchatThread extends TimerTask {
 
-	public PircBotX bot = null;
+	public PircBotX bot =  UnacceptableBot.getBot();
 
 	public void run() {
 		// brokenGetSnaps();
-		UnacceptableBot.getSnapchat().doOneInQueue(bot, UnacceptableBot.getChannels().get(1));
+		UnacceptableBot.getSnapchat().doOneInQueue(bot, UnacceptableBot.getChannels().get(0));
 	}
 
 	@SuppressWarnings("unused")

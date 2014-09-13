@@ -216,6 +216,7 @@ public class SnapchatHandler {
 				UnacceptableBot.getSnapchat().complete.set(i, true);
 				break;
 			}
+			break;
 		}
 	}
 

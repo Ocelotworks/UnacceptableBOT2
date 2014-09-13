@@ -31,11 +31,13 @@ import org.pircbotx.hooks.events.JoinEvent;
 import org.pircbotx.hooks.events.MessageEvent;
 import org.pircbotx.hooks.events.PrivateMessageEvent;
 import org.pircbotx.hooks.events.QuitEvent;
+import org.xeustechnologies.googleapi.spelling.Language;
 
 import com.google.gson.JsonObject;
 import com.unacceptableuse.unacceptablebot.handler.CommandHandler;
 import com.unacceptableuse.unacceptablebot.handler.ConfigHandler;
 import com.unacceptableuse.unacceptablebot.handler.SnapchatHandler;
+import com.unacceptableuse.unacceptablebot.handler.SpellCheckHandler;
 import com.unacceptableuse.unacceptablebot.threading.SnapchatThread;
 
 @SuppressWarnings("rawtypes")
@@ -44,6 +46,7 @@ public class UnacceptableBot extends ListenerAdapter {
 	private static CommandHandler handler = new CommandHandler();
 	private static ConfigHandler config = new ConfigHandler();
 	private static SnapchatHandler snapchat = new SnapchatHandler();
+	private static SpellCheckHandler spell = new SpellCheckHandler(Language.ENGLISH);
 	public static Random rand = new Random();
 	public static ArrayList<String> channels = new ArrayList<String>();
 	private int messageCount = 0;
@@ -96,6 +99,12 @@ public class UnacceptableBot extends ListenerAdapter {
 												"botName"))) {
 					event.getBot().sendIRC().message("DogeWallet", ".balance");
 				}
+			}
+		} else {
+			//Message is not command, so we'll do a check for twat mode, and check spellings :>
+			if(twatMode){
+				bot.sendIRC().message(event.getChannel().getName(), "Did you mean ".concat( 
+						spell.doCheck(event.getMessage()).concat("?")));
 			}
 		}
 		if (event.getChannel().getName().equals("##boywanders")) {
@@ -220,9 +229,7 @@ public class UnacceptableBot extends ListenerAdapter {
 
 	private void doTimer() {
 			Timer timer = new Timer();
-			SnapchatThread sct = new SnapchatThread();
-			sct.bot = getBot();
-			timer.schedule(sct, 0, (40 * 1000));
+			timer.schedule( new SnapchatThread(), 0, (40 * 1000));
 	}
 
 	/**
