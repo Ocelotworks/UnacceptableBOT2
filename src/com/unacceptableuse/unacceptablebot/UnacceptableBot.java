@@ -31,7 +31,6 @@ import org.pircbotx.hooks.events.JoinEvent;
 import org.pircbotx.hooks.events.MessageEvent;
 import org.pircbotx.hooks.events.PrivateMessageEvent;
 import org.pircbotx.hooks.events.QuitEvent;
-import org.xeustechnologies.googleapi.spelling.Language;
 
 import com.google.gson.JsonObject;
 import com.unacceptableuse.unacceptablebot.handler.CommandHandler;
@@ -46,7 +45,6 @@ public class UnacceptableBot extends ListenerAdapter {
 	private static CommandHandler handler = new CommandHandler();
 	private static ConfigHandler config = new ConfigHandler();
 	private static SnapchatHandler snapchat = new SnapchatHandler();
-	private static SpellCheckHandler spell = new SpellCheckHandler(Language.ENGLISH);
 	public static Random rand = new Random();
 	public static ArrayList<String> channels = new ArrayList<String>();
 	private int messageCount = 0;
@@ -103,8 +101,16 @@ public class UnacceptableBot extends ListenerAdapter {
 		} else {
 			//Message is not command, so we'll do a check for twat mode, and check spellings :>
 			if(twatMode){
-				bot.sendIRC().message(event.getChannel().getName(), "Did you mean ".concat( 
-						spell.doCheck(event.getMessage()).concat("?")));
+				if(!(SpellCheckHandler.getSuggestions(event.getMessage(), 1)).equals(event.getMessage().toLowerCase())){
+					try{
+						bot.sendIRC().message(event.getChannel().getName(), "Did you mean ".concat( 
+								SpellCheckHandler.getSuggestions(event.getMessage(), 1).concat("?")));
+					} catch (Exception e){
+						
+					}
+				}
+				stopBeingATwat(event.getMessage(), event.getChannel().getName(),
+						event.getUser(), event.getBot());
 			}
 		}
 		if (event.getChannel().getName().equals("##boywanders")) {
@@ -137,8 +143,6 @@ public class UnacceptableBot extends ListenerAdapter {
 		doYoutube(event.getMessage(), event.getChannel().getName());
 		recordMessage(event);
 		if(getBot() != null){doTimer();}
-		if(twatMode == true){stopBeingATwat(event.getMessage(), event.getChannel().getName(),
-				event.getUser(), event.getBot());}
 	}
 
 	@Override

@@ -3,7 +3,6 @@ package com.unacceptableuse.unacceptablebot.command;
 import java.util.Date;
 
 import org.pircbotx.Channel;
-import org.pircbotx.PircBotX;
 import org.pircbotx.User;
 
 import com.unacceptableuse.unacceptablebot.UnacceptableBot;

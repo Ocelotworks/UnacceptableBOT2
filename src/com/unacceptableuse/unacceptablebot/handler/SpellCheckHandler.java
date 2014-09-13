@@ -1,29 +1,38 @@
 package com.unacceptableuse.unacceptablebot.handler;
 
-import org.xeustechnologies.googleapi.spelling.Language;
-import org.xeustechnologies.googleapi.spelling.SpellChecker;
-import org.xeustechnologies.googleapi.spelling.SpellCorrection;
-import org.xeustechnologies.googleapi.spelling.SpellResponse;
+import java.io.File;
+import java.io.IOException;
+
+import com.swabunga.spell.engine.SpellDictionaryHashMap;
+import com.swabunga.spell.engine.Word;
+import com.swabunga.spell.event.SpellChecker;
+
 
 public class SpellCheckHandler {
+	
+    protected static SpellDictionaryHashMap dictionary = null;
+    protected static SpellChecker spellChecker = null;
 
-	Language lang = null;
+    static {
 
-	public SpellCheckHandler(Language locale) {
-		lang = locale;
-	}
+        try {
 
-	public String doCheck(String sent) {
-		SpellChecker checker = new SpellChecker();
-		checker.setLanguage(lang);
+            dictionary =
+                new SpellDictionaryHashMap(new
+                File("english.0"));
+        }
+        catch (IOException e) {
 
-		SpellResponse spellResponse = checker.check(sent);
+            e.printStackTrace();
+        }
+        spellChecker = new SpellChecker(dictionary);
+    }
 
-		for (SpellCorrection sc : spellResponse.getCorrections())
-			return sc.getValue();
+    public static String getSuggestions(String word,
+        int threshold) {
 
-		return "";
+        return spellChecker.getSuggestions(word, threshold).get(0).toString();
+    }
 
-	}
 
 }

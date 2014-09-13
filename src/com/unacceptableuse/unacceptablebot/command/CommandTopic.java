@@ -1,13 +1,9 @@
 package com.unacceptableuse.unacceptablebot.command;
 
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.ResultSet;
-import java.sql.SQLException;
-
 import org.pircbotx.Channel;
 import org.pircbotx.User;
 

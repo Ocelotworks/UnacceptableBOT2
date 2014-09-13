@@ -3,7 +3,6 @@ package com.unacceptableuse.unacceptablebot.handler;
 import java.util.ArrayList;
 
 import org.pircbotx.Channel;
-import org.pircbotx.PircBotX;
 import org.pircbotx.User;
 import org.pircbotx.hooks.events.MessageEvent;
 
@@ -93,7 +92,6 @@ public class CommandHandler {
 		String message = event.getMessage();
 		Channel channel = event.getChannel();
 		User sender = event.getUser();
-		PircBotX bot = event.getBot();
 
 		Command chosenCommand = getCommand(message.replaceFirst("!", "").split(" ")[0]);
 

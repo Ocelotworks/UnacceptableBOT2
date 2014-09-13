@@ -21,6 +21,7 @@
 	<classpathentry kind="lib" path="jaxb-impl-2.1.5.jar"/>
 	<classpathentry kind="lib" path="log4j-1.2.14.jar"/>
 	<classpathentry kind="lib" path="stax-api-1.0-2.jar"/>
-	<classpathentry kind="lib" path="google-api-spelling-java-1.1.jar"/>
+	<classpathentry kind="lib" path="jazzy-core.jar"/>
+	<classpathentry kind="lib" path="jazzy-swing.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

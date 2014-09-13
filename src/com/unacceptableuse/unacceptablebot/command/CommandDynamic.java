@@ -4,7 +4,6 @@ import java.io.StringReader;
 import java.util.Map.Entry;
 
 import org.pircbotx.Channel;
-import org.pircbotx.PircBotX;
 import org.pircbotx.User;
 
 import com.google.gson.JsonArray;

@@ -207,17 +207,15 @@ public class SnapchatHandler {
 	}
 	
 	public void doOneInQueue(PircBotX bot, String channel) {
-		for (int i = 0; i < add.size(); i++) {
+		/*for (int i = 0; i < add.size(); i++) {
 			if (UnacceptableBot.getSnapchat().complete.get(i) == false) {
 				UnacceptableBot.getSnapchat().getImage(
 						UnacceptableBot.getSnapchat().add.get(i),
 						UnacceptableBot.getSnapchat().targ.get(i));
 				bot.sendIRC().message(channel, "Snap sent.");
 				UnacceptableBot.getSnapchat().complete.set(i, true);
-				break;
 			}
-			break;
-		}
+		} Nope. Sorry :(*/
 	}
 
 	@SuppressWarnings("unused")
