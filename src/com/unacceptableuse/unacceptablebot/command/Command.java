@@ -2,7 +2,6 @@ package com.unacceptableuse.unacceptablebot.command;
 
 import org.pircbotx.Channel;
 import org.pircbotx.Colors;
-import org.pircbotx.PircBotX;
 import org.pircbotx.User;
 
 import com.unacceptableuse.unacceptablebot.UnacceptableBot;
@@ -18,7 +17,6 @@ public abstract class Command
 	 * @param channel The {@link Channel} object of the channel it performed in.
 	 * @param message The whole message
 	 * @param args The message, split by spaces where args[0] is the command performed
-	 * @param bot The {@link PircBotX} instance that performed the command
 	 * @author UnacceptableUse
 	 */
 	public abstract void performCommand(User sender, Channel channel, String message, String[] args);
