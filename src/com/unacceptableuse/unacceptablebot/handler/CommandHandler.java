@@ -80,7 +80,7 @@ public class CommandHandler {
 	}
 
 	/**
-	 * Pass in onMessage for runnign commands
+	 * Pass in onMessage for running commands
 	 * 
 	 * @author UnacceptableUse, teknogeek
 	 * @param event

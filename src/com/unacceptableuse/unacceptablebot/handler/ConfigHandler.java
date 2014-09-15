@@ -22,7 +22,7 @@ public class ConfigHandler {
 	private Properties staticVars = null;
 
 	/**
-	 * Initialises the configurations, {@link MySQLConnection} and {@link Properties}
+	 * Initializes the configurations, {@link MySQLConnection} and {@link Properties}
 	 */
 	public void init() {
 		staticVars = new Properties();
