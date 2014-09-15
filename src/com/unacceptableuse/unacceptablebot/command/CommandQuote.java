@@ -22,6 +22,8 @@ public class CommandQuote extends Command {
 
 		int count = 1;
 
+		String quoteChannel = channel.getName();
+		
 		for (int i = 0; i < args.length; i++) {
 			if (args[i].toLowerCase().contains("--count")
 					|| args[i].toLowerCase().contains("-c")) {
@@ -32,6 +34,9 @@ public class CommandQuote extends Command {
 							UnacceptableBot.log("ERROR", "!quote", e.toString());
 					e.printStackTrace();
 				}
+			} else if (args[i].toLowerCase().contains("--channel")
+					|| args[i].toLowerCase().contains("-ch")) {
+				quoteChannel = args[i + 1];
 			}
 		}
 
@@ -39,9 +44,9 @@ public class CommandQuote extends Command {
 			for (int i = 0; i < count; i++) {
 				PreparedStatement ps = UnacceptableBot.getConfigHandler().sql
 						.getPreparedStatement("SELECT Message FROM `teknogeek_unacceptablebot`.`"
-								+ channel.getName()
+								+ quoteChannel
 								+ "` WHERE Username = '"
-								+ args[1].replace(" ", "")
+								+ args[1].replace(" ", "") // Is the replace needed, since args = message.split(" ")? -eduardog3000
 								+ "' ORDER BY RAND() LIMIT " + count);
 				/*
 				 * ps.setString(1, args.length == 3 ? args[2].startsWith("#") ?
@@ -75,7 +80,7 @@ public class CommandQuote extends Command {
 
 	@Override
 	public String getHelp() {
-		return "Usage: quote <user> [-c <number> | --count <number>]";
+		return "Usage: quote <user> [-c <number> | --count <number>] [-ch <channel> | --channel <channel>]";
 	}
 
 }
