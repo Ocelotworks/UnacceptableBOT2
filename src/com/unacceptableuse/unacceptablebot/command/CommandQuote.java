@@ -36,7 +36,12 @@ public class CommandQuote extends Command {
 				}
 			} else if (args[i].toLowerCase().contains("--channel")
 					|| args[i].toLowerCase().contains("-ch")) {
-				quoteChannel = args[i + 1];
+				quoteChannel = args[i + 1].startsWith("#") ? args[i + 1] : "#" + args[i + 1];
+				/*
+				 * Or does channel.getName() not include the '#'?
+				 * In which case, the line should be:
+				 * quoteChannel = args[i + 1].replaceFirst(Pattern.quote("#"), "");
+				 */
 			}
 		}
 
