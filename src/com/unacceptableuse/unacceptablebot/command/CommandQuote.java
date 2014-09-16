@@ -53,11 +53,6 @@ public class CommandQuote extends Command {
 								+ "` WHERE Username = '"
 								+ args[1].replace(" ", "") // Is the replace needed, since args = message.split(" ")? -eduardog3000
 								+ "' ORDER BY RAND() LIMIT " + count);
-				/*
-				 * ps.setString(1, args.length == 3 ? args[2].startsWith("#") ?
-				 * args[2] : "#" + args[2] : channel.getName()); Like, what the
-				 * fuck are these even here for? ps.setString(2, args[1]);
-				 */
 				ResultSet rs = ps.executeQuery();
 				if (rs.next()) {
 					sendMessage("<" + args[1] + "> " + rs.getString(1), channel);
