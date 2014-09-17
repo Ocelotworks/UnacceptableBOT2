@@ -4,7 +4,6 @@ import org.pircbotx.Channel;
 import org.pircbotx.User;
 
 import com.unacceptableuse.unacceptablebot.UnacceptableBot;
-import com.unacceptableuse.unacceptablebot.variable.Level;
 
 public class CommandFunction extends Command
 {
@@ -20,12 +19,6 @@ public class CommandFunction extends Command
 	public String[] getAliases()
 	{
 		return new String[]{"function"};
-	}
-
-	@Override
-	public Level getAccessLevel()
-	{
-		return Level.USER;
 	}
 	
 	@Override

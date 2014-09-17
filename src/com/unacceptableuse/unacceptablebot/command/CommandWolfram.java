@@ -3,7 +3,6 @@ package com.unacceptableuse.unacceptablebot.command;
 import org.pircbotx.Channel;
 import org.pircbotx.User;
 
-import com.unacceptableuse.unacceptablebot.variable.Level;
 import com.wolfram.alpha.WAEngine;
 import com.wolfram.alpha.WAException;
 import com.wolfram.alpha.WAPlainText;
@@ -60,11 +59,6 @@ public class CommandWolfram extends Command {
 	@Override
 	public String[] getAliases() {
 		return new String[]{"wolfram"};
-	}
-
-	@Override
-	public Level getAccessLevel() {
-		return Level.USER;
 	}
 
 	@Override

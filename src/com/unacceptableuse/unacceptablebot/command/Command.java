@@ -52,17 +52,22 @@ public abstract class Command
 	
 	public abstract String[] getAliases();
 	
-	public abstract Level getAccessLevel();
+	/**
+	 * Override this if a command has a required access level other than {@link Level}.USER.
+	 * @return The access level required to use the command.
+	 */
+	public Level getAccessLevel() {
+		return Level.USER;
+	}
 	
 	public abstract String getHelp();
 	
 	/**
 	 * Override this if a command has any arguments, forcing the {@link CommandHandler} to throw an error if there are no arguments
 	 * @author UnacceptableUse
-	 * @return
+	 * @return The number of arguments that the command requires.
 	 */
-	public int requiredArguments()
-	{
+	public int requiredArguments() {
 		return 0;
 	}
 	

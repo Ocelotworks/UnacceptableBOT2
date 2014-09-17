@@ -9,7 +9,6 @@ import org.pircbotx.Channel;
 import org.pircbotx.User;
 
 import com.google.gson.JsonParser;
-import com.unacceptableuse.unacceptablebot.variable.Level;
 
 /**
  * 
@@ -48,11 +47,6 @@ public class CommandDefineUD extends Command {
 	@Override
 	public int requiredArguments() {
 		return 1;
-	}
-
-	@Override
-	public Level getAccessLevel() {
-		return Level.USER;
 	}
 
 	@Override

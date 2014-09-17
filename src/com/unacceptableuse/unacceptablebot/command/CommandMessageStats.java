@@ -9,8 +9,6 @@ import java.util.HashMap;
 import org.pircbotx.Channel;
 import org.pircbotx.User;
 
-import com.unacceptableuse.unacceptablebot.variable.Level;
-
 public class CommandMessageStats extends Command {
 
 	@Override
@@ -90,11 +88,6 @@ public class CommandMessageStats extends Command {
 	public String[] getAliases() {
 
 		return new String[] { "messagestats" };
-	}
-
-	@Override
-	public Level getAccessLevel() {
-		return Level.USER;
 	}
 
 	@Override
