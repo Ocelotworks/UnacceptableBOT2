@@ -14,8 +14,7 @@ import com.wolfram.alpha.WASubpod;
 public class CommandWolfram extends Command {
 
 	@Override
-	public void performCommand(User sender, Channel channel, String message,
-			String[] args) {
+	public void performCommand(User sender, Channel channel, String message, String[] args) {
 		
 		sendMessage("Working...", channel);
 
