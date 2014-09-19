@@ -13,7 +13,7 @@ public class MySQLConnection
 {
 	private static final String dbClassName = "com.mysql.jdbc.Driver";
 
-	private static final String CONNECTION = "jdbc:mysql://hp.matrixdevuk.pw/";
+	private static final String CONNECTION = "jdbc:mysql://hp.matrixdevuk.pw:3306/";
 
 	protected Connection c;
 
