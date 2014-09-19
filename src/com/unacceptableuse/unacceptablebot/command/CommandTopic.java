@@ -19,13 +19,21 @@ public class CommandTopic extends Command
 	{
 		try
 		{
-			ResultSet rs = UnacceptableBot.getConfigHandler().sql.query("SELECT MAX(ID)-1 FROM `teknogeek_unacceptablebot`.`"+channel.getName()+"`");
+			ResultSet rs = UnacceptableBot.getConfigHandler().sql.query("SELECT MAX(ID) FROM `teknogeek_unacceptablebot`.`"+channel.getName()+"`");
 			rs.next();
-			String newTopic = "<"+rs.getString(3)+"> "+rs.getString(4);
+			int id = rs.getInt(1);
 			
-			PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("myfile.txt", true)));
+			rs = UnacceptableBot.getConfigHandler().sql.query("SELECT Username,Message FROM `teknogeek_unacceptablebot`.`"+channel.getName()+"` WHERE ID="+id);
+			rs.next();
+			String newTopic = "<"+rs.getString(1)+"> "+rs.getString(2);
+			
+			PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("sexquotes.txt", true)));
 			out.println(newTopic);
 			out.close();
+			
+			UnacceptableBot.sexQuotes.add(newTopic);
+			
+			sendMessage("Added topic "+newTopic, channel);
 			
 			
 		} catch (Exception e)

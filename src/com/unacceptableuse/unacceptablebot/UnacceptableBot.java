@@ -48,7 +48,7 @@ public class UnacceptableBot extends ListenerAdapter {
 	public static Random rand = new Random();
 	public static ArrayList<String> channels = new ArrayList<String>();
 	private int messageCount = 0;
-	private ArrayList<String> sexQuotes = new ArrayList<String>();
+	public static ArrayList<String> sexQuotes = new ArrayList<String>();
 	private static PircBotX bot = null;
 	private boolean loadChansFromDB = false; //When using VNC this should be false to avoid dual entries in the database!
 	public static boolean twatMode = false;
