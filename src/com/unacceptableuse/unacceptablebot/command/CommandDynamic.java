@@ -12,7 +12,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.stream.JsonReader;
 import com.unacceptableuse.unacceptablebot.UnacceptableBot;
-import com.unacceptableuse.unacceptablebot.variable.Level;
 
 public class CommandDynamic extends Command
 {
@@ -86,14 +85,6 @@ public class CommandDynamic extends Command
 	{
 		return new String[]{alias};
 	}
-
-	@Override
-	public Level getAccessLevel()
-	{
-		return Level.USER;
-	}
-
-
 
 	@Override
 	public String getHelp() {

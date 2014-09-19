@@ -11,7 +11,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
 import com.unacceptableuse.unacceptablebot.UnacceptableBot;
-import com.unacceptableuse.unacceptablebot.variable.Level;
 
 /**
  * 
@@ -47,11 +46,6 @@ public class CommandInsult extends Command
 	{
 		
 		return new String[]{"insult"};
-	}
-
-	@Override
-	public Level getAccessLevel() {
-		return Level.USER;
 	}
 
 	@Override

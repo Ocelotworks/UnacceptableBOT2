@@ -8,7 +8,6 @@ import org.pircbotx.Channel;
 import org.pircbotx.User;
 
 import com.unacceptableuse.unacceptablebot.UnacceptableBot;
-import com.unacceptableuse.unacceptablebot.variable.Level;
 
 /**
  * 
@@ -22,6 +21,8 @@ public class CommandQuote extends Command {
 
 		int count = 1;
 
+		String quoteChannel = channel.getName();
+		
 		for (int i = 0; i < args.length; i++) {
 			if (args[i].toLowerCase().contains("--count")
 					|| args[i].toLowerCase().contains("-c")) {
@@ -32,6 +33,14 @@ public class CommandQuote extends Command {
 							UnacceptableBot.log("ERROR", "!quote", e.toString());
 					e.printStackTrace();
 				}
+			} else if (args[i].toLowerCase().contains("--channel")
+					|| args[i].toLowerCase().contains("-ch")) {
+				quoteChannel = args[i + 1].startsWith("#") ? args[i + 1] : "#" + args[i + 1];
+				/*
+				 * Or does channel.getName() not include the '#'?
+				 * In which case, the line should be:
+				 * quoteChannel = args[i + 1].replaceFirst(Pattern.quote("#"), "");
+				 */
 			}
 		}
 
@@ -39,15 +48,10 @@ public class CommandQuote extends Command {
 			for (int i = 0; i < count; i++) {
 				PreparedStatement ps = UnacceptableBot.getConfigHandler().sql
 						.getPreparedStatement("SELECT Message FROM `teknogeek_unacceptablebot`.`"
-								+ channel.getName()
+								+ quoteChannel
 								+ "` WHERE Username = '"
-								+ args[1].replace(" ", "")
+								+ args[1].replace(" ", "") // Is the replace needed, since args = message.split(" ")? -eduardog3000
 								+ "' ORDER BY RAND() LIMIT " + count);
-				/*
-				 * ps.setString(1, args.length == 3 ? args[2].startsWith("#") ?
-				 * args[2] : "#" + args[2] : channel.getName()); Like, what the
-				 * fuck are these even here for? ps.setString(2, args[1]);
-				 */
 				ResultSet rs = ps.executeQuery();
 				if (rs.next()) {
 					sendMessage("<" + args[1] + "> " + rs.getString(1), channel);
@@ -69,13 +73,8 @@ public class CommandQuote extends Command {
 	}
 
 	@Override
-	public Level getAccessLevel() {
-		return Level.USER;
-	}
-
-	@Override
 	public String getHelp() {
-		return "Usage: quote <user> [-c <number> | --count <number>]";
+		return "Usage: quote <user> [-c <number> | --count <number>] [-ch <channel> | --channel <channel>]";
 	}
 
 }

@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 
 import com.swabunga.spell.engine.SpellDictionaryHashMap;
-import com.swabunga.spell.engine.Word;
 import com.swabunga.spell.event.SpellChecker;
 
 

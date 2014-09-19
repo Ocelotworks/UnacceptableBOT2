@@ -11,7 +11,6 @@ import org.pircbotx.User;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.unacceptableuse.unacceptablebot.variable.Level;
 
 /**
  * 
@@ -90,12 +89,6 @@ public class CommandDefine extends Command
 	public int requiredArguments()
 	{
 		return 1;
-	}
-
-	@Override
-	public Level getAccessLevel() {
-		// TODO Auto-generated method stub
-		return Level.USER;
 	}
 
 	@Override

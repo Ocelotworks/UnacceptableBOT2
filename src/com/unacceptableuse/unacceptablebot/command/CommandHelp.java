@@ -4,7 +4,6 @@ import org.pircbotx.Channel;
 import org.pircbotx.User;
 
 import com.unacceptableuse.unacceptablebot.UnacceptableBot;
-import com.unacceptableuse.unacceptablebot.variable.Level;
 
 /**
  * 
@@ -45,11 +44,6 @@ public class CommandHelp extends Command {
 	@Override
 	public String[] getAliases() {
 		return new String[] { "help", "?" };
-	}
-
-	@Override
-	public Level getAccessLevel() {
-		return Level.USER;
 	}
 
 	@Override

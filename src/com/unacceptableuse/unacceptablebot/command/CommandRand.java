@@ -4,7 +4,6 @@ import org.pircbotx.Channel;
 import org.pircbotx.User;
 
 import com.unacceptableuse.unacceptablebot.UnacceptableBot;
-import com.unacceptableuse.unacceptablebot.variable.Level;
 
 /**
  * 
@@ -33,11 +32,6 @@ public class CommandRand extends Command
 	{
 		
 		return new String[]{"rand","random"};
-	}
-
-	@Override
-	public Level getAccessLevel() {
-		return Level.USER;
 	}
 
 	@Override

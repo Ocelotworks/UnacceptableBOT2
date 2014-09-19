@@ -10,7 +10,6 @@ import org.pircbotx.User;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.unacceptableuse.unacceptablebot.variable.Level;
 
 /**
  * 
@@ -92,11 +91,6 @@ public class CommandLive extends Command {
 	public int requiredArguments()
 	{
 		return 1;
-	}
-
-	@Override
-	public Level getAccessLevel() {
-		return Level.USER;
 	}
 
 	@Override

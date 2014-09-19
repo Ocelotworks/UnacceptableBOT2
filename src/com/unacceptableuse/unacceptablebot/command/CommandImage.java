@@ -7,7 +7,6 @@ import org.pircbotx.Channel;
 import org.pircbotx.User;
 
 import com.unacceptableuse.unacceptablebot.UnacceptableBot;
-import com.unacceptableuse.unacceptablebot.variable.Level;
 
 public class CommandImage extends Command
 {
@@ -72,12 +71,6 @@ public class CommandImage extends Command
 	public String[] getAliases()
 	{
 		return new String[]{"image","images"};
-	}
-
-	@Override
-	public Level getAccessLevel()
-	{
-		return Level.USER;
 	}
 
 	@Override

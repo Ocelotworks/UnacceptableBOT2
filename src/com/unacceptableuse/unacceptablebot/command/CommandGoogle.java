@@ -3,8 +3,6 @@ package com.unacceptableuse.unacceptablebot.command;
 import org.pircbotx.Channel;
 import org.pircbotx.User;
 
-import com.unacceptableuse.unacceptablebot.variable.Level;
-
 /**
  * 
  * @author Joel?
@@ -35,11 +33,6 @@ public class CommandGoogle extends Command
 	public int requiredArguments()
 	{
 		return 1;
-	}
-
-	@Override
-	public Level getAccessLevel() {
-		return Level.USER;
 	}
 
 	@Override

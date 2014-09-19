@@ -2,26 +2,31 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
-	<classpathentry kind="lib" path="mysql-connector-java-5.1.31-bin.jar"/>
-	<classpathentry kind="lib" path="slf4j-api-1.7.7.jar"/>
-	<classpathentry kind="lib" path="gson-2.2.4.jar"/>
-	<classpathentry kind="lib" path="commons-lang3-3.3.2.jar"/>
-	<classpathentry kind="lib" path="pircbotx-2.0.1.jar" sourcepath="C:/Users/Peter/.m2/repository/org/pircbotx/pircbotx/2.0.1/pircbotx-2.0.1-sources.jar"/>
-	<classpathentry kind="lib" path="jdom-2.0.5.jar"/>
-	<classpathentry kind="lib" path="slf4j-simple-1.7.7.jar"/>
-	<classpathentry kind="lib" path="guava-17.0.jar"/>
-	<classpathentry kind="lib" path="jsch-0.1.51.jar"/>
-	<classpathentry kind="lib" path="commons-codec-1.9-javadoc.jar"/>
-	<classpathentry kind="lib" path="commons-codec-1.9-sources.jar"/>
-	<classpathentry kind="lib" path="commons-codec-1.9-test-sources.jar"/>
-	<classpathentry kind="lib" path="commons-codec-1.9-tests.jar"/>
-	<classpathentry kind="lib" path="commons-codec-1.9.jar"/>
-	<classpathentry kind="lib" path="activation-1.1.jar"/>
-	<classpathentry kind="lib" path="jaxb-api-2.1.jar"/>
-	<classpathentry kind="lib" path="jaxb-impl-2.1.5.jar"/>
-	<classpathentry kind="lib" path="log4j-1.2.14.jar"/>
-	<classpathentry kind="lib" path="stax-api-1.0-2.jar"/>
-	<classpathentry kind="lib" path="jazzy-core.jar"/>
-	<classpathentry kind="lib" path="jazzy-swing.jar"/>
+	<classpathentry kind="lib" path="lib/activation-1.1.jar"/>
+	<classpathentry kind="lib" path="lib/commons-codec-1.9-javadoc.jar"/>
+	<classpathentry kind="lib" path="lib/commons-codec-1.9-sources.jar"/>
+	<classpathentry kind="lib" path="lib/commons-codec-1.9-test-sources.jar"/>
+	<classpathentry kind="lib" path="lib/commons-codec-1.9-tests.jar"/>
+	<classpathentry kind="lib" path="lib/commons-codec-1.9.jar"/>
+	<classpathentry kind="lib" path="lib/commons-lang3-3.3.2.jar"/>
+	<classpathentry kind="lib" path="lib/gson-2.2.4.jar"/>
+	<classpathentry kind="lib" path="lib/guava-17.0.jar"/>
+	<classpathentry kind="lib" path="lib/jaxb-api-2.1.jar"/>
+	<classpathentry kind="lib" path="lib/jaxb-impl-2.1.5.jar"/>
+	<classpathentry kind="lib" path="lib/jazzy-core.jar"/>
+	<classpathentry kind="lib" path="lib/jazzy-swing.jar"/>
+	<classpathentry kind="lib" path="lib/jdom-2.0.5.jar"/>
+	<classpathentry kind="lib" path="lib/jsch-0.1.51.jar"/>
+	<classpathentry kind="lib" path="lib/log4j-1.2.14.jar"/>
+	<classpathentry kind="lib" path="lib/mysql-connector-java-5.1.31-bin.jar"/>
+	<classpathentry kind="lib" path="lib/pircbotx-2.0.1.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="http://site.pircbotx.googlecode.com/hg-history/2.0/apidocs/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="lib/slf4j-api-1.7.7.jar"/>
+	<classpathentry kind="lib" path="lib/slf4j-simple-1.7.7.jar"/>
+	<classpathentry kind="lib" path="lib/stax-api-1.0-2.jar"/>
+	<classpathentry kind="lib" path="lib/WolframAlpha-1.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

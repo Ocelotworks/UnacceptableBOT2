@@ -3,8 +3,6 @@ package com.unacceptableuse.unacceptablebot.command;
 import org.pircbotx.Channel;
 import org.pircbotx.User;
 
-import com.unacceptableuse.unacceptablebot.variable.Level;
-
 public class CommandTime extends Command{
 
 	@Override
@@ -22,11 +20,6 @@ public class CommandTime extends Command{
 	public int requiredArguments()
 	{
 		return 0;
-	}
-
-	@Override
-	public Level getAccessLevel() {
-		return Level.USER;
 	}
 
 	@Override

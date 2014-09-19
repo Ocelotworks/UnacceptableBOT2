@@ -2,7 +2,6 @@ package com.unacceptableuse.unacceptablebot.command;
 
 import org.pircbotx.Channel;
 import org.pircbotx.Colors;
-import org.pircbotx.PircBotX;
 import org.pircbotx.User;
 
 import com.unacceptableuse.unacceptablebot.UnacceptableBot;
@@ -18,7 +17,6 @@ public abstract class Command
 	 * @param channel The {@link Channel} object of the channel it performed in.
 	 * @param message The whole message
 	 * @param args The message, split by spaces where args[0] is the command performed
-	 * @param bot The {@link PircBotX} instance that performed the command
 	 * @author UnacceptableUse
 	 */
 	public abstract void performCommand(User sender, Channel channel, String message, String[] args);
@@ -54,17 +52,22 @@ public abstract class Command
 	
 	public abstract String[] getAliases();
 	
-	public abstract Level getAccessLevel();
+	/**
+	 * Override this if a command has a required access level other than {@link Level}.USER.
+	 * @return The access level required to use the command.
+	 */
+	public Level getAccessLevel() {
+		return Level.USER;
+	}
 	
 	public abstract String getHelp();
 	
 	/**
 	 * Override this if a command has any arguments, forcing the {@link CommandHandler} to throw an error if there are no arguments
 	 * @author UnacceptableUse
-	 * @return
+	 * @return The number of arguments that the command requires.
 	 */
-	public int requiredArguments()
-	{
+	public int requiredArguments() {
 		return 0;
 	}
 	

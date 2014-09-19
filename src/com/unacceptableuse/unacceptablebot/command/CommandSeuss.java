@@ -18,8 +18,6 @@ import java.util.Random;
 import org.pircbotx.Channel;
 import org.pircbotx.User;
 
-import com.unacceptableuse.unacceptablebot.variable.Level;
-
 /**
  * @author Neil
  * 
@@ -54,11 +52,6 @@ public class CommandSeuss extends Command {
 	@Override
 	public String[] getAliases() {
 		return new String[] { "seuss" };
-	}
-
-	@Override
-	public Level getAccessLevel() {
-		return Level.USER;
 	}
 
 	@Override

@@ -7,7 +7,6 @@ import org.pircbotx.User;
 
 import com.unacceptableuse.unacceptablebot.UnacceptableBot;
 import com.unacceptableuse.unacceptablebot.handler.SnapchatHandler;
-import com.unacceptableuse.unacceptablebot.variable.Level;
 
 public class CommandSnapChat extends Command {
 
@@ -80,11 +79,6 @@ public class CommandSnapChat extends Command {
 	@Override
 	public String[] getAliases() {
 		return new String[] { "sc", "snap", "snapchat" };
-	}
-
-	@Override
-	public Level getAccessLevel() {
-		return Level.USER;
 	}
 
 	@Override
