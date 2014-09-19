@@ -20,6 +20,7 @@ public class CommandTopic extends Command
 		try
 		{
 			ResultSet rs = UnacceptableBot.getConfigHandler().sql.query("SELECT MAX(ID)-1 FROM `teknogeek_unacceptablebot`.`"+channel.getName()+"`");
+			rs.next();
 			String newTopic = "<"+rs.getString(3)+"> "+rs.getString(4);
 			
 			PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("myfile.txt", true)));

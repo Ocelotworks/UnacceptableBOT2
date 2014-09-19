@@ -61,11 +61,12 @@ public class MySQLConnection
 
 
 	public String getSetting(String setting) {
+		UnacceptableBot.getBot().sendIRC().message("##Ocelotworks", "getSetting("+setting+") called.");
 		try {
-			PreparedStatement ps = getPreparedStatement("SELECT * FROM  teknogeek_settings.Global_Settings WHERE  `Setting` =  '?' LIMIT 1");
+			PreparedStatement ps = getPreparedStatement("SELECT Value FROM  teknogeek_settings.Global_Settings WHERE  `Setting` =  ? LIMIT 1");
 			ps.setString(1, setting);
 			ResultSet rs = ps.executeQuery();
-			return rs.next() ? rs.getString(2) : null;
+			return rs.next() ? rs.getString(1) : null;
 		} catch (SQLException e) {
 			e.printStackTrace();
 			attemptReconnect();
