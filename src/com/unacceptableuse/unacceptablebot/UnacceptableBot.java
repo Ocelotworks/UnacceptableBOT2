@@ -50,8 +50,9 @@ public class UnacceptableBot extends ListenerAdapter {
 	private int messageCount = 0;
 	public static ArrayList<String> sexQuotes = new ArrayList<String>();
 	private static PircBotX bot = null;
-	private boolean loadChansFromDB = false; //When using VNC this should be false to avoid dual entries in the database!
+	private boolean loadChansFromDB = false; //When using ZNC this should be false to avoid dual entries in the database!
 	public static boolean twatMode = false;
+	private static Timer timer = null;
 
 	/**
 	 * Starts the init process of everything
@@ -68,6 +69,8 @@ public class UnacceptableBot extends ListenerAdapter {
 		config.init();
 		config.increment("stat:startups");
 		config.setLong("startupTime", new Date().getTime());
+		timer = new Timer();
+		timer.schedule( new SnapchatThread(), 0, (40 * 1000));
 		
 		loadSexQuotes();
 		
@@ -103,7 +106,7 @@ public class UnacceptableBot extends ListenerAdapter {
 			if(twatMode){
 				if(!(SpellCheckHandler.getSuggestions(event.getMessage(), 1)).equals(event.getMessage().toLowerCase())){
 					try{
-						bot.sendIRC().message(event.getChannel().getName(), "Did you mean ".concat( 
+						bot.sendIRC().message(event.getChannel().getName(), "*".concat( 
 								SpellCheckHandler.getSuggestions(event.getMessage(), 1).concat("?")));
 					} catch (Exception e){
 						
@@ -142,7 +145,6 @@ public class UnacceptableBot extends ListenerAdapter {
 		doReddit(event.getMessage(), event.getChannel().getName(),event.getUser());
 		doYoutube(event.getMessage(), event.getChannel().getName());
 		recordMessage(event);
-		if(getBot() != null){doTimer();}
 	}
 
 	@Override
@@ -229,11 +231,6 @@ public class UnacceptableBot extends ListenerAdapter {
 			if(chanStr != ""){
 				config.setChannels(chanStr);
 			}
-	}
-
-	private void doTimer() {
-			Timer timer = new Timer();
-			timer.schedule( new SnapchatThread(), 0, (40 * 1000));
 	}
 
 	/**

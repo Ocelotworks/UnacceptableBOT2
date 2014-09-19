@@ -209,5 +209,9 @@ public class ConfigHandler {
 			return null;
 		}
 	}
+	
+	public String getHomeChannel(){
+		return sql.getSetting("homeChannel");
+	}
 
 }

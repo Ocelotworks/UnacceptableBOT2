@@ -38,7 +38,7 @@ public class SnapchatHandler {
 	StringBuilder stb;
 	public ArrayList<String> add = new ArrayList<String>();
 	public ArrayList<String> targ = new ArrayList<String>();
-	public ArrayList<Boolean> complete = new ArrayList<Boolean>();
+	public ArrayList<org.pircbotx.Channel> chan = new ArrayList<org.pircbotx.Channel>();
 
 	public void init() throws Exception {
 		user = "Stevie-BOT";
@@ -60,7 +60,7 @@ public class SnapchatHandler {
 	public void getImage(String strURL, String target) {
 		try {
 			Random rn = new Random();
-			int number = rn.nextInt(9999 - 1 + 1) + 1;
+			int number = rn.nextInt(10000);
 			fileName = "temp" + number;
 			if (strURL.substring(strURL.lastIndexOf(".")).equals(".png")) {
 				convertToJPG(strURL);
@@ -81,10 +81,14 @@ public class SnapchatHandler {
 				fos.close();
 			}
 			upload(fileName + ".jpg", target, user, pass);
-			if (new File(fileName + ".png").exists()) {
-				new File(fileName + ".png").delete();
+			boolean pngSuccess = new File(fileName + ".png").delete();
+			boolean jpgSuccess = new File(fileName + ".jpg").delete();
+			if (!jpgSuccess && !pngSuccess) {
+				System.out
+						.print("Failed to delete sent snap files:"
+								+ " File.delete() provides no insight into why, so that's all I got, sorry");
 			}
-			new File(fileName + ".jpg").delete();
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -205,17 +209,42 @@ public class SnapchatHandler {
 		session.disconnect();
 		channel.disconnect();
 	}
-	
+
 	public void doOneInQueue(PircBotX bot, String channel) {
-		/*for (int i = 0; i < add.size(); i++) {
-			if (UnacceptableBot.getSnapchat().complete.get(i) == false) {
-				UnacceptableBot.getSnapchat().getImage(
-						UnacceptableBot.getSnapchat().add.get(i),
-						UnacceptableBot.getSnapchat().targ.get(i));
-				bot.sendIRC().message(channel, "Snap sent.");
-				UnacceptableBot.getSnapchat().complete.set(i, true);
+		int assumedSnapCount = add.size() * 3;
+		int actualSnapCount = add.size() + targ.size() + chan.size();
+		if (actualSnapCount != assumedSnapCount) {
+			nullQueue(assumedSnapCount, actualSnapCount);
+		} else {
+			//We have equal numbers of snaps in each queue. great!
+			for(int i = 0; i<actualSnapCount; i++){
+				if (add.get(i) != "sent!"){
+					getImage(add.get(i),targ.get(i));
+					UnacceptableBot.getBot().sendIRC().message(chan.get(i).getName(), "Snap to "
+					+ targ.get(i) + " sent!");
+					add.set(i, "sent!");
+					targ.set(i, "hidden");
+					break;
+				}
 			}
-		} Nope. Sorry :(*/
+		}
+	}
+
+	private void nullQueue(int a, int b) {
+		UnacceptableBot
+				.getBot()
+				.sendIRC()
+				.message(UnacceptableBot.getConfigHandler().getHomeChannel(),
+						a + "!=" + b);
+		UnacceptableBot
+				.getBot()
+				.sendIRC()
+				.message(UnacceptableBot.getConfigHandler().getHomeChannel(),
+						"Nulling queue to fix!");
+		add = new ArrayList<String>();
+		targ = new ArrayList<String>();
+		chan = new ArrayList<org.pircbotx.Channel>();
+
 	}
 
 	@SuppressWarnings("unused")
@@ -243,7 +272,7 @@ public class SnapchatHandler {
 				return Base64.decodeBase64(snapObj.toString());
 			}
 		}
-		return new byte[]{0};
+		return new byte[] { 0 };
 	}
 
 	public boolean logged() {

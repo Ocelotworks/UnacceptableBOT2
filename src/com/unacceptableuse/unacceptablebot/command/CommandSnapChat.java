@@ -7,10 +7,9 @@ import org.pircbotx.User;
 
 import com.unacceptableuse.unacceptablebot.UnacceptableBot;
 import com.unacceptableuse.unacceptablebot.handler.SnapchatHandler;
+import com.unacceptableuse.unacceptablebot.variable.Level;
 
 public class CommandSnapChat extends Command {
-
-	boolean canSnap = true;
 
 	@Override
 	public void performCommand(User sender, Channel channel, String message,
@@ -21,6 +20,8 @@ public class CommandSnapChat extends Command {
 			File f = new File("api.pem");
 			if (!f.exists()) {
 				sendMessage("Cannot send snaps. Missing " + f.getAbsolutePath(), channel);
+			} else if(!UnacceptableBot.getSnapchat().logged()) {
+				sendMessage("Snapchat failed to login!", channel);
 			} else {
 				sendMessage("Snapchat is ok!", channel);
 			}
@@ -32,7 +33,7 @@ public class CommandSnapChat extends Command {
 				String target = args[3];
 				UnacceptableBot.getSnapchat().add.add(url);
 				UnacceptableBot.getSnapchat().targ.add(target);
-				UnacceptableBot.getSnapchat().complete.add(false);
+				UnacceptableBot.getSnapchat().chan.add(channel);
 			} catch (Exception e) {
 				sendMessage("Did you enter the correct number of arguments?", channel);
 				e.printStackTrace();
@@ -66,6 +67,7 @@ public class CommandSnapChat extends Command {
 				UnacceptableBot.getSnapchat().init();
 				sendMessage("Handler Init..", channel);
 			} catch (Exception e) {
+				sendMessage("Handler init failed: " + e.getCause(), channel);
 				e.printStackTrace();
 			}
 			break;
@@ -89,6 +91,11 @@ public class CommandSnapChat extends Command {
 	@Override
 	public String getHelp() {
 		return "System command";
+	}
+	
+	@Override
+	public Level getAccessLevel(){
+		return Level.SUPERADMIN;
 	}
 
 }
