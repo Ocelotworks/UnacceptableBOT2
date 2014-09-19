@@ -24,7 +24,10 @@ public class CommandQuote extends Command {
 		String quoteChannel = channel.getName();
 		
 		for (int i = 0; i < args.length; i++) {
-			if (args[i].toLowerCase().contains("--count")
+			if (args[i].toLowerCase().contains("--channel")
+					|| args[i].toLowerCase().contains("-ch")) {
+				quoteChannel = args[i + 1].startsWith("#") ? args[i + 1] : "#" + args[i + 1];
+			} else if (args[i].toLowerCase().contains("--count")
 					|| args[i].toLowerCase().contains("-c")) {
 				try {
 					count = Integer.parseInt(args[i + 1]);
@@ -33,14 +36,6 @@ public class CommandQuote extends Command {
 							UnacceptableBot.log("ERROR", "!quote", e.toString());
 					e.printStackTrace();
 				}
-			} else if (args[i].toLowerCase().contains("--channel")
-					|| args[i].toLowerCase().contains("-ch")) {
-				quoteChannel = args[i + 1].startsWith("#") ? args[i + 1] : "#" + args[i + 1];
-				/*
-				 * Or does channel.getName() not include the '#'?
-				 * In which case, the line should be:
-				 * quoteChannel = args[i + 1].replaceFirst(Pattern.quote("#"), "");
-				 */
 			}
 		}
 
