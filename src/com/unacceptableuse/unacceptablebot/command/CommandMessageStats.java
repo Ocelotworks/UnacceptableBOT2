@@ -14,7 +14,7 @@ public class CommandMessageStats extends Command {
 
 	@Override
 	public void performCommand(User sender, Channel channel, String message, String[] args) {
-		final String target = args.length > 1 ? args[1] : sender.getNick();
+		String target = sender.getNick();
 		String targetChannel = channel.getName();
 		float targetMessagesCount = 0.0f, channelMessagesCount = 0.0f;
 		
@@ -22,6 +22,9 @@ public class CommandMessageStats extends Command {
 			if (args[i].toLowerCase().contains("--channel")
 					|| args[i].toLowerCase().contains("-ch")) {
 				targetChannel = args[i + 1].startsWith("#") ? args[i + 1] : "#" + args[i + 1];
+			} else if (args[i].toLowerCase().contains("--user")
+					|| args[i].toLowerCase().contains("-u")) {
+				target = args[i + 1];
 			}
 		}
 
@@ -91,7 +94,7 @@ public class CommandMessageStats extends Command {
 
 	@Override
 	public String getHelp() {
-		return "Usage: messagestats [-ch <channel> | --channel <channel>] | Result: Grades the channel of several recorded stats";
+		return "Usage: messagestats [-u <user> | --user <user>] [-ch <channel> | --channel <channel>] | Result: Grades the channel of several recorded stats";
 	}
 
 }
