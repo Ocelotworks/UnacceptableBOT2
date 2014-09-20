@@ -2,6 +2,7 @@ package com.unacceptableuse.unacceptablebot.command;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import org.pircbotx.Channel;
@@ -15,6 +16,7 @@ public class CommandMessageStats extends Command {
 	public void performCommand(User sender, Channel channel, String message, String[] args) {
 		final String target = args.length > 1 ? args[1] : sender.getNick();
 		String targetChannel = channel.getName();
+		float targetMessagesCount = 0.0f, channelMessagesCount = 0.0f;
 		
 		for (int i = 0; i < args.length; i++) {
 			if (args[i].toLowerCase().contains("--channel")
@@ -27,41 +29,41 @@ public class CommandMessageStats extends Command {
 			ArrayList<String> targetMessages = new ArrayList<String>();
 			ArrayList<String> channelMessages = new ArrayList<String>();
 			
-			sendMessage("Processing... This might take a while", channel);
-			
 			PreparedStatement ps = UnacceptableBot.getConfigHandler().sql
-					.getPreparedStatement("SELECT Message FROM `teknogeek_unacceptablebot`.`"
+					.getPreparedStatement("SELECT Count(Message) AS MessageCount FROM `teknogeek_unacceptablebot`.`"
 							+ targetChannel + "`");
 			
 			ResultSet rs = ps.executeQuery();
-			int i = 1;
-			while (rs.next()) {
-				channelMessages.add(rs.getString(i));
-				i++;
+			while(rs.next())
+			{
+				channelMessages.add(rs.getString("MessageCount"));
 			}
+			channelMessagesCount = Integer.valueOf(channelMessages.get(0));
 			
 			PreparedStatement ps1 = UnacceptableBot.getConfigHandler().sql
-					.getPreparedStatement("SELECT Message FROM `teknogeek_unacceptablebot`.`"
+					.getPreparedStatement("SELECT Count(Message) AS MessageCount FROM `teknogeek_unacceptablebot`.`"
 							+ targetChannel
 							+ "` WHERE Username = '"
 							+ target + "'");
 			
 			ResultSet rs1 = ps1.executeQuery();
-			i = 1;
-			while (rs1.next()) {
-				targetMessages.add(rs1.getString(i));
-				i++;
+			while(rs1.next())
+			{
+				targetMessages.add(rs1.getString("MessageCount"));
 			}
+			targetMessagesCount = Integer.valueOf(targetMessages.get(0));
+			
+			float percent = (targetMessagesCount / channelMessagesCount) * 100;
 			
 			sendMessage(
 					"&BOLD" 
 							+ target 
 							+ "&RESET has sent &BOLD"
-							+ targetMessages.size()
+							+ Math.round(targetMessagesCount)
 							+ "&RESET messages in &BOLD" 
 							+ targetChannel
 							+ "&RESET. &BOLD"
-							+ ((targetMessages.size() / channelMessages.size()) * 100)
+							+ new DecimalFormat("#.##").format(percent)
 							+ "&RESET% of all messages.", 
 					channel);
 			
