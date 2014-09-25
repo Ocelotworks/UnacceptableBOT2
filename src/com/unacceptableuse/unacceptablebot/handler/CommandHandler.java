@@ -20,6 +20,7 @@ import com.unacceptableuse.unacceptablebot.command.CommandFunction;
 import com.unacceptableuse.unacceptablebot.command.CommandGoogle;
 import com.unacceptableuse.unacceptablebot.command.CommandHelp;
 import com.unacceptableuse.unacceptablebot.command.CommandImage;
+import com.unacceptableuse.unacceptablebot.command.CommandImageSearch;
 import com.unacceptableuse.unacceptablebot.command.CommandImport;
 import com.unacceptableuse.unacceptablebot.command.CommandInsult;
 import com.unacceptableuse.unacceptablebot.command.CommandListChans;
@@ -63,6 +64,7 @@ public class CommandHandler {
 		addCommand(new CommandGoogle());
 		addCommand(new CommandHelp());
 		addCommand(new CommandImage());
+		addCommand(new CommandImageSearch());
 		addCommand(new CommandImport());
 		addCommand(new CommandInsult());
 		addCommand(new CommandListChans());
