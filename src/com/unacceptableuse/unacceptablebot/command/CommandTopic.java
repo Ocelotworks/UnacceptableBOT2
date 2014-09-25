@@ -19,11 +19,7 @@ public class CommandTopic extends Command
 	{
 		try
 		{
-			ResultSet rs = UnacceptableBot.getConfigHandler().sql.query("SELECT MAX(ID) FROM `teknogeek_unacceptablebot`.`"+channel.getName()+"`");
-			rs.next();
-			int id = rs.getInt(1);
-			
-			rs = UnacceptableBot.getConfigHandler().sql.query("SELECT Username,Message FROM `teknogeek_unacceptablebot`.`"+channel.getName()+"` WHERE ID="+id);
+			ResultSet rs = UnacceptableBot.getConfigHandler().sql.query("SELECT Username,Message FROM `teknogeek_unacceptablebot`.`"+channel.getName()+"` WHERE ID=(SELECT MAX(ID) FROM `teknogeek_unacceptablebot`.`"+channel.getName()+"`)");
 			rs.next();
 			String newTopic = "<"+rs.getString(1)+"> "+rs.getString(2);
 			
