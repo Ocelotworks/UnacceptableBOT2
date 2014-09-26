@@ -88,6 +88,27 @@ public class UnacceptableBot extends ListenerAdapter {
 
 	@Override
 	public void onMessage(final MessageEvent event) throws Exception {
+		if (event.getUser().getNick().equals("[MC]-DogeFest") && event.getMessage().contains("<")) {
+				/*onMessage(
+						new MessageEvent<PircBotX>(event.getBot(), 
+						event.getChannel(), 
+						MinecraftUser.create(
+								bot, 
+								event.getMessage().replace("[MineCraft] <", "").split(">")[0]), 
+								event.getMessage().substring(event.getMessage().indexOf(">") + 2)
+						)
+				);*/
+				onMessage(
+						new MessageEvent<PircBotX>(
+								event.getBot(), 
+								event.getChannel(), 
+								event.getUser(), 
+								event.getMessage().substring(event.getMessage().indexOf(">") + 2)
+						)
+				);
+				return;	
+		}
+		
 		
 		if (event.getMessage().charAt(0) == '!') {
 			if (event.getMessage().startsWith("!")) {
