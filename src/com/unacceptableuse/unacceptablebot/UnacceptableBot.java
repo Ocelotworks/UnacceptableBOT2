@@ -35,8 +35,10 @@ import org.pircbotx.hooks.events.QuitEvent;
 import com.google.gson.JsonObject;
 import com.unacceptableuse.unacceptablebot.handler.CommandHandler;
 import com.unacceptableuse.unacceptablebot.handler.ConfigHandler;
+import com.unacceptableuse.unacceptablebot.handler.JobHandler;
 import com.unacceptableuse.unacceptablebot.handler.SnapchatHandler;
 import com.unacceptableuse.unacceptablebot.handler.SpellCheckHandler;
+import com.unacceptableuse.unacceptablebot.threading.JobThread;
 import com.unacceptableuse.unacceptablebot.threading.SnapchatThread;
 
 @SuppressWarnings("rawtypes")
@@ -45,6 +47,7 @@ public class UnacceptableBot extends ListenerAdapter {
 	private static CommandHandler handler = new CommandHandler();
 	private static ConfigHandler config = new ConfigHandler();
 	private static SnapchatHandler snapchat = new SnapchatHandler();
+	private static JobHandler jobs = new JobHandler();
 	public static Random rand = new Random();
 	public static ArrayList<String> channels = new ArrayList<String>();
 	private int messageCount = 0;
@@ -60,17 +63,21 @@ public class UnacceptableBot extends ListenerAdapter {
 	 * @author UnacceptableUse
 	 */
 	public UnacceptableBot() {
-		handler.init();
-		try {
-			snapchat.init();
-		} catch (Exception e) {
+		
+		try
+		{
+			initHandlers();
+		} catch (Exception e)
+		{
+			log("SEVERE", "HINIT", "A handler failed to initialize! "+e.toString()+". Attempting to continue, but it doesn't look good.");
 			e.printStackTrace();
 		}
-		config.init();
+		
 		config.increment("stat:startups");
 		config.setLong("startupTime", new Date().getTime());
 		timer = new Timer();
 		timer.schedule( new SnapchatThread(), 0, (40 * 1000));
+		timer.schedule( new JobThread(), 0, (60 * 1000));
 		
 		loadSexQuotes();
 		
@@ -84,6 +91,19 @@ public class UnacceptableBot extends ListenerAdapter {
 			}
 		}
 
+	}
+	
+	/**
+	 * Handlers should be started in order of priority, because I said so.
+	 * @throws Exception Any exceptions thrown by the handlers should be handled with extreme panic
+	 */
+	private void initHandlers() throws Exception
+	{
+		handler.init(); 	//CommandHandler
+		config.init();		//ConfigHandler
+		jobs.init();		//JobHandler
+		snapchat.init(); 	//SnapchatHandler
+		
 	}
 
 	@Override
@@ -423,6 +443,11 @@ public class UnacceptableBot extends ListenerAdapter {
 
 			e.printStackTrace();
 		}
+	}
+	
+	public static JobHandler getJobHandler()
+	{
+		return jobs;
 	}
 
 	public static CommandHandler getCommandHandler() {
