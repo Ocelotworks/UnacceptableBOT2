@@ -3,6 +3,7 @@ package com.unacceptableuse.unacceptablebot.command;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.net.ConnectException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -36,7 +37,7 @@ public class CommandImageSearch extends Command {
 					sendMessage(args[i + 1] + "is not a number.", channel);
 					return;
 				}
-			} else if(args[i].toLowerCase().startsWith("--i")) {
+			} else if(args[i].toLowerCase().startsWith("--r")) {
 				rehost = true;
 			}
 		}
@@ -48,37 +49,45 @@ public class CommandImageSearch extends Command {
 			String url = new JsonParser().parse(new InputStreamReader(is)).getAsJsonObject().get("responseData").getAsJsonObject().get("results").getAsJsonArray().get(nth).getAsJsonObject().get("url").getAsString();
 		
 			if (rehost) {
-				URL api;
-				api = new URL("https://api.imgur.com/3/image");
-				HttpURLConnection conn = (HttpURLConnection) api.openConnection();
+				HttpURLConnection httpcon = (HttpURLConnection) new URL("http://upload.gfycat.com/transcode?fetchUrl=" + url).openConnection();
+				httpcon.addRequestProperty("User-Agent", "Mozilla/4.0");
+				
+				try {
+					String gfy = new JsonParser().parse(new InputStreamReader(httpcon.getInputStream())).getAsJsonObject().get("gfyName").getAsString();
+					url = "http://gfycat.com/" + gfy;
+				} catch (NullPointerException notagif) {
+					URL api;
+					api = new URL("https://api.imgur.com/3/image");
+					HttpURLConnection conn = (HttpURLConnection) api.openConnection();
 
-				String data = URLEncoder.encode("image", "UTF-8") + "=" + URLEncoder.encode(url, "UTF-8");
+					String data = URLEncoder.encode("image", "UTF-8") + "=" + URLEncoder.encode(url, "UTF-8");
 
-				conn.setDoOutput(true);
-				conn.setDoInput(true);
-				conn.setRequestMethod("POST");
-				conn.setRequestProperty("Authorization", "Client-ID " + "0b47321417f7173");
-				conn.setRequestMethod("POST");
-				conn.setRequestProperty("Content-Type",
-						"application/x-www-form-urlencoded");
-
-				conn.connect();
-				OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
-				wr.write(data);
-				wr.close();
-
-				url = new JsonParser().parse(new InputStreamReader(conn.getInputStream())).getAsJsonObject().get("data").getAsJsonObject().get("link").getAsString();
-				conn.disconnect();
+					conn.setDoOutput(true);
+					conn.setDoInput(true);
+					conn.setRequestMethod("POST");
+					conn.setRequestProperty("Authorization", "Client-ID " + "0b47321417f7173");
+					conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+					conn.connect();
+					
+					OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
+					wr.write(data);
+					wr.close();
+					
+					url = new JsonParser().parse(new InputStreamReader(conn.getInputStream())).getAsJsonObject().get("data").getAsJsonObject().get("link").getAsString();
+					conn.disconnect();
+				}
 			}
 			
 			sendMessage(url, channel);
+		} catch (ConnectException timeout) { 
+			sendMessage("Could not rehost.", channel);
 		} catch (Exception e) {
+			e.printStackTrace();
 			if(e.getMessage().equals("Index: 0, Size: 0")) {
 				sendMessage("No results found.", channel);
 			} else {
 				sendMessage(e.getMessage(), channel);
 			}
-			return;
 		}
 	}
 
@@ -89,7 +98,7 @@ public class CommandImageSearch extends Command {
 
 	@Override
 	public String getHelp() {
-		return "Usage: gimage <search term> [--number <1-4>] [--imgur] | Result: A link to the first result on google images, if --n is included, returns the nth result, will rehost the image to imgur if --imgur is included.";
+		return "Usage: gimage <search term> [--number <1-4>] [--rehost] | Result: A link to the first result on google images, if --n is included, returns the nth result, will rehost the image to imgur if --imgur is included.";
 	}
 	
 	@Override
