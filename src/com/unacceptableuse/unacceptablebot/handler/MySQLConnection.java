@@ -61,7 +61,6 @@ public class MySQLConnection
 
 
 	public String getSetting(String setting) {
-		UnacceptableBot.getBot().sendIRC().message("##Ocelotworks", "getSetting("+setting+") called.");
 		try {
 			PreparedStatement ps = getPreparedStatement("SELECT Value FROM  teknogeek_settings.Global_Settings WHERE  `Setting` =  ? LIMIT 1");
 			ps.setString(1, setting);

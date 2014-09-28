@@ -40,6 +40,7 @@ import com.unacceptableuse.unacceptablebot.handler.SnapchatHandler;
 import com.unacceptableuse.unacceptablebot.handler.SpellCheckHandler;
 import com.unacceptableuse.unacceptablebot.threading.JobThread;
 import com.unacceptableuse.unacceptablebot.threading.SnapchatThread;
+import com.unacceptableuse.unacceptablebot.variable.HealthStatus;
 
 @SuppressWarnings("rawtypes")
 public class UnacceptableBot extends ListenerAdapter {
@@ -56,6 +57,7 @@ public class UnacceptableBot extends ListenerAdapter {
 	private boolean loadChansFromDB = false; //When using ZNC this should be false to avoid dual entries in the database!
 	public static boolean twatMode = false;
 	private static Timer timer = null;
+	private static HealthStatus ZNCStatus = new HealthStatus("ZNC", "Connected", "export");
 
 	/**
 	 * Starts the init process of everything
@@ -105,6 +107,9 @@ public class UnacceptableBot extends ListenerAdapter {
 		snapchat.init(); 	//SnapchatHandler
 		
 	}
+	
+
+	
 
 	@Override
 	public void onMessage(final MessageEvent event) throws Exception {
@@ -196,6 +201,22 @@ public class UnacceptableBot extends ListenerAdapter {
 		// String user = event.getUser().getNick();
 		// handler.processMessage(event);
 		// }
+		
+		if(event.getUser().equals("*status"))
+		{
+			if(ZNCStatus.isCritical())
+			{
+				if(event.getMessage().contains("Connected"))
+				{
+					ZNCStatus.setCritical(false);
+					ZNCStatus.setStatus(event.getMessage());
+				}
+			}else if(event.getMessage().contains("Disconnected") || event.getMessage().contains("Error"))
+			{
+				ZNCStatus.setCritical(true);
+				ZNCStatus.setStatus(event.getMessage());
+			}
+		}
 
 		if (event.getUser().getNick().equals("DogeWallet")) {
 			if (event.getMessage().contains("Active")) {
@@ -237,6 +258,12 @@ public class UnacceptableBot extends ListenerAdapter {
 
 			}
 		}
+	}
+	
+	
+	public static HealthStatus getZNCStatus()
+	{
+		return ZNCStatus;
 	}
 
 	@Override

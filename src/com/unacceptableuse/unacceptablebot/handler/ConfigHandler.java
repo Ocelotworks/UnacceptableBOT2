@@ -7,9 +7,12 @@ import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Properties;
 
 import org.pircbotx.User;
+
+import com.unacceptableuse.unacceptablebot.variable.HealthStatus;
 
 public class ConfigHandler {
 
@@ -46,6 +49,24 @@ public class ConfigHandler {
 
 			e1.printStackTrace();
 		}
+	}
+	
+	/**
+	 * Updates the web status
+	 * @param ar An array of HealthStatus
+	 */
+	public void updateWebStatus(ArrayList<HealthStatus> ar)
+	{
+		StringBuilder stb = new StringBuilder();
+		while(ar.iterator().hasNext())
+		{
+			HealthStatus hs = ar.iterator().next();
+			stb.append(hs.toString());
+			if(ar.iterator().hasNext())
+				stb.append(":");
+		}
+		
+		setString("health", stb.toString());
 	}
 	
 	public boolean isConnected()
@@ -148,6 +169,8 @@ public class ConfigHandler {
 			return false;
 		}
 	}
+	
+	
 
 	/**
 	 * @author Neil - dvd604

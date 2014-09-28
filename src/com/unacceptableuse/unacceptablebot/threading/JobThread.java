@@ -2,9 +2,11 @@ package com.unacceptableuse.unacceptablebot.threading;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.TimerTask;
 
 import com.unacceptableuse.unacceptablebot.UnacceptableBot;
+import com.unacceptableuse.unacceptablebot.variable.HealthStatus;
 import com.unacceptableuse.unacceptablebot.variable.Job;
 
 public class JobThread extends TimerTask
@@ -27,6 +29,17 @@ public class JobThread extends TimerTask
 			e.printStackTrace();
 		}
 		
+		updateHealth();
+		
+	}
+	
+	
+	private static void updateHealth()
+	{
+		
+		ArrayList<HealthStatus> statuses = new ArrayList<HealthStatus>();
+		statuses.add(new HealthStatus("IRC Connection",UnacceptableBot.getBot().isConnected() ? "connected" : "disconnected", "resize-small").setCritical(!UnacceptableBot.getBot().isConnected()));
+		statuses.add(UnacceptableBot.getZNCStatus());
 	}
 
 }
