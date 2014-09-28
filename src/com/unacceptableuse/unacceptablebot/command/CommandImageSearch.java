@@ -1,9 +1,9 @@
 package com.unacceptableuse.unacceptablebot.command;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.net.ConnectException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -11,6 +11,7 @@ import java.net.URLEncoder;
 import org.pircbotx.Channel;
 import org.pircbotx.User;
 
+import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 /**
@@ -44,16 +45,27 @@ public class CommandImageSearch extends Command {
 		
 		String query = message.substring(message.indexOf(" ") + 1, message.indexOf("--") == -1 ? message.length() - 1 : message.indexOf(" --"));
 				
-		try {
-			InputStream is = new URL("http://ajax.googleapis.com/ajax/services/search/images?v=13.0&q=" + query.replace(" ", "%20").replace("&", "and")).openConnection().getInputStream();
-			String url = new JsonParser().parse(new InputStreamReader(is)).getAsJsonObject().get("responseData").getAsJsonObject().get("results").getAsJsonArray().get(nth).getAsJsonObject().get("url").getAsString();
+		JsonParser json = new JsonParser();
 		
+		String url = "";
+		try {
+			InputStream is = new URL("http://ajax.googleapis.com/ajax/services/search/images?v=13.0&q=" + query.replace(" ", "%20").replace("&", "and")).openStream();
+			url = json.parse(new InputStreamReader(is)).getAsJsonObject().get("responseData").getAsJsonObject().get("results").getAsJsonArray().get(nth).getAsJsonObject().get("url").getAsString();
+		} catch (Exception e) {
+			if(e.getMessage().equals("Index: 0, Size: 0")) {
+				sendMessage("No results found.", channel);
+			} else {
+				sendMessage(e.getMessage(), channel);
+			}
+			return;
+		}
+		
+		try {
 			if (rehost) {
-				HttpURLConnection httpcon = (HttpURLConnection) new URL("http://upload.gfycat.com/transcode?fetchUrl=" + url).openConnection();
-				httpcon.addRequestProperty("User-Agent", "Mozilla/4.0");
-				
 				try {
-					String gfy = new JsonParser().parse(new InputStreamReader(httpcon.getInputStream())).getAsJsonObject().get("gfyName").getAsString();
+					HttpURLConnection httpcon = (HttpURLConnection) new URL("http://upload.gfycat.com/transcode?fetchUrl=" + url).openConnection();
+					httpcon.addRequestProperty("User-Agent", "Mozilla/4.0");
+					String gfy = json.parse(new InputStreamReader(httpcon.getInputStream())).getAsJsonObject().get("gfyName").getAsString();
 					url = "http://gfycat.com/" + gfy;
 				} catch (NullPointerException notagif) {
 					URL api;
@@ -73,21 +85,25 @@ public class CommandImageSearch extends Command {
 					wr.write(data);
 					wr.close();
 					
-					url = new JsonParser().parse(new InputStreamReader(conn.getInputStream())).getAsJsonObject().get("data").getAsJsonObject().get("link").getAsString();
+					JsonObject imgurJson = json.parse(new InputStreamReader(conn.getInputStream())).getAsJsonObject();
+					
+					if (imgurJson.get("success").getAsBoolean()) {
+						url = imgurJson.get("data").getAsJsonObject().get("link").getAsString();
+					} else {
+						sendMessage("Rehost unsuccessful, original image: " + url, channel);
+					}
+					
 					conn.disconnect();
 				}
 			}
 			
-			sendMessage(url, channel);
-		} catch (ConnectException timeout) { 
-			sendMessage("Could not rehost.", channel);
-		} catch (Exception e) {
-			e.printStackTrace();
-			if(e.getMessage().equals("Index: 0, Size: 0")) {
+			if(url.equals("")) {
 				sendMessage("No results found.", channel);
 			} else {
-				sendMessage(e.getMessage(), channel);
+				sendMessage(url, channel);
 			}
+		} catch (IOException timeout) { 
+			sendMessage("Rehost unsuccessful, original image: " + url, channel);
 		}
 	}
 
@@ -98,7 +114,7 @@ public class CommandImageSearch extends Command {
 
 	@Override
 	public String getHelp() {
-		return "Usage: gimage <search term> [--number <1-4>] [--rehost] | Result: A link to the first result on google images, if --n is included, returns the nth result, will rehost the image to imgur if --imgur is included.";
+		return "Usage: gimage <search term> [--number <1-4>] [--rehost] | Result: A link to the first result on google images, if --n is included, returns the nth result, will rehost the image to imgur or gfycat if --rehost is included.";
 	}
 	
 	@Override
