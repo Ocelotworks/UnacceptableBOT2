@@ -29,6 +29,7 @@ import com.unacceptableuse.unacceptablebot.command.CommandMessageStats;
 import com.unacceptableuse.unacceptablebot.command.CommandPing;
 import com.unacceptableuse.unacceptablebot.command.CommandQuote;
 import com.unacceptableuse.unacceptablebot.command.CommandRand;
+import com.unacceptableuse.unacceptablebot.command.CommandRelay;
 import com.unacceptableuse.unacceptablebot.command.CommandSentence;
 import com.unacceptableuse.unacceptablebot.command.CommandSetAccessLevel;
 import com.unacceptableuse.unacceptablebot.command.CommandSeuss;
@@ -73,6 +74,7 @@ public class CommandHandler {
 		addCommand(new CommandPing());
 		addCommand(new CommandQuote());
 		addCommand(new CommandRand());
+		addCommand(new CommandRelay());
 		addCommand(new CommandSentence());
 		addCommand(new CommandSetAccessLevel());
 		addCommand(new CommandSeuss());

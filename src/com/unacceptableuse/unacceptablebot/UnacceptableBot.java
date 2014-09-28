@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.Random;
 import java.util.Timer;
@@ -51,6 +52,7 @@ public class UnacceptableBot extends ListenerAdapter {
 	private static JobHandler jobs = new JobHandler();
 	public static Random rand = new Random();
 	public static ArrayList<String> channels = new ArrayList<String>();
+	public static HashMap<String, ArrayList<String>> relay = new HashMap<String, ArrayList<String>>();
 	private int messageCount = 0;
 	public static ArrayList<String> sexQuotes = new ArrayList<String>();
 	private static PircBotX bot = null;
@@ -107,12 +109,15 @@ public class UnacceptableBot extends ListenerAdapter {
 		snapchat.init(); 	//SnapchatHandler
 		
 	}
-	
-
-	
 
 	@Override
 	public void onMessage(final MessageEvent event) throws Exception {
+		if(relay.containsKey(event.getChannel().getName())) {
+			for(String to : relay.get(event.getChannel().getName())) {
+				bot.sendIRC().message(to, event.getChannel().getName() + " - <" + event.getUser().getNick() + "> " + event.getMessage());
+			}
+		}
+		
 		if (event.getUser().getNick().equals("[MC]-DogeFest") && event.getMessage().contains("<")) {
 				/*onMessage(
 						new MessageEvent<PircBotX>(event.getBot(), 
@@ -275,6 +280,12 @@ public class UnacceptableBot extends ListenerAdapter {
 
 	@Override
 	public void onJoin(final JoinEvent event) {
+		if(relay.containsKey(event.getChannel().getName())) {
+			for(String to : relay.get(event.getChannel().getName())) {
+				bot.sendIRC().message(to, event.getUser().getNick() + " joined " + event.getChannel().getName());
+			}
+		}
+		
 		if (event.getUser().equals(event.getBot().getUserBot())) {
 			channels.add(event.getChannel().getName());
 			log("INFO", "JOIN", "Joined channel "
