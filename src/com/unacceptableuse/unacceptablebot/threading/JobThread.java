@@ -18,7 +18,7 @@ public class JobThread extends TimerTask
 			ResultSet rs = UnacceptableBot.getConfigHandler().sql.query("SELECT * FROM `teknogeek_settings`.`Jobs`");
 			while(rs.next())
 			{
-				UnacceptableBot.getJobHandler().queueJob(Job.getJob(rs.getString(2)),rs.getString(3), rs.getInt(1));
+				UnacceptableBot.getJobHandler().queueJob(Job.getJob(rs.getString(2)), rs.getString(3));
 			}
 			
 		} catch (SQLException e)

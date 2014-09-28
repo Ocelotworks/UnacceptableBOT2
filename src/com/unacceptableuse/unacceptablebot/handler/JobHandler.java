@@ -8,6 +8,7 @@ public class JobHandler
 {
 
 	private ArrayList<Job> queue = new ArrayList<Job>();
+	private ArrayList<String> args = new ArrayList<String>();
 	
 	
 	public void init()
@@ -16,9 +17,10 @@ public class JobHandler
 	}
 	
 	
-	public void queueJob(Job job, String args, int priority)
+	public void queueJob(Job job, String args)
 	{
-		
+		queue.add(job);
+		this.args.add(args);
 	}
 	
 	
