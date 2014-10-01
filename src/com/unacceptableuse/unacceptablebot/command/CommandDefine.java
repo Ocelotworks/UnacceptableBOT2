@@ -91,8 +91,4 @@ public class CommandDefine extends Command
 		return 1;
 	}
 
-	@Override
-	public String getHelp() {
-		return "Usage: define <word> | Result: Returns the lookup for the word ";
-	}
 }

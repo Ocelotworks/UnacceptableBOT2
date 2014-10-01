@@ -21,9 +21,4 @@ public class CommandTime extends Command{
 	{
 		return 0;
 	}
-
-	@Override
-	public String getHelp() {
-		return "Usage: time | Result: Returns the current system time";
-	}
 }

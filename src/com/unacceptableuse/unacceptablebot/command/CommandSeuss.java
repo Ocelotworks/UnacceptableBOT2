@@ -39,10 +39,11 @@ public class CommandSeuss extends Command {
 		case ("list"): {
 			File folder = new File("books/");
 			File[] listOfFiles = folder.listFiles();
-			sendMessage("Books:", channel);
+			String books = "";
 			for (int i = 0; i < listOfFiles.length; i++) {
-						sendMessage((i + 1) + ". " + listOfFiles[i], channel);
+				books.concat(listOfFiles[i].getName());
 			}
+			sendMessage("Books: ".concat(books),channel);
 			break;
 		}
 		}
@@ -69,22 +70,22 @@ public class CommandSeuss extends Command {
 
 		BufferedReader in = null;
 		List<String> fileList = new ArrayList<String>();
-		try {   
-		    in = new BufferedReader(new FileReader(file));
-		    String str;
-		    while ((str = in.readLine()) != null) {
-		        fileList.add(str);
-		    }
+		try {
+			in = new BufferedReader(new FileReader(file));
+			String str;
+			while ((str = in.readLine()) != null) {
+				fileList.add(str);
+			}
 		} catch (FileNotFoundException e) {
-		    e.printStackTrace();
+			e.printStackTrace();
 		} catch (IOException e) {
-		    e.printStackTrace();
+			e.printStackTrace();
 		} finally {
-		    if (in != null) {
-		        in.close();
-		    }
+			if (in != null) {
+				in.close();
+			}
 		}
-		
+
 		return fileList.get(rand);
 	}
 
@@ -109,9 +110,5 @@ public class CommandSeuss extends Command {
 		}
 	}
 
-	@Override
-	public String getHelp() {
-		return "Usage: seuss <bookName|list> | Result: Either pick a line of a Dr. Seuss book at random, or list all availble Dr. Seuss books ";
-	}
 
 }

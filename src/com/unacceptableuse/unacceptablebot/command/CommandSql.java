@@ -96,9 +96,5 @@ public class CommandSql extends Command
 		return Level.SUPERADMIN;
 	}
 
-	@Override
-	public String getHelp() {
-		return "System Command";
-	}
 	
 }

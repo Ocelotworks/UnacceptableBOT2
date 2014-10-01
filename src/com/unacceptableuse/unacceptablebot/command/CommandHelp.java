@@ -15,30 +15,8 @@ public class CommandHelp extends Command {
 	@Override
 	public void performCommand(User sender, Channel channel, String message,
 			String[] args) {
-		sendMessage("Help:", channel);
-
-		for (int i = 0; i < UnacceptableBot.getCommandHandler().getCommands()
-				.size(); i++) {
-
-			// Message: command : command help
-
-			if (!UnacceptableBot.getCommandHandler().getCommands().get(i)
-					.getHelp().toLowerCase().equals("system command")
-					|| !UnacceptableBot.getCommandHandler().getCommands()
-							.get(i).getHelp().toLowerCase()
-							.equals("unfinished")
-					|| !UnacceptableBot.getCommandHandler().getCommands()
-							.get(i).getHelp().toLowerCase().equals("")) { //Holy indent batman
-
-				sendMessage("&GREEN"
-						+ UnacceptableBot.getCommandHandler().getCommands()
-								.get(i).getAliases()[0]
-						+ " &RESET - &RED"
-						+ UnacceptableBot.getCommandHandler().getCommands()
-								.get(i).getHelp(), channel);
-			}
-		}
-
+		//I hate you all <3
+		sendMessage("Peter has shit to fix",channel);
 	}
 
 	@Override
@@ -46,9 +24,5 @@ public class CommandHelp extends Command {
 		return new String[] { "help", "?" };
 	}
 
-	@Override
-	public String getHelp() {
-		return "";
-	}
 
 }

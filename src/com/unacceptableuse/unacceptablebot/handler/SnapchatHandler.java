@@ -28,6 +28,7 @@ import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.Session;
 import com.unacceptableuse.unacceptablebot.UnacceptableBot;
+import com.unacceptableuse.unacceptablebot.variable.Snap;
 
 public class SnapchatHandler {
 
@@ -36,9 +37,7 @@ public class SnapchatHandler {
 	String fileName;
 	private boolean _loggedIn = false;
 	StringBuilder stb;
-	public ArrayList<String> add = new ArrayList<String>();
-	public ArrayList<String> targ = new ArrayList<String>();
-	public ArrayList<org.pircbotx.Channel> chan = new ArrayList<org.pircbotx.Channel>();
+	ArrayList<Snap> snaps = new ArrayList<Snap>();
 
 	public void init() throws Exception {
 		user = "Stevie-BOT";
@@ -211,40 +210,12 @@ public class SnapchatHandler {
 	}
 
 	public void doOneInQueue(PircBotX bot, String channel) {
-		int assumedSnapCount = add.size() * 3;
-		int actualSnapCount = add.size() + targ.size() + chan.size();
-		if (actualSnapCount != assumedSnapCount) {
-			nullQueue(assumedSnapCount, actualSnapCount);
-		} else {
-			//We have equal numbers of snaps in each queue. great!
-			for(int i = 0; i<actualSnapCount; i++){
-				if (add.get(i) != "sent!"){
-					getImage(add.get(i),targ.get(i));
-					UnacceptableBot.getBot().sendIRC().message(chan.get(i).getName(), "Snap to "
-					+ targ.get(i) + " sent!");
-					add.set(i, "sent!");
-					targ.set(i, "hidden");
-					break;
-				}
+		for(Snap snap : snaps){
+			if(snap.sent != true){
+				snap.send();
+				break;
 			}
 		}
-	}
-
-	private void nullQueue(int a, int b) {
-		UnacceptableBot
-				.getBot()
-				.sendIRC()
-				.message(UnacceptableBot.getConfigHandler().getHomeChannel(),
-						a + "!=" + b);
-		UnacceptableBot
-				.getBot()
-				.sendIRC()
-				.message(UnacceptableBot.getConfigHandler().getHomeChannel(),
-						"Nulling queue to fix!");
-		add = new ArrayList<String>();
-		targ = new ArrayList<String>();
-		chan = new ArrayList<org.pircbotx.Channel>();
-
 	}
 
 	@SuppressWarnings("unused")
@@ -287,5 +258,9 @@ public class SnapchatHandler {
 		String pass = UnacceptableBot.getConfigHandler().getString(
 				"sc_password");
 		return pass;
+	}
+	
+	public void addSnap(Snap snap){
+		snaps.add(snap);
 	}
 }

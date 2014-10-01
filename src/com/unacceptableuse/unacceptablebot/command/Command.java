@@ -60,7 +60,6 @@ public abstract class Command
 		return Level.USER;
 	}
 	
-	public abstract String getHelp();
 	
 	/**
 	 * Override this if a command has any arguments, forcing the {@link CommandHandler} to throw an error if there are no arguments

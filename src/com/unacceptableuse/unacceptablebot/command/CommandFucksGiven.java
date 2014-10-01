@@ -24,9 +24,5 @@ public class CommandFucksGiven extends Command {
 		return new String[] { "fucksgiven" };
 	}
 
-	@Override
-	public String getHelp() {
-		return "Usage: fucksgiven | Result: Shows how many fucks you give";
-	}
 
 }

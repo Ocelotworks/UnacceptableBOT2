@@ -73,9 +73,5 @@ public class CommandSentence extends Command
 		return 1;
 	}
 
-	@Override
-	public String getHelp() {
-		return "Unfinished";
-	}
 
 }

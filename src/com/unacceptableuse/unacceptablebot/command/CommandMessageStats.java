@@ -92,9 +92,5 @@ public class CommandMessageStats extends Command {
 		return new String[] {"messagestats"};
 	}
 
-	@Override
-	public String getHelp() {
-		return "Usage: messagestats [-u <user> | --user <user>] [-ch <channel> | --channel <channel>] | Result: Grades the channel of several recorded stats";
-	}
 
 }

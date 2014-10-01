@@ -92,7 +92,7 @@ public class CommandHandler {
 	/**
 	 * Pass in onMessage for running commands
 	 * 
-	 * @author UnacceptableUse, teknogeek
+	 * @author UnacceptableUse, teknogeek, dvd604
 	 * @param event
 	 *            - The MessageEvent containing user, channel etc
 	 */
@@ -112,7 +112,7 @@ public class CommandHandler {
 				event.respond("Needed Level: " + Level.levelToInt(chosenCommand.getAccessLevel()) + " | Your Level: " + UnacceptableBot.getConfigHandler().getUserLevel(sender));
 				event.respond("You do not have permission to perform this command");
 			} else {
-				if (chosenCommand.requiredArguments() > event.getMessage().split(" ").length) {
+				if (chosenCommand.requiredArguments() > (event.getMessage().split(" ").length - 1)) {
 					event.respond("Insufficent Arguments. There should be help here but I havn't gotten around to it.");
 				} else {
 					UnacceptableBot.getConfigHandler().increment("stat:commandsPerformed");

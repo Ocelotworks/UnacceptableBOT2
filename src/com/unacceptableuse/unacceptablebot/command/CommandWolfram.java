@@ -60,10 +60,7 @@ public class CommandWolfram extends Command {
 		return new String[]{"wolfram"};
 	}
 
-	@Override
-	public String getHelp() {
-		return "Usage: wolfram <querey> | Performs wolfram alpha query.";
-	}
+
 	
 	@Override
 	public int requiredArguments() {

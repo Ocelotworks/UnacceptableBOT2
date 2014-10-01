@@ -52,10 +52,6 @@ public class CommandTopic extends Command
 		return Level.TRUSTED;
 	}
 
-	@Override
-	public String getHelp()
-	{
-		return "Adds the previous quote to the random topic list";
-	}
+
 
 }

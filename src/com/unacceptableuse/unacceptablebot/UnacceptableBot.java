@@ -107,7 +107,6 @@ public class UnacceptableBot extends ListenerAdapter {
 		config.init();		//ConfigHandler
 		jobs.init();		//JobHandler
 		snapchat.init(); 	//SnapchatHandler
-		
 	}
 
 	@Override

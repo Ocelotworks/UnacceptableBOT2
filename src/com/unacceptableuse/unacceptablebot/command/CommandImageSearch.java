@@ -112,10 +112,6 @@ public class CommandImageSearch extends Command {
 		return new String[]{ "gimage", "imagesearch" };
 	}
 
-	@Override
-	public String getHelp() {
-		return "Usage: gimage <search term> [--number <1-4>] [--rehost] | Result: A link to the first result on google images, if --n is included, returns the nth result, will rehost the image to imgur or gfycat if --rehost is included.";
-	}
 	
 	@Override
 	public int requiredArguments() {

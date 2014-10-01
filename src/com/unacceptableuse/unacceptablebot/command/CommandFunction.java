@@ -27,9 +27,5 @@ public class CommandFunction extends Command
 		return 2;
 	}
 
-	@Override
-	public String getHelp() {
-		return "System command";
-	}
 
 }

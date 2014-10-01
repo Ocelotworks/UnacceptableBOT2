@@ -73,9 +73,5 @@ public class CommandImage extends Command
 		return new String[]{"image","images"};
 	}
 
-	@Override
-	public String getHelp() {
-		return "Usage: image <subreddit>  | Result: Returns a link of a picture from the desired subreddit";
-	}
 
 }

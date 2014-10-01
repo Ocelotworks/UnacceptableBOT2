@@ -38,9 +38,4 @@ public class CommandBroadcast extends Command{
 	public Level getAccessLevel() {
 		return Level.ADMIN;
 	}
-
-	@Override
-	public String getHelp() {
-		return "Usage: broadcast <message> | Result: Sends a message to every channel Stevie is connected to";
-	}
 }

@@ -47,9 +47,5 @@ public class CommandStevie extends Command
 		return new String[]{"stevie","steviebot","ub"};
 	}
 
-	@Override
-	public String getHelp() {
-		return "Usage: stevie <credits|source|about|help> | Result: Produces information on the selected topic";
-	}
 
 }
