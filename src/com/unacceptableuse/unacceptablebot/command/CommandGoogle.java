@@ -35,5 +35,9 @@ public class CommandGoogle extends Command
 		return 1;
 	}
 
+	@Override
+	public String getHelp() {
+		return "Usage: google <terms> | Result: Produces a LMGTFY link using the specified terms";
+	}
 
 }

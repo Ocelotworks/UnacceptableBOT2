@@ -52,5 +52,9 @@ public class CommandFillMeIn extends Command {
 		return 1;
 	}
 
+	@Override
+	public String getHelp() {
+		return "Usage: fmi <number> | Result: Shows you the last specified number of messages";
+	}
 
 }

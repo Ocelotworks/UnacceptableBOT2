@@ -110,5 +110,8 @@ public class CommandSeuss extends Command {
 		}
 	}
 
-
+	@Override
+	public String getHelp() {
+		return "Usage: seuss <bookName|list> | Result: Either pick a line of a Dr. Seuss book at random, or list all availble Dr. Seuss books ";
+	}
 }

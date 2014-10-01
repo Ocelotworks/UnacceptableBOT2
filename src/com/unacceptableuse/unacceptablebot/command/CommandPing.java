@@ -38,5 +38,9 @@ public class CommandPing extends Command {
 		return new String[]{"ping"};
 	}
 
+	@Override
+	public String getHelp() {
+		return "Usage: ping <url> | Pings the given URL.";
+	}
 
 }

@@ -88,10 +88,13 @@ public class CommandSnapChat extends Command {
 		return 1;
 	}
 
-	
 	@Override
 	public Level getAccessLevel(){
 		return Level.SUPERADMIN;
 	}
-
+	
+	@Override
+	public String getHelp() {
+		return "System command";
+	}
 }

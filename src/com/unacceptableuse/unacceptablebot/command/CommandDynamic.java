@@ -86,5 +86,9 @@ public class CommandDynamic extends Command
 		return new String[]{alias};
 	}
 
+	@Override
+	public String getHelp() {
+		return "System command";
+	}
 
 }

@@ -85,4 +85,8 @@ public class CommandCommand extends Command{
 		return  Level.SUPERADMIN;
 	}
 
+	@Override
+	public String getHelp() {
+		return "Usage: command <linux command> | Result: Runs the linux command on the server";
+	}
 }

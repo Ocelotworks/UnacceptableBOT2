@@ -49,8 +49,9 @@ public abstract class Command
 		sendMessage(message, user.getNick());
 	}
 	
-	
 	public abstract String[] getAliases();
+	
+	public abstract String getHelp();
 	
 	/**
 	 * Override this if a command has a required access level other than {@link Level}.USER.
@@ -59,7 +60,6 @@ public abstract class Command
 	public Level getAccessLevel() {
 		return Level.USER;
 	}
-	
 	
 	/**
 	 * Override this if a command has any arguments, forcing the {@link CommandHandler} to throw an error if there are no arguments

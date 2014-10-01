@@ -35,5 +35,8 @@ public class CommandListChans extends Command{
 		return Level.ADMIN;
 	}
 
-
+	@Override
+	public String getHelp() {
+		return "System command";
+	}
 }

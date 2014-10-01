@@ -38,4 +38,9 @@ public class CommandConnect extends Command
 		return Level.ADMIN;
 	}
 
+	@Override
+	public String getHelp() {
+		return "Usage: join <channel> | Result: Joins the bot to the specified channel";
+	}
+
 }

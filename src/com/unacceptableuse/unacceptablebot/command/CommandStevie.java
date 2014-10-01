@@ -27,7 +27,7 @@ public class CommandStevie extends Command
 			sendMessage(UnacceptableBot.getConfigHandler().getString("botName")+" is a utility/logging bot originally designed for ##Ocelotworks", channel);	
 		}else if(args[1].equalsIgnoreCase("help"))
 		{
-			sendMessage("Help can be found here: https://unacceptableuse.com/bot/help.html", channel);
+			sendMessage("Help can be found here: http://unacceptableuse.com/bot/help.html", channel);
 		}else
 		{
 			sendMessage("I literally can't even hold all these feels.", channel);
@@ -47,5 +47,9 @@ public class CommandStevie extends Command
 		return new String[]{"stevie","steviebot","ub"};
 	}
 
+	@Override
+	public String getHelp() {
+		return "Usage: stevie <credits|source|about|help> | Result: Produces information on the selected topic";
+	}
 
 }

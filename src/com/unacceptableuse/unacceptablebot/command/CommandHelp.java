@@ -13,10 +13,14 @@ import com.unacceptableuse.unacceptablebot.UnacceptableBot;
 public class CommandHelp extends Command {
 
 	@Override
-	public void performCommand(User sender, Channel channel, String message,
-			String[] args) {
-		//I hate you all <3
-		sendMessage("Peter has shit to fix",channel);
+	public void performCommand(User sender, Channel channel, String message, String[] args) {
+		Command command = UnacceptableBot.getCommandHandler().getCommand(args[1]);
+		
+		if(command != null) {
+			sendMessage(command.getHelp(), channel);
+		} else {
+			sendMessage("Command, " + args[1] + ", not found.", channel);
+		}
 	}
 
 	@Override
@@ -24,5 +28,12 @@ public class CommandHelp extends Command {
 		return new String[] { "help", "?" };
 	}
 
-
+	@Override
+	public String getHelp() {
+		return "Usage help <command> | Returns: information about the specified command.";
+	}
+	
+	public int requiredArguments() {
+		return 1;
+	}
 }

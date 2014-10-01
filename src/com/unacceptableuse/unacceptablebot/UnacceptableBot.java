@@ -118,15 +118,6 @@ public class UnacceptableBot extends ListenerAdapter {
 		}
 		
 		if (event.getUser().getNick().equals("[MC]-DogeFest") && event.getMessage().contains("<")) {
-				/*onMessage(
-						new MessageEvent<PircBotX>(event.getBot(), 
-						event.getChannel(), 
-						MinecraftUser.create(
-								bot, 
-								event.getMessage().replace("[MineCraft] <", "").split(">")[0]), 
-								event.getMessage().substring(event.getMessage().indexOf(">") + 2)
-						)
-				);*/
 				onMessage(
 						new MessageEvent<PircBotX>(
 								event.getBot(), 
@@ -138,6 +129,9 @@ public class UnacceptableBot extends ListenerAdapter {
 				return;	
 		}
 		
+		if (event.getMessage().equalsIgnoreCase("test")) {
+			bot.sendIRC().message(event.getChannel().getName(), "icles");
+		}
 		
 		if (event.getMessage().charAt(0) == '!') {
 			if (event.getMessage().startsWith("!")) {

@@ -48,4 +48,9 @@ public class CommandDefineUD extends Command {
 	public int requiredArguments() {
 		return 1;
 	}
+
+	@Override
+	public String getHelp() {
+		return "Usage: defineud <word> | Result: Returns the Urban Dictionary definition of the word.";
+	}
 }

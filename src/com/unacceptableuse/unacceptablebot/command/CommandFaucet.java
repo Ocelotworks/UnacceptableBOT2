@@ -47,5 +47,9 @@ public class CommandFaucet extends Command
 		return new String[]{"faucet","freedoge"};
 	}
 
+	@Override
+	public String getHelp() {
+		return "System command";
+	}
 
 }

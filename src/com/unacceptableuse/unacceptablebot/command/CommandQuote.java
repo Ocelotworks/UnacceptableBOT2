@@ -67,5 +67,9 @@ public class CommandQuote extends Command {
 		return 1;
 	}
 
+	@Override
+	public String getHelp() {
+		return "Usage: quote <user> [-c <number> | --count <number>] [-ch <channel> | --channel <channel>]";
+	}
 
 }

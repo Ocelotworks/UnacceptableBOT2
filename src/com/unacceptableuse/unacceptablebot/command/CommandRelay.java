@@ -41,7 +41,11 @@ public class CommandRelay extends Command {
 	public Level getAccessLevel() {
 		return Level.ADMIN;
 	}
-
+	
+	@Override
+	public String getHelp() {
+		return "Usage: relay <from> <to> | Will relay all messages from the first channel to the second.";
+	}
 	
 	@Override
 	public int requiredArguments() {

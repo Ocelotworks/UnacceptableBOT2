@@ -48,4 +48,9 @@ public class CommandInsult extends Command
 		return new String[]{"insult"};
 	}
 
+	@Override
+	public String getHelp() {
+		return "Usage: insult [user] | Result: Generates an insult";
+	}
+
 }

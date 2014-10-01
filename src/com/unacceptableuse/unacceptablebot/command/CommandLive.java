@@ -93,6 +93,9 @@ public class CommandLive extends Command {
 		return 1;
 	}
 
-
+	@Override
+	public String getHelp() {
+		return "Usage: live <twitch user>  | Result: Checks if the specified twitch streamer is live ";
+	}
 
 }
