@@ -56,6 +56,10 @@ public class CommandSnapChat extends Command {
 			sendMessage("Logged in: " + UnacceptableBot.getSnapchat().logged(), channel);
 			break;
 		}
+		case ("forcequeue"): {
+			UnacceptableBot.getSnapchat().doOneInQueue();
+			break;
+		}
 		case ("fucked"): {
 			UnacceptableBot.setSnapchat(null);
 			sendMessage("Reseting handler..", channel);

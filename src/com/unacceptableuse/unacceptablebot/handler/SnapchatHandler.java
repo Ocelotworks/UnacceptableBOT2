@@ -209,7 +209,7 @@ public class SnapchatHandler {
 		channel.disconnect();
 	}
 
-	public void doOneInQueue(PircBotX bot, String channel) {
+	public void doOneInQueue() {
 		for(Snap snap : snaps){
 			if(snap.sent != true){
 				snap.send();
