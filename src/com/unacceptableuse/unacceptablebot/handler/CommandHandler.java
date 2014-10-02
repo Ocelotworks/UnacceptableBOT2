@@ -11,6 +11,7 @@ import com.unacceptableuse.unacceptablebot.command.Command;
 import com.unacceptableuse.unacceptablebot.command.CommandBroadcast;
 import com.unacceptableuse.unacceptablebot.command.CommandCommand;
 import com.unacceptableuse.unacceptablebot.command.CommandConnect;
+import com.unacceptableuse.unacceptablebot.command.CommandCount;
 import com.unacceptableuse.unacceptablebot.command.CommandDefine;
 import com.unacceptableuse.unacceptablebot.command.CommandDefineUD;
 import com.unacceptableuse.unacceptablebot.command.CommandFaucet;
@@ -86,6 +87,7 @@ public class CommandHandler {
 		addCommand(new CommandTwat());
 		addCommand(new CommandWhoami());
 		addCommand(new CommandWolfram());
+		addCommand(new CommandCount());
 		UnacceptableBot.log("DEBUG", "CMDREG", "Registered " + getCommands().size() + " commands successfully!");
 	}
 
