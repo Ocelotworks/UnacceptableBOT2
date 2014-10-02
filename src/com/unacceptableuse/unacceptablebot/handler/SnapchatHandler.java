@@ -18,7 +18,6 @@ import java.util.Scanner;
 import javax.imageio.ImageIO;
 
 import org.apache.commons.codec.binary.Base64;
-import org.pircbotx.PircBotX;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;

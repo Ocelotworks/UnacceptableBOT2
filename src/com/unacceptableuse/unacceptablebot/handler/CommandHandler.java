@@ -54,9 +54,11 @@ public class CommandHandler {
 	 */
 	public void init() {
 		System.out.println("Starting command registration");
+		// Keep this in alphabetical order.
 		addCommand(new CommandBroadcast());
 		addCommand(new CommandCommand());
 		addCommand(new CommandConnect());
+		addCommand(new CommandCount());
 		addCommand(new CommandDefine());
 		addCommand(new CommandDefineUD());
 		addCommand(new CommandFaucet());
@@ -87,7 +89,6 @@ public class CommandHandler {
 		addCommand(new CommandTwat());
 		addCommand(new CommandWhoami());
 		addCommand(new CommandWolfram());
-		addCommand(new CommandCount());
 		UnacceptableBot.log("DEBUG", "CMDREG", "Registered " + getCommands().size() + " commands successfully!");
 	}
 
