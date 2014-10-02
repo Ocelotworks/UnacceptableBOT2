@@ -49,7 +49,6 @@ public abstract class Command
 		sendMessage(message, user.getNick());
 	}
 	
-	
 	public abstract String[] getAliases();
 	
 	/**
