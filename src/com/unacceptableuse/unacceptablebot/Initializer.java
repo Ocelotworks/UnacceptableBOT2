@@ -32,7 +32,7 @@ public class Initializer
 			.buildConfiguration();
 			
 			UnacceptableBot.channels.add(props.getProperty("default_channel"));
-			UnacceptableBot.nickAuth(username, props.getProperty("nickserv_password"));
+			//UnacceptableBot.nickAuth(username, props.getProperty("nickserv_password"));
 			props.clear();
 			is.close();
 			 
