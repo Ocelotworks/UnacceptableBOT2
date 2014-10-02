@@ -16,10 +16,12 @@ public class CommandListChans extends Command{
 	@Override
 	public void performCommand(User sender, Channel channel, String message,String[] args) {
 		
-		sendMessage("Channels:", channel);
-		for(int i = 0; i < UnacceptableBot.getChannels().size(); i++){
-			sendMessage(UnacceptableBot.getChannels().get(i), channel);
+		//When you complain about my code a child in Africa dies because of Ebola
+		String channels = "";
+		for(String channelStr : UnacceptableBot.getChannels()){
+			channels.concat(", ".concat(channelStr));
 		}
+		sendMessage("Channels: " .concat(channels), channel);
 		
 	}
 
@@ -37,5 +39,4 @@ public class CommandListChans extends Command{
 	public String getHelp() {
 		return "System command";
 	}
-
 }

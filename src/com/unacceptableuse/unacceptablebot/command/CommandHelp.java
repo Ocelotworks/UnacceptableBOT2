@@ -13,32 +13,14 @@ import com.unacceptableuse.unacceptablebot.UnacceptableBot;
 public class CommandHelp extends Command {
 
 	@Override
-	public void performCommand(User sender, Channel channel, String message,
-			String[] args) {
-		sendMessage("Help:", channel);
-
-		for (int i = 0; i < UnacceptableBot.getCommandHandler().getCommands()
-				.size(); i++) {
-
-			// Message: command : command help
-
-			if (!UnacceptableBot.getCommandHandler().getCommands().get(i)
-					.getHelp().toLowerCase().equals("system command")
-					|| !UnacceptableBot.getCommandHandler().getCommands()
-							.get(i).getHelp().toLowerCase()
-							.equals("unfinished")
-					|| !UnacceptableBot.getCommandHandler().getCommands()
-							.get(i).getHelp().toLowerCase().equals("")) { //Holy indent batman
-
-				sendMessage("&GREEN"
-						+ UnacceptableBot.getCommandHandler().getCommands()
-								.get(i).getAliases()[0]
-						+ " &RESET - &RED"
-						+ UnacceptableBot.getCommandHandler().getCommands()
-								.get(i).getHelp(), channel);
-			}
+	public void performCommand(User sender, Channel channel, String message, String[] args) {
+		Command command = UnacceptableBot.getCommandHandler().getCommand(args[1]);
+		
+		if(command != null) {
+			sendMessage(command.getHelp(), channel);
+		} else {
+			sendMessage("Command, " + args[1] + ", not found.", channel);
 		}
-
 	}
 
 	@Override
@@ -48,7 +30,10 @@ public class CommandHelp extends Command {
 
 	@Override
 	public String getHelp() {
-		return "";
+		return "Usage help <command> | Returns: information about the specified command.";
 	}
-
+	
+	public int requiredArguments() {
+		return 1;
+	}
 }

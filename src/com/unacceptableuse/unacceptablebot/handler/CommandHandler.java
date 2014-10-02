@@ -92,7 +92,7 @@ public class CommandHandler {
 	/**
 	 * Pass in onMessage for running commands
 	 * 
-	 * @author UnacceptableUse, teknogeek
+	 * @author UnacceptableUse, teknogeek, dvd604
 	 * @param event
 	 *            - The MessageEvent containing user, channel etc
 	 */
@@ -109,11 +109,11 @@ public class CommandHandler {
 			return; // These arn't the commands you are looking for...
 		} else {
 			if (chosenCommand.getAccessLevel() == Level.BANNED || UnacceptableBot.getConfigHandler().getUserLevel(sender) < Level.levelToInt(chosenCommand.getAccessLevel())) {
-				event.respond("Needed Level: " + Level.levelToInt(chosenCommand.getAccessLevel()) + " | Your Level: " + UnacceptableBot.getConfigHandler().getUserLevel(sender));
-				event.respond("You do not have permission to perform this command");
+				event.getBot().sendIRC().message(event.getChannel().getName(), "You do not have permission to perform this command");
+				event.getBot().sendIRC().message(event.getChannel().getName(), "Needed Level: " + Level.levelToInt(chosenCommand.getAccessLevel()) + " | Your Level: " + UnacceptableBot.getConfigHandler().getUserLevel(sender));
 			} else {
-				if (chosenCommand.requiredArguments() > event.getMessage().split(" ").length) {
-					event.respond("Insufficent Arguments. There should be help here but I havn't gotten around to it.");
+				if (chosenCommand.requiredArguments() > (event.getMessage().split(" ").length - 1)) {
+					event.getBot().sendIRC().message(event.getChannel().getName(), "Insufficent Arguments. " + chosenCommand.getHelp());
 				} else {
 					UnacceptableBot.getConfigHandler().increment("stat:commandsPerformed");
 					UnacceptableBot.log("INFO", "CMDPRF", "Command " + chosenCommand.getAliases()[0] + " performed by " + sender.getNick());
@@ -121,7 +121,7 @@ public class CommandHandler {
 						chosenCommand.performCommand(sender, channel, message, message.split(" "));
 					} catch (Exception e) {
 						UnacceptableBot.log("ERROR", "CMDPRC", "Exception performing " + chosenCommand.getAliases()[0] + ": " + e.toString());
-						event.respond("An error occurred. (" + e.toString() + ")");
+						event.getBot().sendIRC().message(event.getChannel().getName(), "An error occurred. (" + e.toString() + ")");
 					}
 				}
 			}

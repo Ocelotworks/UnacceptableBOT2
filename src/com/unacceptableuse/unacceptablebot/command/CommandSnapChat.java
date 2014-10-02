@@ -8,6 +8,7 @@ import org.pircbotx.User;
 import com.unacceptableuse.unacceptablebot.UnacceptableBot;
 import com.unacceptableuse.unacceptablebot.handler.SnapchatHandler;
 import com.unacceptableuse.unacceptablebot.variable.Level;
+import com.unacceptableuse.unacceptablebot.variable.Snap;
 
 public class CommandSnapChat extends Command {
 
@@ -31,9 +32,8 @@ public class CommandSnapChat extends Command {
 			try {
 				String url = args[2];
 				String target = args[3];
-				UnacceptableBot.getSnapchat().add.add(url);
-				UnacceptableBot.getSnapchat().targ.add(target);
-				UnacceptableBot.getSnapchat().chan.add(channel);
+				Snap snap = new Snap(target, url, null);
+				UnacceptableBot.getSnapchat().addSnap(snap);
 			} catch (Exception e) {
 				sendMessage("Did you enter the correct number of arguments?", channel);
 				e.printStackTrace();
@@ -89,13 +89,12 @@ public class CommandSnapChat extends Command {
 	}
 
 	@Override
-	public String getHelp() {
-		return "System command";
-	}
-	
-	@Override
 	public Level getAccessLevel(){
 		return Level.SUPERADMIN;
 	}
-
+	
+	@Override
+	public String getHelp() {
+		return "System command";
+	}
 }
