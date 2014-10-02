@@ -30,6 +30,8 @@ import org.pircbotx.hooks.ListenerAdapter;
 import org.pircbotx.hooks.events.InviteEvent;
 import org.pircbotx.hooks.events.JoinEvent;
 import org.pircbotx.hooks.events.MessageEvent;
+import org.pircbotx.hooks.events.NickAlreadyInUseEvent;
+import org.pircbotx.hooks.events.NickChangeEvent;
 import org.pircbotx.hooks.events.PrivateMessageEvent;
 import org.pircbotx.hooks.events.QuitEvent;
 
@@ -218,6 +220,7 @@ public class UnacceptableBot extends ListenerAdapter {
 		doYoutube(event.getMessage(), event.getChannel().getName());
 		recordMessage(event);
 	}
+	
 
 	@Override
 	public void onPrivateMessage(final PrivateMessageEvent event)
@@ -286,6 +289,23 @@ public class UnacceptableBot extends ListenerAdapter {
 		}
 	}
 	
+	/**
+	 * 
+	 * @param username The nickname to auth as
+	 * @param password The password to auth with
+	 */
+	public static void nickAuth(String username, String password)
+	{
+		if(!getConfigHandler().getString("botName").equals(username))		//If the bot name set in the database is not equal to the one we need....
+			getConfigHandler().setString("botName", username);				//Then there must be a mistake somewhere... So we assume the database is wrong
+		
+		if(!getBot().getNick().equals(username))							//If the nickname isn't already the username we want
+			getBot().sendIRC().changeNick(username);						//Then we change it to what we are trying to authenticate as
+		
+		getBot().sendIRC().message("nickserv", "IDENTIFY "+password);		//Actually authenticating
+		
+	}
+	
 	
 	public static HealthStatus getZNCStatus()
 	{
@@ -294,8 +314,7 @@ public class UnacceptableBot extends ListenerAdapter {
 
 	@Override
 	public void onInvite(final InviteEvent event) {
-		log("INFO", "INVITE",
-				event.getUser() + " invited bot to " + event.getChannel());
+		log("INFO", "INVITE",event.getUser() + " invited bot to " + event.getChannel());
 		event.getBot().sendIRC().joinChannel(event.getChannel());
 	}
 
