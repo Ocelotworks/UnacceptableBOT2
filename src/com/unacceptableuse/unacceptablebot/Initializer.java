@@ -52,6 +52,10 @@ public class Initializer
 	
 	public static void main(String[] args) throws Exception
 	{
+		
+		if(System.getProperty("os.name").contains("Windows"))
+			System.err.println("WARNING: This is designed to run on Linux and certain features may not work on Windows!");
+
 		new Initializer("StevieBOT");
 	}
 }
