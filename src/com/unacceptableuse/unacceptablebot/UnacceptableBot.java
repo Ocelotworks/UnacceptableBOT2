@@ -111,9 +111,37 @@ public class UnacceptableBot extends ListenerAdapter {
 
 	@Override
 	public void onMessage(final MessageEvent event) throws Exception {
-		if(relay.containsKey(event.getChannel().getName())) {
-			for(String to : relay.get(event.getChannel().getName())) {
-				bot.sendIRC().message(to, event.getChannel().getName() + " - <" + event.getUser().getNick() + "> " + event.getMessage());
+		if(relay.containsKey(event.getChannel().getName().toLowerCase()) && !event.getMessage().startsWith("!stoprelay")) {
+			String user = event.getUser().getNick().toLowerCase();
+					/*.replace("a", "ᴀ")
+					.replace("b", "ʙ")
+					.replace("b", "ᴄ")
+					.replace("d", "ᴅ")
+					.replace("e", "ᴇ")
+					.replace("f", "f")
+					.replace("g", "ɢ")
+					.replace("h", "ʜ")
+					.replace("i", "ɪ")
+					.replace("j", "ᴊ")
+					.replace("k", "ᴋ")
+					.replace("l", "ʟ")
+					.replace("m", "ᴍ")
+					.replace("n", "ɴ")
+					.replace("o", "ᴏ")
+					.replace("p", "ᴘ")
+					.replace("q", "q")
+					.replace("r", "ʀ")
+					.replace("s", "s")
+					.replace("t", "ᴛ")
+					.replace("u", "ᴜ")
+					.replace("v", "ᴠ")
+					.replace("w", "ᴡ")
+					.replace("x", "x")
+					.replace("y", "ʏ")
+					.replace("z", "ᴢ");*/
+			
+			for(String to : relay.get(event.getChannel().getName().toLowerCase())) {
+				bot.sendIRC().message(to, event.getChannel().getName() + " - <" + user + "> " + event.getMessage());
 			}
 		}
 		
