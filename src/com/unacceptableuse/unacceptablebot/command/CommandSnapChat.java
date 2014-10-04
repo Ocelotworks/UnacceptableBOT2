@@ -32,7 +32,7 @@ public class CommandSnapChat extends Command {
 			try {
 				String url = args[2];
 				String target = args[3];
-				Snap snap = new Snap(target, url, null);
+				Snap snap = new Snap(target, url, null, channel.getName(), sender.getNick());
 				UnacceptableBot.getSnapchat().addSnap(snap);
 			} catch (Exception e) {
 				sendMessage("Did you enter the correct number of arguments?", channel);
