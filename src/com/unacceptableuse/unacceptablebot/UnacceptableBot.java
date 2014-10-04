@@ -73,7 +73,8 @@ public class UnacceptableBot extends ListenerAdapter {
 			initHandlers();
 		} catch (Exception e)
 		{
-			log("SEVERE", "HINIT", "A handler failed to initialize! "+e.toString()+". Attempting to continue, but it doesn't look good.");
+			log("SEVERE", "HINIT", "A handler failed to initialize! "+e.toString()+
+					". Attempting to continue, but it doesn't look good.");
 			e.printStackTrace();
 		}
 		

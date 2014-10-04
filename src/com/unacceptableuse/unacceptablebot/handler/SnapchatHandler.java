@@ -212,6 +212,7 @@ public class SnapchatHandler {
 		for(Snap snap : snaps){
 			if(snap.sent != true){
 				snap.send();
+				snap.sent = true;
 				break;
 			}
 		}
