@@ -40,10 +40,9 @@ import org.pircbotx.hooks.events.QuitEvent;
 import com.google.gson.JsonObject;
 import com.unacceptableuse.unacceptablebot.handler.CommandHandler;
 import com.unacceptableuse.unacceptablebot.handler.ConfigHandler;
-import com.unacceptableuse.unacceptablebot.handler.JobHandler;
+import com.unacceptableuse.unacceptablebot.handler.WebSocketHandler;
 import com.unacceptableuse.unacceptablebot.handler.SnapchatHandler;
 import com.unacceptableuse.unacceptablebot.handler.SpellCheckHandler;
-import com.unacceptableuse.unacceptablebot.threading.JobThread;
 import com.unacceptableuse.unacceptablebot.threading.SnapchatThread;
 import com.unacceptableuse.unacceptablebot.variable.HealthStatus;
 
@@ -53,7 +52,7 @@ public class UnacceptableBot extends ListenerAdapter {
 	private static CommandHandler handler = new CommandHandler();
 	private static ConfigHandler config = new ConfigHandler();
 	private static SnapchatHandler snapchat = new SnapchatHandler();
-	private static JobHandler jobs = new JobHandler();
+	private static WebSocketHandler socks = new WebSocketHandler();
 	public static Random rand = new Random();
 	public static ArrayList<String> channels = new ArrayList<String>();
 	public static HashMap<String, ArrayList<String>> relay = new HashMap<String, ArrayList<String>>();
@@ -116,7 +115,6 @@ public class UnacceptableBot extends ListenerAdapter {
 		config.setLong("startupTime", new Date().getTime());
 		timer = new Timer();
 		timer.schedule( new SnapchatThread(), 0, (40 * 1000));
-		timer.schedule( new JobThread(), 0, (60 * 1000));
 		
 		loadSexQuotes();
 		
@@ -140,7 +138,7 @@ public class UnacceptableBot extends ListenerAdapter {
 	{
 		handler.init(); 	//CommandHandler
 		config.init();		//ConfigHandler
-		jobs.init();		//JobHandler
+		socks.init();		//WebSocketHandler
 		snapchat.init(); 	//SnapchatHandler
 	}
 
@@ -505,6 +503,9 @@ public class UnacceptableBot extends ListenerAdapter {
 	}
 
 	public static void log(String level, String origin, String message) {
+		
+		getWebSocketHandler().logMessage("[" + level + "]" + " " + message);
+		
 		try {
 			getConfigHandler().createChannelTable("SYSTEM");
 			getConfigHandler().setLog(new Date().toString(), origin,
@@ -512,6 +513,10 @@ public class UnacceptableBot extends ListenerAdapter {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		
+		
+		
 
 	}
 
@@ -566,9 +571,9 @@ public class UnacceptableBot extends ListenerAdapter {
 		}
 	}
 	
-	public static JobHandler getJobHandler()
+	public static WebSocketHandler getWebSocketHandler()
 	{
-		return jobs;
+		return socks;
 	}
 
 	public static CommandHandler getCommandHandler() {

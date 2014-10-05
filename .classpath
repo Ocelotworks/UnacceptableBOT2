@@ -35,5 +35,6 @@
 	<classpathentry kind="lib" path="lib/httpcore-4.3.2.jar"/>
 	<classpathentry kind="lib" path="lib/httpmime-4.3.5.jar"/>
 	<classpathentry kind="lib" path="lib/twitter4j-core-4.0.2.jar"/>
+	<classpathentry kind="lib" path="/JavaWebsocketServer/java_websocket.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
