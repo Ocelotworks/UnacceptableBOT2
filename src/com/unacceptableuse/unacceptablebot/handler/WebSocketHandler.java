@@ -7,6 +7,7 @@ import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
 import org.pircbotx.Channel;
+import org.pircbotx.User;
 
 import com.google.common.collect.ImmutableSet;
 import com.unacceptableuse.unacceptablebot.UnacceptableBot;
@@ -74,10 +75,15 @@ public class WebSocketHandler extends WebSocketServer
 		connectedClients.add(sock);
 		sock.send("logm:[INFO] Connection recognized by server");
 		
-		ImmutableSet<Channel> channels = UnacceptableBot.getBot().getUserBot().getChannels();
+		User u = UnacceptableBot.getBot().getUserBot();
+		ImmutableSet<Channel> channels = u.getChannels();
 		for(Channel c : channels)
 		{
-			sock.send("cinf:"+c.getName()+":"+c.getMode()+":"+c.getUsers().size()+":"+"User");
+			sock.send("cinf:"+
+								c.getName()+":"+
+								c.getMode()+":"+
+								c.getUsers().size()+(c.getChannelLimit() != -1 ? c.getChannelLimit() : "")+":"+
+								(c.getOps().contains(u) ? "Opped" : c.getVoices().contains(u) ? "Voiced" : "User"));
 		}
 		sock.send("cinfend");
 				
