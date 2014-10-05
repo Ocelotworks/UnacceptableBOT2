@@ -8,6 +8,11 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.security.DigestInputStream;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -77,6 +82,36 @@ public class UnacceptableBot extends ListenerAdapter {
 					". Attempting to continue, but it doesn't look good.");
 			e.printStackTrace();
 		}
+		
+		
+		
+		try
+		{
+			System.out.println("Generating MD5 Checksum...");
+			MessageDigest md = MessageDigest.getInstance("MD5");
+			
+			InputStream is = Files.newInputStream(Paths.get("unacceptablebot2.jar"));
+			DigestInputStream dis = new DigestInputStream(is, md);
+			
+			MessageDigest mdg = dis.getMessageDigest();
+			
+			String newDigest = mdg.toString();
+			String oldDigest = config.getString("checksum");
+			
+			if(!newDigest.equals(oldDigest))
+			{
+				System.out.println("Detected new build...");
+				config.setString("checksum", mdg.toString());
+				handleNewBuild();
+			}
+			
+		} catch (Exception e)
+		{
+			System.err.println("There was an error generating the MD5 Checksum. Not sure if new build or not...");
+			e.printStackTrace();
+		}
+		
+		
 		
 		config.increment("stat:startups");
 		config.setLong("startupTime", new Date().getTime());
@@ -286,6 +321,16 @@ public class UnacceptableBot extends ListenerAdapter {
 
 			}
 		}
+	}
+	
+	
+	private static void handleNewBuild()
+	{
+		config.increment("build");
+		System.out.println("Is build "+config.getInteger("build"));
+		
+		//TODO: Help file uploading
+		
 	}
 	
 	/**
