@@ -5,6 +5,8 @@ import java.util.List;
 import org.pircbotx.Channel;
 import org.pircbotx.User;
 
+import com.unacceptableuse.unacceptablebot.UnacceptableBot;
+
 import twitter4j.Paging;
 import twitter4j.Status;
 import twitter4j.Twitter;
@@ -19,10 +21,17 @@ public class CommandTwitter extends Command {
 			String[] args) {
 		try {
 			ConfigurationBuilder cb = new ConfigurationBuilder();
-			cb.setDebugEnabled(true).setOAuthConsumerKey("")
-					.setOAuthConsumerSecret("").setOAuthAccessToken("")
-					.setOAuthAccessTokenSecret("");
-			Twitter unauthenticatedTwitter = new TwitterFactory(cb.build()).getInstance();
+			cb.setDebugEnabled(true)
+					.setOAuthConsumerKey("qkjJsZ6OfDaOGN0HHuqXUitsb")
+					.setOAuthConsumerSecret(
+							UnacceptableBot.getConfigHandler().getString(
+									"twitPrivKey"))
+					.setOAuthAccessToken(
+							"https://api.twitter.com/oauth/access_token")
+					.setOAuthAccessTokenSecret(
+							"https://api.twitter.com/oauth/authorize");
+			Twitter unauthenticatedTwitter = new TwitterFactory(cb.build())
+					.getInstance();
 			// First param of Paging() is the page number, second is the number
 			// per page (this is capped around 200 I think.
 			Paging paging = new Paging(1, 100);
