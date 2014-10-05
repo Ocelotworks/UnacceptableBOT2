@@ -30,8 +30,8 @@ public class CommandImageSearch extends Command {
 			if(args[i].toLowerCase().startsWith("--n")) {
 				try {
 					nth = Integer.parseInt(args[i + 1]) - 1;
-					if(nth < 0 || nth > 3) {
-						sendMessage("Number must be between 1 and 4.", channel);
+					if(nth < 0 || nth > 7) {
+						sendMessage("Number must be between 1 and 8.", channel);
 						return;
 					}
 				} catch (NumberFormatException nfe) {
@@ -49,7 +49,7 @@ public class CommandImageSearch extends Command {
 		
 		String url = "";
 		try {
-			InputStream is = new URL("http://ajax.googleapis.com/ajax/services/search/images?v=13.0&q=" + query.replace(" ", "%20").replace("&", "and")).openStream();
+			InputStream is = new URL("http://ajax.googleapis.com/ajax/services/search/images?v=13.0&rsz=8&q=" + query.replace(" ", "%20").replace("&", "and")).openStream();
 			url = json.parse(new InputStreamReader(is)).getAsJsonObject().get("responseData").getAsJsonObject().get("results").getAsJsonArray().get(nth).getAsJsonObject().get("url").getAsString();
 		} catch (Exception e) {
 			if(e.getMessage().equals("Index: 0, Size: 0")) {

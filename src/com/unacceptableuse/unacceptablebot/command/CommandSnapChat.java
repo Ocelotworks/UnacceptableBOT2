@@ -32,7 +32,7 @@ public class CommandSnapChat extends Command {
 			try {
 				String url = args[2];
 				String target = args[3];
-				Snap snap = new Snap(target, url, null);
+				Snap snap = new Snap(target, url, null, channel.getName(), sender.getNick());
 				UnacceptableBot.getSnapchat().addSnap(snap);
 			} catch (Exception e) {
 				sendMessage("Did you enter the correct number of arguments?", channel);
@@ -54,6 +54,10 @@ public class CommandSnapChat extends Command {
 		}
 		case ("loggedin"): {
 			sendMessage("Logged in: " + UnacceptableBot.getSnapchat().logged(), channel);
+			break;
+		}
+		case ("forcequeue"): {
+			UnacceptableBot.getSnapchat().doOneInQueue();
 			break;
 		}
 		case ("fucked"): {

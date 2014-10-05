@@ -8,6 +8,11 @@ import org.pircbotx.User;
 import com.unacceptableuse.unacceptablebot.UnacceptableBot;
 import com.unacceptableuse.unacceptablebot.variable.Level;
 
+/**
+ * 
+ * @author Edward
+ *
+ */
 public class CommandRelay extends Command {
 	@Override
 	public void performCommand(User sender, Channel channel, String message, String[] args) {

@@ -7,6 +7,11 @@ import java.net.URL;
 import org.pircbotx.Channel;
 import org.pircbotx.User;
 
+/**
+ * 
+ * @author Edward
+ *
+ */
 public class CommandPing extends Command {
 
 	@Override

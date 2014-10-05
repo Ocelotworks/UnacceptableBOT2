@@ -11,7 +11,7 @@ public class SnapchatThread extends TimerTask {
 	public PircBotX bot =  UnacceptableBot.getBot();
 
 	public void run() {
-		UnacceptableBot.getSnapchat().doOneInQueue(bot, UnacceptableBot.getChannels().get(0));
+		UnacceptableBot.getSnapchat().doOneInQueue();
 	}
 
 }

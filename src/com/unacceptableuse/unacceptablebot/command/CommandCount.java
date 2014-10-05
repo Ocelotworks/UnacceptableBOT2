@@ -2,7 +2,6 @@ package com.unacceptableuse.unacceptablebot.command;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 
 import org.pircbotx.Channel;
 import org.pircbotx.User;

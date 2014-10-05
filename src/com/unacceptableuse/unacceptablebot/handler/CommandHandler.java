@@ -40,6 +40,7 @@ import com.unacceptableuse.unacceptablebot.command.CommandStevie;
 import com.unacceptableuse.unacceptablebot.command.CommandTime;
 import com.unacceptableuse.unacceptablebot.command.CommandTopic;
 import com.unacceptableuse.unacceptablebot.command.CommandTwat;
+import com.unacceptableuse.unacceptablebot.command.CommandTwitter;
 import com.unacceptableuse.unacceptablebot.command.CommandWhoami;
 import com.unacceptableuse.unacceptablebot.command.CommandWolfram;
 import com.unacceptableuse.unacceptablebot.variable.Level;
@@ -54,9 +55,11 @@ public class CommandHandler {
 	 */
 	public void init() {
 		System.out.println("Starting command registration");
+		// Keep this in alphabetical order.
 		addCommand(new CommandBroadcast());
 		addCommand(new CommandCommand());
 		addCommand(new CommandConnect());
+		addCommand(new CommandCount());
 		addCommand(new CommandDefine());
 		addCommand(new CommandDefineUD());
 		addCommand(new CommandFaucet());
@@ -85,9 +88,9 @@ public class CommandHandler {
 		addCommand(new CommandTime());
 		addCommand(new CommandTopic());
 		addCommand(new CommandTwat());
+		addCommand(new CommandTwitter());
 		addCommand(new CommandWhoami());
 		addCommand(new CommandWolfram());
-		addCommand(new CommandCount());
 		UnacceptableBot.log("DEBUG", "CMDREG", "Registered " + getCommands().size() + " commands successfully!");
 	}
 
