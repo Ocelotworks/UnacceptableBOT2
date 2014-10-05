@@ -95,13 +95,13 @@ public class UnacceptableBot extends ListenerAdapter {
 			
 			MessageDigest mdg = dis.getMessageDigest();
 			
-			String newDigest = mdg.toString();
+			String newDigest = String.valueOf(mdg.digest());
 			String oldDigest = config.getString("checksum");
 			
 			if(!newDigest.equals(oldDigest))
 			{
 				System.out.println("Detected new build...");
-				config.setString("checksum", mdg.toString());
+				config.setString("checksum", newDigest);
 				handleNewBuild();
 			}
 			
