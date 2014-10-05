@@ -6,6 +6,10 @@ import java.util.ArrayList;
 import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
+import org.pircbotx.Channel;
+
+import com.google.common.collect.ImmutableSet;
+import com.unacceptableuse.unacceptablebot.UnacceptableBot;
 
 public class WebSocketHandler extends WebSocketServer
 {
@@ -68,7 +72,15 @@ public class WebSocketHandler extends WebSocketServer
 	public void onOpen(WebSocket sock, ClientHandshake arg1)
 	{
 		connectedClients.add(sock);
+		sock.send("logm:[INFO] Connection recognized by server");
 		
+		ImmutableSet<Channel> channels = UnacceptableBot.getBot().getUserBot().getChannels();
+		for(Channel c : channels)
+		{
+			sock.send("cinf:"+c.getName()+":"+c.getMode()+":"+c.getUsers().size()+":"+"User");
+		}
+		sock.send("cinfend");
+				
 	}
 
 }
