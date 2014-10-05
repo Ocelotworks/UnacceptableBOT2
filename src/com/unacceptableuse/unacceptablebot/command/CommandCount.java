@@ -19,16 +19,16 @@ public class CommandCount extends Command
 		try
 		{
 			String phrase = message.replace(args[0], "");
-			PreparedStatement ps = UnacceptableBot.getConfigHandler().sql.getPreparedStatement("SELECT COUNT(*) FROM `teknogeek_unacceptablebot`.`"+channel.getName()+"` WHERE Message LIKE \"%?%\"");
+			PreparedStatement ps = UnacceptableBot.getConfigHandler().sql.getPreparedStatement("SELECT COUNT(*) FROM `teknogeek_unacceptablebot`.`"+channel.getName()+"` WHERE Message LIKE '%?%'");
 			ps.setString(1, phrase);
 			ResultSet rs = ps.executeQuery();
-			int amt = rs.getInt(1);
+			int amt = rs.getInt("COUNT(*)");
 			
 			sendMessage("The "+(args.length > 1 ? "phrase" : "word")+" '"+phrase+"' "+(amt == 0 ? "has never been used." : " has been used &BOLD"+amt+"&RESET times."),channel);
 	
 		} catch (Exception e)
 		{
-			sendMessage("There was an error trying to count this word. ("+e.toString()+")", channel);
+			sendMessage("There was an error trying to count this word.("+e.toString()+")", channel);
 			e.printStackTrace();
 		}
 		
