@@ -114,7 +114,7 @@ public class UnacceptableBot extends ListenerAdapter {
 		config.increment("stat:startups");
 		config.setLong("startupTime", new Date().getTime());
 		timer = new Timer();
-		timer.schedule( new SnapchatThread(), 0, (40 * 1000));
+		timer.scheduleAtFixedRate( new SnapchatThread(), 0, (20 * 1000));
 		
 		loadSexQuotes();
 		
@@ -409,8 +409,7 @@ public class UnacceptableBot extends ListenerAdapter {
 		int date = calendar.get(Calendar.DATE);
 		int month = calendar.get(Calendar.MONTH);
 		final String[] months = new String[] { "Jan", "Feb", "Mar", "Apr",
-				"May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
-				"WHAT ARE YOU, A FUCKING WIZARD?!" };
+				"May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
 		String stringMonth = months[month];
 		String dateTime = date + " " + stringMonth + ", " + hours + ":"
 				+ minutes;
