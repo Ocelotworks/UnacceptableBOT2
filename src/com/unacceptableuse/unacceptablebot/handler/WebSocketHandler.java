@@ -43,9 +43,25 @@ public class WebSocketHandler extends WebSocketServer
 	}
 
 	@Override
-	public void onMessage(WebSocket sock, String arg1)
+	public void onMessage(WebSocket sock, String message)
 	{
-		
+		switch(message)
+		{
+			case "cinf":
+				User u = UnacceptableBot.getBot().getUserBot();
+				ImmutableSet<Channel> channels = u.getChannels();
+				for(Channel c : channels)
+				{
+					sock.send("cinf:"+
+										c.getName()+":"+
+										c.getMode()+":"+
+										c.getUsers().size()+(c.getChannelLimit() != -1 ? c.getChannelLimit() : "")+":"+
+										(c.getOps().contains(u) ? "Opped" : c.getVoices().contains(u) ? "Voiced" : "User"));
+				}
+				sock.send("cinfend");
+				sock.close(1000);
+				break;
+		}
 		
 	}
 	
@@ -73,20 +89,6 @@ public class WebSocketHandler extends WebSocketServer
 	public void onOpen(WebSocket sock, ClientHandshake arg1)
 	{
 		connectedClients.add(sock);
-		sock.send("logm:[INFO] Connection recognized by server");
-		
-		User u = UnacceptableBot.getBot().getUserBot();
-		ImmutableSet<Channel> channels = u.getChannels();
-		for(Channel c : channels)
-		{
-			sock.send("cinf:"+
-								c.getName()+":"+
-								c.getMode()+":"+
-								c.getUsers().size()+(c.getChannelLimit() != -1 ? c.getChannelLimit() : "")+":"+
-								(c.getOps().contains(u) ? "Opped" : c.getVoices().contains(u) ? "Voiced" : "User"));
-		}
-		sock.send("cinfend");
-				
 	}
 
 }
