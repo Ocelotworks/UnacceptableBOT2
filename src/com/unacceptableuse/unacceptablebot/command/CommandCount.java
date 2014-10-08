@@ -17,13 +17,14 @@ public class CommandCount extends Command
 	{
 		try
 		{
-			String phrase = message.replace(args[0], "");
-			PreparedStatement ps = UnacceptableBot.getConfigHandler().sql.getPreparedStatement("SELECT COUNT(*) FROM `teknogeek_unacceptablebot`.`"+channel.getName()+"` WHERE Message LIKE '%?%'");
-			ps.setString(1, phrase);
+			String phrase = message.replace(args[0], "").trim();
+			PreparedStatement ps = UnacceptableBot.getConfigHandler().sql.getPreparedStatement("SELECT COUNT(*) FROM `teknogeek_unacceptablebot`.`"+channel.getName()+"` WHERE Message LIKE ?");
+			ps.setString(1, "%"+phrase+"%");
 			ResultSet rs = ps.executeQuery();
+			rs.next();
 			int amt = rs.getInt("COUNT(*)");
 			
-			sendMessage("The "+(args.length > 1 ? "phrase" : "word")+" '"+phrase+"' "+(amt == 0 ? "has never been used." : " has been used &BOLD"+amt+"&RESET times."),channel);
+			sendMessage("The "+(args.length > 2 ? "phrase" : "word")+" '"+phrase+"' "+(amt == 0 ? "has never been used." : " has been used &BOLD"+amt+"&RESET times."),channel);
 	
 		} catch (Exception e)
 		{
