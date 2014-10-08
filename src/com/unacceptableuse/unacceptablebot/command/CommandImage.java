@@ -2,7 +2,8 @@ package com.unacceptableuse.unacceptablebot.command;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
-
+import java.util.ArrayList;
+import java.util.Arrays;
 import org.pircbotx.Channel;
 import org.pircbotx.User;
 
@@ -19,8 +20,15 @@ public class CommandImage extends Command
 	
 	private String getRandomImage(String subreddit)
 	{
-		
-		if(UnacceptableBot.getConfigHandler().getBoolean("srd:"+subreddit))return "This subreddit has been disabled";
+		String bannedReddits = UnacceptableBot.getConfigHandler().getString("bannedReddits");
+		ArrayList<String> bannedRedditsAry = new ArrayList<String>(Arrays.asList(bannedReddits.split(",")));
+		boolean canGetImage = true;
+		for(String s : bannedRedditsAry){
+			if(s.equals(subreddit)){
+				canGetImage = false;
+			}
+		}
+		if(!canGetImage)return "This subreddit has been disabled";
 		try{
 
 		
@@ -45,8 +53,9 @@ public class CommandImage extends Command
 			
 			is.close();
 			
-
-		return imageURL.contains("imgur") ?  imageURL + (isNSFW ? " &RED&BOLD[NSFW]&RESET" : ""): "Could not find image in that sub!" ;
+			boolean canGetNSFW = UnacceptableBot.getConfigHandler().getBoolean("allowNSFW");
+			if(!canGetNSFW && isNSFW) return "NSFW Images are currently not allowed. Please try again later!";
+			return imageURL.contains("imgur") ?  imageURL + (isNSFW ? " &RED&BOLD[NSFW]&RESET" : ""): "Could not find image in that sub!" ;
 		}catch(IllegalStateException e)
 		{
 			return "Reddit returned nothing, try again later.";
