@@ -19,6 +19,7 @@ import com.unacceptableuse.unacceptablebot.command.CommandFaucet;
 import com.unacceptableuse.unacceptablebot.command.CommandFillMeIn;
 import com.unacceptableuse.unacceptablebot.command.CommandFucksGiven;
 import com.unacceptableuse.unacceptablebot.command.CommandFunction;
+import com.unacceptableuse.unacceptablebot.command.CommandGitInfo;
 import com.unacceptableuse.unacceptablebot.command.CommandGoogle;
 import com.unacceptableuse.unacceptablebot.command.CommandHelp;
 import com.unacceptableuse.unacceptablebot.command.CommandImage;
@@ -68,6 +69,7 @@ public class CommandHandler {
 		addCommand(new CommandFillMeIn());
 		addCommand(new CommandFucksGiven());
 		addCommand(new CommandFunction());
+		addCommand(new CommandGitInfo());
 		addCommand(new CommandGoogle());
 		addCommand(new CommandHelp());
 		addCommand(new CommandImage());
