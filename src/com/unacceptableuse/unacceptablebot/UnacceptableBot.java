@@ -505,13 +505,13 @@ public class UnacceptableBot extends ListenerAdapter {
 		
 		getWebSocketHandler().logMessage("[" + level + "]" + " " + message);
 		
-		try {
-			getConfigHandler().createChannelTable("SYSTEM");
-			getConfigHandler().setLog(new Date().toString(), origin,
-					"[" + level + "]" + " " + message, "SYSTEM");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+//		try {
+//			getConfigHandler().createChannelTable("SYSTEM");
+//			getConfigHandler().setLog(new Date().toString(), origin,
+//					"[" + level + "]" + " " + message, "SYSTEM");
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
 		
 		
 		
