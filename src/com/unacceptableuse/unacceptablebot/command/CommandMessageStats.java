@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import org.pircbotx.Channel;
 import org.pircbotx.User;
 
+import com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException;
 import com.unacceptableuse.unacceptablebot.UnacceptableBot;
 
 public class CommandMessageStats extends Command {
@@ -80,10 +81,13 @@ public class CommandMessageStats extends Command {
 							+ "&RESET channels. &BOLDFuck knows I CBA fixing this&RESET% of all messages.",
 					channel);
 			*/
-		} catch (Exception e) {
-			sendMessage(
-					"&REDSHIT!&RESET: " + e.getMessage() + " "
-							+ e.getStackTrace()[0], channel);
+		}
+		catch(MySQLSyntaxErrorException e)
+		{
+			sendMessage("The channel "+targetChannel+" has not been logged.", message);
+		}
+		catch (Exception e) {
+			sendMessage("&REDSHIT!&RESET: " + e.toString(), channel);
 		}
 	}
 

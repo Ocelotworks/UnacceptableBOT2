@@ -96,6 +96,8 @@ public class UnacceptableBot extends ListenerAdapter {
 			String newDigest = String.valueOf(mdg.digest());
 			String oldDigest = config.getString("checksum");
 			
+			System.out.println("MD5: "+newDigest);
+			
 			if(!newDigest.equals(oldDigest))
 			{
 				System.out.println("Detected new build...");

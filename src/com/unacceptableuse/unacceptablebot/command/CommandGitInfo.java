@@ -19,58 +19,87 @@ public class CommandGitInfo extends Command
 			String[] args)
 	{
 		String user = args[1];
+		
+
 		JsonParser parser = new JsonParser();
 		
 		JsonObject jo = parser.parse(new InputStreamReader(UnacceptableBot.getUrlContents("https://osrc.dfm.io/"+user+".json"))).getAsJsonObject();
 		
+		
 		try{
-			//ACTIVE REPOS
-			JsonArray repos = jo.get("repositories").getAsJsonArray();
-			StringBuilder stb = new StringBuilder();
-			stb.append(user+" is most actively contributing to ");
-			for(int i = 0; i < repos.size(); i++)
+			if(user.contains("/"))
 			{
-				stb.append(repos.get(i).getAsJsonObject().get("repo").getAsString()+(i < repos.size() ? i == repos.size()-1 ? " and " : ", " : "."));
-			}
-			sendMessage(stb.toString(), channel);
-			
-			
-			//CONNECTED USERS
-			JsonArray friends = jo.get("connected_users").getAsJsonArray();
-			stb = new StringBuilder();
-			stb.append(user+" is probably friends with ");
-			for(int i = 0; i < friends.size(); i++)
-			{
-				stb.append(friends.get(i).getAsJsonObject().get("name").getAsString()+(i < friends.size() ? i == friends.size()-1 ? " and " : ", " : "."));
-			}
-			sendMessage(stb.toString(), channel);
-			
-			
-			//ACTIVITY
-			JsonArray activity = jo.get("usage").getAsJsonObject().get("events").getAsJsonArray();
-			stb = new StringBuilder();
-			stb.append(user+" has ");
-			for(int i = 0; i < activity.size(); i++)
-			{
-				JsonObject event = activity.get(i).getAsJsonObject();
-				switch(event.get("type").getAsString())
+				JsonArray contributors = jo.get("contributors").getAsJsonArray();
+				StringBuilder stb = new StringBuilder();
+				for(int i = 0; i < contributors.size(); i++)
 				{
-				case "PushEvent":
-					stb.append("pushed "+event.get("total").getAsInt()+" commits");
-					break;
-				case "IssuesEvent":
-					stb.append("dealt with "+event.get("total").getAsInt()+" issues");
-					break;
-				case "IssueCommentEvent":
-					stb.append("commented on "+event.get("total").getAsInt()+" issues");
-					break;
-				case "CreateEvent":
-					stb.append("created "+event.get("total").getAsInt()+" repos");
-					break;
+					JsonObject contributor = contributors.get(i).getAsJsonObject();
+					stb.append(contributor.get("name").getAsString()+" made "+contributor.get("count")+" changes"+(i < contributors.size()-1 ? i == contributors.size()-2 ? " and " : ", " : "."));
 				}
-				stb.append(i < friends.size() ? i == friends.size()-1 ? " and " : ", " : ".");	
+				sendMessage(stb.toString(), channel);
+				
+				JsonArray recommendations = jo.get("recommendations").getAsJsonArray();
+				stb = new StringBuilder();
+				stb.append("Similar to "+user+" are: ");
+				for(int i = 0; i < recommendations.size(); i++)
+				{
+					String recomendation = recommendations.get(i).getAsString();
+					stb.append(recomendation+(i < recommendations.size()-1 ? i == recommendations.size()-2 ? " and " : ", " : "."));
+				}
+				sendMessage(stb.toString(), channel);
+			}else
+			{
+				//ACTIVE REPOS
+				JsonArray repos = jo.get("repositories").getAsJsonArray();
+				StringBuilder stb = new StringBuilder();
+				stb.append(user+" is most actively contributing to ");
+				for(int i = 0; i < repos.size(); i++)
+				{
+					stb.append(repos.get(i).getAsJsonObject().get("repo").getAsString()+(i < repos.size()-1 ? i == repos.size()-2 ? " and " : ", " : "."));
+				}
+				sendMessage(stb.toString(), channel);
+				
+				
+				//CONNECTED USERS
+				JsonArray friends = jo.get("connected_users").getAsJsonArray();
+				stb = new StringBuilder();
+				stb.append(user+" is probably friends with ");
+				for(int i = 0; i < friends.size(); i++)
+				{
+					stb.append(friends.get(i).getAsJsonObject().get("name").getAsString()+(i < friends.size()-1 ? i == friends.size()-2 ? " and " : ", " : "."));
+				}
+				sendMessage(stb.toString(), channel);
+				
+				
+				//ACTIVITY
+				JsonArray activity = jo.get("usage").getAsJsonObject().get("events").getAsJsonArray();
+				stb = new StringBuilder();
+				stb.append(user+" has ");
+				for(int i = 0; i < activity.size(); i++)
+				{
+					JsonObject event = activity.get(i).getAsJsonObject();
+					switch(event.get("type").getAsString())
+					{
+					case "PushEvent":
+						stb.append("pushed "+event.get("total").getAsInt()+" commits");
+						break;
+					case "IssuesEvent":
+						stb.append("dealt with "+event.get("total").getAsInt()+" issues");
+						break;
+					case "IssueCommentEvent":
+						stb.append("commented on "+event.get("total").getAsInt()+" issues");
+						break;
+					case "CreateEvent":
+						stb.append("created "+event.get("total").getAsInt()+" repos");
+						break;
+					default:
+						stb.append(event.get("total").getAsInt()+" other things");
+						break;
+					}
+					stb.append(i < activity.size()-1 ? i == activity.size()-2 ? " and " : ", " : ".");	
+				}
+				sendMessage(stb.toString(), channel);
 			}
-			sendMessage(stb.toString(), channel);
 			
 		}catch(Exception e)
 		{
@@ -83,7 +112,7 @@ public class CommandGitInfo extends Command
 	@Override
 	public String[] getAliases()
 	{
-		return new String[]{"gitinf"};
+		return new String[]{"gitinfo"};
 	}
 
 	@Override
