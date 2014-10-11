@@ -9,6 +9,7 @@ import org.pircbotx.hooks.events.MessageEvent;
 import com.unacceptableuse.unacceptablebot.UnacceptableBot;
 import com.unacceptableuse.unacceptablebot.command.Command;
 import com.unacceptableuse.unacceptablebot.command.CommandBroadcast;
+import com.unacceptableuse.unacceptablebot.command.CommandCanIDate;
 import com.unacceptableuse.unacceptablebot.command.CommandCommand;
 import com.unacceptableuse.unacceptablebot.command.CommandConnect;
 import com.unacceptableuse.unacceptablebot.command.CommandCount;
@@ -59,6 +60,7 @@ public class CommandHandler {
 		System.out.println("Starting command registration");
 		// Keep this in alphabetical order.
 		addCommand(new CommandBroadcast());
+		addCommand(new CommandCanIDate());
 		addCommand(new CommandCommand());
 		addCommand(new CommandConnect());
 		addCommand(new CommandCount());

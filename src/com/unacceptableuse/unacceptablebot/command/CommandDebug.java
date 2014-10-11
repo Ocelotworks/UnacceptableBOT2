@@ -18,7 +18,7 @@ public class CommandDebug extends Command
 		{
 			if(args.length < 3)
 			{
-				sendMessage("debug sock status|send", channel);
+				sendMessage("debug sock status|send ", channel);
 				return;
 			}else
 			{
@@ -33,6 +33,23 @@ public class CommandDebug extends Command
 				}
 			}
 			
+		}else
+		if(args[1].equalsIgnoreCase("commands"))
+		{
+			if(args.length < 3)
+			{
+				sendMessage("debug commands reload| ", channel);
+				return;
+			}else
+			{
+				if(args[2].equalsIgnoreCase("reload"))
+				{
+					UnacceptableBot.getCommandHandler()._commands.clear();
+					UnacceptableBot.getCommandHandler().init();
+					sendMessage("Commands reloaded!", channel);
+				}
+			}
+
 		}
 		
 	}
@@ -46,7 +63,7 @@ public class CommandDebug extends Command
 	@Override
 	public String getHelp()
 	{
-		return "sock|";
+		return "sock|commands";
 	}
 	
 	@Override
