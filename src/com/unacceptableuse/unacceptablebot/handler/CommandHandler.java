@@ -99,6 +99,7 @@ public class CommandHandler {
 		addCommand(new CommandWolfram());
 		UnacceptableBot.log("DEBUG", "CMDREG", "Registered " + getCommands().size() + " commands successfully!");
 	}
+	
 
 	/**
 	 * Pass in onMessage for running commands
