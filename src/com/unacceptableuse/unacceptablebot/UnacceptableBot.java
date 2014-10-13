@@ -37,12 +37,14 @@ import org.pircbotx.hooks.events.MessageEvent;
 import org.pircbotx.hooks.events.PrivateMessageEvent;
 import org.pircbotx.hooks.events.QuitEvent;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.unacceptableuse.unacceptablebot.handler.CommandHandler;
 import com.unacceptableuse.unacceptablebot.handler.ConfigHandler;
-import com.unacceptableuse.unacceptablebot.handler.WebSocketHandler;
 import com.unacceptableuse.unacceptablebot.handler.SnapchatHandler;
 import com.unacceptableuse.unacceptablebot.handler.SpellCheckHandler;
+import com.unacceptableuse.unacceptablebot.handler.WebSocketHandler;
 import com.unacceptableuse.unacceptablebot.threading.SnapchatThread;
 import com.unacceptableuse.unacceptablebot.variable.HealthStatus;
 
@@ -446,23 +448,46 @@ public class UnacceptableBot extends ListenerAdapter {
 
 	private static void doReddit(String message, String channel, User sender) {
 		// TODO: fancy regex for this lol still not done it
+		if(message.contains("whoop there it is") || message.contains("whoop, there it is"))
+		{
+			bot.sendIRC().message(channel, Colors.BOLD+"WHO THE FUCK SAID THAT?");
+		}
 		try {
-			if (message.contains("/r/") && !message.contains("reddit.com")
-					&& config.getUserLevel(sender) >= 0) {
-				String subreddit = message.split("/r/")[1].split(" ")[0];
-				InputStream is = getUrlContents("http://api.reddit.com/r/"
-						+ subreddit.replace(",", "").replace(".", "")
-						+ "/about");
-				com.google.gson.JsonParser parser = new com.google.gson.JsonParser();
+			
+			if (message.contains("/r/") && config.getUserLevel(sender) >= 0) {
+				if(message.contains("reddit.com") && message.contains("/comments/"))
+				{
+					String reddit = "api."+message.substring(message.indexOf("reddit.com"), message.lastIndexOf("/"));
+					InputStream is = getUrlContents(reddit);
+					JsonParser parser = new JsonParser();
+					JsonArray ja = parser.parse(new InputStreamReader(is)).getAsJsonArray();
+					
+					JsonObject data = ja.get(0).getAsJsonObject()
+										.get("data").getAsJsonObject()
+										.get("children").getAsJsonArray()
+										.get(0).getAsJsonObject()
+										.get("data").getAsJsonObject(); //Holy JSON batman
+					
+					bot.sendIRC().message(channel, data.get("title").getAsString()+" ("+data.get("domain").getAsString()+(data.get("over_18").getAsBoolean() ? ") "+Colors.RED+"NSFW" : ")"));
+					
+				}else
+				{
+					String subreddit = message.split("/r/")[1].split(" ")[0];
+					InputStream is = getUrlContents("http://api.reddit.com/r/"
+							+ subreddit.replace(",", "").replace(".", "")
+							+ "/about");
+					JsonParser parser = new JsonParser();
 
-				String subredditDesc = parser.parse(new InputStreamReader(is))
-						.getAsJsonObject().get("data").getAsJsonObject()
-						.get("public_description").getAsString();
-				bot.sendIRC().message(
-						channel,
-						Colors.BOLD + "http://reddit.com/r/" + subreddit
-								+ " - " + subredditDesc);
-			}
+					String subredditDesc = parser.parse(new InputStreamReader(is))
+							.getAsJsonObject().get("data").getAsJsonObject()
+							.get("public_description").getAsString();
+					bot.sendIRC().message(
+							channel,
+							Colors.BOLD + "http://reddit.com/r/" + subreddit
+									+ " - " + subredditDesc);
+				}
+				}
+				
 
 			if (message.contains("/u/") && !message.contains("reddit.com")
 					&& config.getUserLevel(sender) >= 0) {
