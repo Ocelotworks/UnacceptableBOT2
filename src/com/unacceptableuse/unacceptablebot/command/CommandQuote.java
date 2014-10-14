@@ -45,7 +45,7 @@ public class CommandQuote extends Command {
 						.getPreparedStatement("SELECT Message FROM `teknogeek_unacceptablebot`.`"
 								+ quoteChannel
 								+ "` WHERE Username = '"
-								+ args[1].replace(" ", "") // Is the replace needed, since args = message.split(" ")? -eduardog3000
+								+ args[1] // No replace needed
 								+ "' ORDER BY RAND() LIMIT " + count);
 				ResultSet rs = ps.executeQuery();
 				if (rs.next()) {
