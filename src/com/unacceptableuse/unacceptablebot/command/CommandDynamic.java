@@ -42,11 +42,9 @@ public class CommandDynamic extends Command
 		
 		for(JsonElement je : ja)
 		{
-			sendMessage("JSON Element: " + ja.toString(), channel);
 			JsonObject jo = je.getAsJsonObject();
 			for(Entry e : jo.entrySet())
 			{
-				sendMessage("JSON Entry: " + e.getKey() + " " + e.getValue(), channel);
 				switch(e.getKey().toString())
 				{
 					case "text":
