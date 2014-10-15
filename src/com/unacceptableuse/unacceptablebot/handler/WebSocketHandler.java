@@ -8,15 +8,13 @@ import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
 import org.pircbotx.Channel;
 import org.pircbotx.User;
-
 import com.google.common.collect.ImmutableSet;
 import com.unacceptableuse.unacceptablebot.UnacceptableBot;
 
 public class WebSocketHandler extends WebSocketServer
 {
 
-	private ArrayList<WebSocket> connectedClients = new ArrayList<WebSocket>(); 
-	
+	private ArrayList<WebSocket> connectedClients = new ArrayList<WebSocket>();	
 	
 	public WebSocketHandler() 
 	{
@@ -60,6 +58,18 @@ public class WebSocketHandler extends WebSocketServer
 				}
 				sock.send("cinfend");
 				sock.close(1000);
+				break;
+			case "recon":
+				try
+				{
+					UnacceptableBot.getBot().startBot();
+				}
+				catch (Exception e)
+				{
+					sock.send("recon:"+e.toString());
+					e.printStackTrace();
+				}
+				
 				break;
 		}
 		
