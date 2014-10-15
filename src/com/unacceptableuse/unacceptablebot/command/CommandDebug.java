@@ -50,6 +50,21 @@ public class CommandDebug extends Command
 				}
 			}
 
+		}else
+		if(args[1].equalsIgnoreCase("nick"))
+		{
+			if(args.length < 3)
+			{
+				sendMessage("debug nick set ", channel);
+				return;
+			}else
+			{
+				if(args[2].equalsIgnoreCase("set"))
+				{
+					UnacceptableBot.getBot().sendIRC().changeNick(args[3]);
+					sendMessage("Nickname changed", channel);
+				}
+			}
 		}
 		
 	}
@@ -63,7 +78,7 @@ public class CommandDebug extends Command
 	@Override
 	public String getHelp()
 	{
-		return "sock|commands";
+		return "sock|commands|nick";
 	}
 	
 	@Override
