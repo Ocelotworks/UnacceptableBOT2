@@ -457,7 +457,7 @@ public class UnacceptableBot extends ListenerAdapter {
 			if (message.contains("/r/") && config.getUserLevel(sender) >= 0) {
 				if(message.contains("reddit.com") && message.contains("/comments/"))
 				{
-					String reddit = "api."+message.substring(message.indexOf("reddit.com"), message.lastIndexOf("/"));
+					String reddit = "http://api."+message.substring(message.indexOf("reddit.com"), message.lastIndexOf("/"));
 					InputStream is = getUrlContents(reddit);
 					JsonParser parser = new JsonParser();
 					JsonArray ja = parser.parse(new InputStreamReader(is)).getAsJsonArray();
@@ -468,7 +468,8 @@ public class UnacceptableBot extends ListenerAdapter {
 										.get(0).getAsJsonObject()
 										.get("data").getAsJsonObject(); //Holy JSON batman
 					
-					bot.sendIRC().message(channel, data.get("title").getAsString()+" ("+data.get("domain").getAsString()+(data.get("over_18").getAsBoolean() ? ") "+Colors.RED+"NSFW" : ")"));
+					
+					bot.sendIRC().message(channel, Colors.BOLD+data.get("title").getAsString()+Colors.NORMAL+" ("+data.get("domain").getAsString()+(data.get("over_18").getAsBoolean() ? ") "+Colors.RED+"NSFW" : ")"));
 					
 				}else
 				{
