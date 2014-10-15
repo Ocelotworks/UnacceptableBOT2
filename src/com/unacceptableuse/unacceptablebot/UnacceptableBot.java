@@ -450,6 +450,7 @@ public class UnacceptableBot extends ListenerAdapter {
 		// TODO: fancy regex for this lol still not done it
 		if(message.contains("whoop there it is") || message.contains("whoop, there it is"))
 		{
+			log("INFO","REDDIT", "Whoop there it is detected");
 			bot.sendIRC().message(channel, Colors.BOLD+"WHO THE FUCK SAID THAT?");
 		}
 		try {
@@ -457,6 +458,7 @@ public class UnacceptableBot extends ListenerAdapter {
 			if (message.contains("/r/") && config.getUserLevel(sender) >= 0) {
 				if(message.contains("reddit.com") && message.contains("/comments/"))
 				{
+					log("INFO","REDDIT", "Reddit link: "+message);
 					String reddit = "http://api."+message.substring(message.indexOf("reddit.com"), message.lastIndexOf("/"));
 					InputStream is = getUrlContents(reddit);
 					JsonParser parser = new JsonParser();
@@ -473,6 +475,7 @@ public class UnacceptableBot extends ListenerAdapter {
 					
 				}else
 				{
+					log("INFO","REDDIT", "Subreddit: "+message);
 					String subreddit = message.split("/r/")[1].split(" ")[0];
 					InputStream is = getUrlContents("http://api.reddit.com/r/"
 							+ subreddit.replace(",", "").replace(".", "")
@@ -492,6 +495,7 @@ public class UnacceptableBot extends ListenerAdapter {
 
 			if (message.contains("/u/") && !message.contains("reddit.com")
 					&& config.getUserLevel(sender) >= 0) {
+				log("INFO","REDDIT", "Redditor: "+message);
 				String user = message.split("/u/")[1].split(" ")[0];
 				InputStream is = getUrlContents("http://api.reddit.com/u/"
 						+ user.replace(",", "").replace(".", "") + "/about");
@@ -532,6 +536,7 @@ public class UnacceptableBot extends ListenerAdapter {
 	public static void log(String level, String origin, String message) {
 		
 		getWebSocketHandler().logMessage("[" + level + "]" + " " + message);
+		System.out.println("[" + level + "]" + " " + message);
 		
 //		try {
 //			getConfigHandler().createChannelTable("SYSTEM");
