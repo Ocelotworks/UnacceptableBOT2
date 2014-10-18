@@ -472,7 +472,13 @@ public class UnacceptableBot extends ListenerAdapter {
 					
 					
 					String title = data.get("title").getAsString();
-					title = title.startsWith(".") ? title.replaceFirst(Pattern.quote("."), "") : title.startsWith("!") ? title.replaceFirst(Pattern.quote("!"), "") : title;
+					while(title.startsWith(".") || title.startsWith("!")) {
+						if(title.startsWith(".")) {
+							title = title.replaceFirst(Pattern.quote("."), "");
+						} else if(title.startsWith("!")) {
+							title = title.replaceFirst(Pattern.quote("!"), "");
+						}
+					}
 					
 					bot.sendIRC().message(channel, Colors.BOLD+title+Colors.NORMAL+" ("+data.get("domain").getAsString()+(data.get("over_18").getAsBoolean() ? ") "+Colors.RED+"NSFW" : ")"));
 					
