@@ -18,7 +18,7 @@ public class CommandDebug extends Command
 		{
 			if(args.length < 3)
 			{
-				sendMessage("debug sock status|send ", channel);
+				sendMessage("Usage: !debug sock status|send ", channel);
 				return;
 			}else
 			{
@@ -38,7 +38,7 @@ public class CommandDebug extends Command
 		{
 			if(args.length < 3)
 			{
-				sendMessage("debug commands reload| ", channel);
+				sendMessage("Usage: !debug commands reload| ", channel);
 				return;
 			}else
 			{
@@ -51,22 +51,47 @@ public class CommandDebug extends Command
 			}
 
 		}else
-		if(args[1].equalsIgnoreCase("nick"))
+		if(args[1].equalsIgnoreCase("irc"))
 		{
 			if(args.length < 3)
 			{
-				sendMessage("debug nick set ", channel);
+				sendMessage("Usage: !debug irc status|nick|action|mode|notice|invite|message", channel);
 				return;
 			}else
 			{
-				if(args[2].equalsIgnoreCase("set"))
+				switch(args[2].toLowerCase())
 				{
-					UnacceptableBot.getBot().sendIRC().changeNick(args[3]);
-					sendMessage("Nickname changed", channel);
+					case "nick": 	UnacceptableBot.getBot().sendIRC().changeNick(args[3]);				break;
+					case "mode": 	UnacceptableBot.getBot().sendIRC().mode(args[3], args[4]);			break;
+					case "action": 	UnacceptableBot.getBot().sendIRC().action(args[3], args[4]);		break;
+					case "notice": 	UnacceptableBot.getBot().sendIRC().notice(args[3], args[4]);		break;
+					case "invite": 	UnacceptableBot.getBot().sendIRC().invite(args[3], args[4]);		break;
+					case "message": UnacceptableBot.getBot().sendIRC().message(args[3], args[4]);		break;
+					case "status": 	sendMessage(UnacceptableBot.getBot().getState().name(), channel);	break;
+					default: 		sendMessage("Unknown option. See !debug irc", channel);
 				}
 			}
+		}else
+		if(args[1].equalsIgnoreCase("bot"))
+		{
+//			if(args.length < 3)
+//			{
+//				sendMessage("Usage: !debug bot ", channel);
+//				return;
+//			}else
+//			{
+//				switch(args[2].toLowerCase())
+//				{
+//					case "nick": 	UnacceptableBot.getBot().getUserBot().		break;
+//					case "mode": 	UnacceptableBot.getBot().sendIRC().mode(args[3], args[4]);		break;
+//					case "action": 	UnacceptableBot.getBot().sendIRC().action(args[3], args[4]);	break;
+//					case "notice": 	UnacceptableBot.getBot().sendIRC().notice(args[3], args[4]);	break;
+//					case "invite": 	UnacceptableBot.getBot().sendIRC().invite(args[3], args[4]);	break;
+//					case "message": UnacceptableBot.getBot().sendIRC().message(args[3], args[4]);	break;
+//					default: 		sendMessage("Unknown option. See !debug irc", channel);
+//				}
+//			}
 		}
-		
 	}
 
 	@Override
@@ -78,7 +103,7 @@ public class CommandDebug extends Command
 	@Override
 	public String getHelp()
 	{
-		return "sock|commands|nick";
+		return "sock|commands|irc";
 	}
 	
 	@Override
