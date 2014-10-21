@@ -471,7 +471,16 @@ public class UnacceptableBot extends ListenerAdapter {
 										.get("data").getAsJsonObject(); //Holy JSON batman
 					
 					
-					bot.sendIRC().message(channel, Colors.BOLD+data.get("title").getAsString()+Colors.NORMAL+" ("+data.get("domain").getAsString()+(data.get("over_18").getAsBoolean() ? ") "+Colors.RED+"NSFW" : ")"));
+					String title = data.get("title").getAsString();
+					while(title.startsWith(".") || title.startsWith("!")) {
+						if(title.startsWith(".")) {
+							title = title.replaceFirst(Pattern.quote("."), "");
+						} else if(title.startsWith("!")) {
+							title = title.replaceFirst(Pattern.quote("!"), "");
+						}
+					}
+					
+					bot.sendIRC().message(channel, Colors.BOLD+title+Colors.NORMAL+" ("+data.get("domain").getAsString()+(data.get("over_18").getAsBoolean() ? ") "+Colors.RED+"NSFW" : ")"));
 					
 				}else
 				{
@@ -553,6 +562,16 @@ public class UnacceptableBot extends ListenerAdapter {
 	}
 
 	public static InputStream getUrlContents(String surl) {
+		/*
+		 * Instead of:
+		 * InputStream is = getUrlContents(url);
+		 * parser.parse(new InputStreamReader(is));
+		 * 
+		 * You can use:
+		 * parser.parse(new URL(url).openStream())
+		 * 
+		 * And instead of creating a new JsonParser before every parse, you can make a static global parser.
+		 */
 		URL url;
 
 		try {
