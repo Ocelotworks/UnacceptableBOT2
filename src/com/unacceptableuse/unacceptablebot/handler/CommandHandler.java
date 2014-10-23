@@ -38,6 +38,7 @@ import com.unacceptableuse.unacceptablebot.command.CommandSentence;
 import com.unacceptableuse.unacceptablebot.command.CommandSetAccessLevel;
 import com.unacceptableuse.unacceptablebot.command.CommandSeuss;
 import com.unacceptableuse.unacceptablebot.command.CommandSnapChat;
+import com.unacceptableuse.unacceptablebot.command.CommandSoundcloud;
 import com.unacceptableuse.unacceptablebot.command.CommandSql;
 import com.unacceptableuse.unacceptablebot.command.CommandStevie;
 import com.unacceptableuse.unacceptablebot.command.CommandTime;
@@ -89,6 +90,7 @@ public class CommandHandler {
 		addCommand(new CommandSetAccessLevel());
 		addCommand(new CommandSeuss());
 		addCommand(new CommandSnapChat());
+		addCommand(new CommandSoundcloud());
 		addCommand(new CommandSql());
 		addCommand(new CommandStevie());
 		addCommand(new CommandTime());

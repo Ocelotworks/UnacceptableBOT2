@@ -65,6 +65,7 @@ public class UnacceptableBot extends ListenerAdapter {
 	public static boolean twatMode = false;
 	private static Timer timer = null;
 	private static HealthStatus ZNCStatus = new HealthStatus("ZNC", "Connected", "export");
+	private static JsonParser parser;
 
 	/**
 	 * Starts the init process of everything
@@ -144,6 +145,7 @@ public class UnacceptableBot extends ListenerAdapter {
 		config.init();		//ConfigHandler
 		socks.init();		//WebSocketHandler
 		snapchat.init(); 	//SnapchatHandler
+		parser = new JsonParser();
 	}
 
 	@Override
@@ -620,6 +622,11 @@ public class UnacceptableBot extends ListenerAdapter {
 
 			e.printStackTrace();
 		}
+	}
+	
+	public static JsonParser getParser()
+	{
+		return parser;
 	}
 	
 	public static WebSocketHandler getWebSocketHandler()
