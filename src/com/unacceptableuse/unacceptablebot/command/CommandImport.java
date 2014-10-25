@@ -15,7 +15,7 @@ import com.unacceptableuse.unacceptablebot.handler.ConfigHandler;
 import com.unacceptableuse.unacceptablebot.variable.Level;
 
 /**
- * 
+ *
  * @author Neil
  *
  */
@@ -23,7 +23,25 @@ public class CommandImport extends Command
 {
 
 	@Override
-	public void performCommand(User sender, Channel channel, String message, String[] args)
+	public Level getAccessLevel()
+	{
+		return Level.SUPERADMIN;
+	}
+
+	@Override
+	public String[] getAliases()
+	{
+		return new String[] { "import" };
+	}
+
+	@Override
+	public String getHelp()
+	{
+		return "System command";
+	}
+
+	@Override
+	public void performCommand(final User sender, final Channel channel, final String message, final String[] args)
 	{
 		// 0 1 2 3 4 5 6 split.length()-1
 		// format: [Wed Jan 29 21:28:27 GMT 2014] <teknogeek> i cant ssh in
@@ -33,26 +51,20 @@ public class CommandImport extends Command
 		try
 		{
 			sendMessage("Starting import!", channel);
-			String[] log = readLog(args[1]);
-			ConfigHandler config = UnacceptableBot.getConfigHandler();
+			final String[] log = readLog(args[1]);
+			final ConfigHandler config = UnacceptableBot.getConfigHandler();
 			for (int i = 0; i < log.length; i++)
 			{
 				currentPercent = (i / log.length) * 100;
 				if (currentPercent != lastPercent)
-				{
 					sendMessage("Import " + currentPercent + "% complete", channel);
-				}
-				String[] split = log[i].split(" ");
-				String time = split[1] + " " + split[2] + ", " + split[3];
-				String user = split[6];
+				final String[] split = log[i].split(" ");
+				final String time = split[1] + " " + split[2] + ", " + split[3];
+				final String user = split[6];
 				String logMessage = "";
-				for (int k = 0; k < split.length; k++)
-				{
+				for (final String element : split)
 					if (i > 6)
-					{
 						logMessage = logMessage + " " + split[i];
-					}
-				}
 				config.createChannelTable(args[2]);
 				config.setLog(time, user, logMessage, args[2]);
 				lastPercent = currentPercent;
@@ -68,41 +80,21 @@ public class CommandImport extends Command
 
 	}
 
-	@Override
-	public String[] getAliases()
+	public String[] readLog(final String filename) throws IOException
 	{
-		return new String[] { "import" };
-	}
-
-	@Override
-	public Level getAccessLevel()
-	{
-		return Level.SUPERADMIN;
+		final FileReader fileReader = new FileReader(filename);
+		final BufferedReader bufferedReader = new BufferedReader(fileReader);
+		final List<String> lines = new ArrayList<String>();
+		String line = null;
+		while ((line = bufferedReader.readLine()) != null)
+			lines.add(line);
+		bufferedReader.close();
+		return lines.toArray(new String[lines.size()]);
 	}
 
 	@Override
 	public int requiredArguments()
 	{
 		return 2;
-	}
-
-	public String[] readLog(String filename) throws IOException
-	{
-		FileReader fileReader = new FileReader(filename);
-		BufferedReader bufferedReader = new BufferedReader(fileReader);
-		List<String> lines = new ArrayList<String>();
-		String line = null;
-		while ((line = bufferedReader.readLine()) != null)
-		{
-			lines.add(line);
-		}
-		bufferedReader.close();
-		return lines.toArray(new String[lines.size()]);
-	}
-
-	@Override
-	public String getHelp()
-	{
-		return "System command";
 	}
 }

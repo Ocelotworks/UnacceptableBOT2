@@ -10,7 +10,26 @@ public class CommandSetAccessLevel extends Command
 {
 
 	@Override
-	public void performCommand(User sender, Channel channel, String message, String[] args)
+	public Level getAccessLevel()
+	{
+		return Level.ADMIN;
+	}
+
+	@Override
+	public String[] getAliases()
+	{
+
+		return new String[] { "setaccesslevel" };
+	}
+
+	@Override
+	public String getHelp()
+	{
+		return "System command";
+	}
+
+	@Override
+	public void performCommand(final User sender, final Channel channel, final String message, final String[] args)
 	{
 
 		User theUser = null;
@@ -19,19 +38,17 @@ public class CommandSetAccessLevel extends Command
 		try
 		{
 			newLevel = Integer.parseInt(args[2]);
-		} catch (NumberFormatException e)
+		} catch (final NumberFormatException e)
 		{
 			sendMessage("Invalid access level", channel);
 		}
 
-		for (User u : channel.getUsers())
-		{
+		for (final User u : channel.getUsers())
 			if (u.getNick().equals(args[1]))
 			{
 				theUser = u;
 				break;
 			}
-		}
 
 		if (theUser == null)
 		{
@@ -57,25 +74,6 @@ public class CommandSetAccessLevel extends Command
 		UnacceptableBot.getConfigHandler().setUserLevel(theUser, newLevel);
 		sendMessage(args[1] + "'s access level is now " + newLevel, channel);
 
-	}
-
-	@Override
-	public String[] getAliases()
-	{
-
-		return new String[] { "setaccesslevel" };
-	}
-
-	@Override
-	public Level getAccessLevel()
-	{
-		return Level.ADMIN;
-	}
-
-	@Override
-	public String getHelp()
-	{
-		return "System command";
 	}
 
 }

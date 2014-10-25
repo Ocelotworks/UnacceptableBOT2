@@ -19,7 +19,7 @@ public class SpellCheckHandler
 		{
 
 			dictionary = new SpellDictionaryHashMap(new File("english.0"));
-		} catch (IOException e)
+		} catch (final IOException e)
 		{
 
 			e.printStackTrace();
@@ -27,7 +27,7 @@ public class SpellCheckHandler
 		spellChecker = new SpellChecker(dictionary);
 	}
 
-	public static String getSuggestions(String word, int threshold)
+	public static String getSuggestions(final String word, final int threshold)
 	{
 
 		return spellChecker.getSuggestions(word, threshold).get(0).toString();

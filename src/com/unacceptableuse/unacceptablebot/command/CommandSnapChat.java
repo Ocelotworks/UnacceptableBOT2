@@ -14,35 +14,49 @@ public class CommandSnapChat extends Command
 {
 
 	@Override
-	public void performCommand(User sender, Channel channel, String message, String[] args)
+	public Level getAccessLevel()
 	{
-		String com = args[1];
+		return Level.SUPERADMIN;
+	}
+
+	@Override
+	public String[] getAliases()
+	{
+		return new String[] { "sc", "snap", "snapchat" };
+	}
+
+	@Override
+	public String getHelp()
+	{
+		return "System command";
+	}
+
+	@Override
+	public void performCommand(final User sender, final Channel channel, final String message, final String[] args)
+	{
+		final String com = args[1];
 		switch (com)
 		{
 		case ("test"):
 		{
-			File f = new File("api.pem");
+			final File f = new File("api.pem");
 			if (!f.exists())
-			{
 				sendMessage("Cannot send snaps. Missing " + f.getAbsolutePath(), channel);
-			} else if (!UnacceptableBot.getSnapchat().logged())
-			{
+			else if (!UnacceptableBot.getSnapchat().logged())
 				sendMessage("Snapchat failed to login!", channel);
-			} else
-			{
+			else
 				sendMessage("Snapchat is ok!", channel);
-			}
 			break;
 		}
 		case ("send"):
 		{
 			try
 			{
-				String url = args[2];
-				String target = args[3];
-				Snap snap = new Snap(target, url, null, channel.getName(), sender.getNick());
+				final String url = args[2];
+				final String target = args[3];
+				final Snap snap = new Snap(target, url, null, channel.getName(), sender.getNick());
 				UnacceptableBot.getSnapchat().addSnap(snap);
-			} catch (Exception e)
+			} catch (final Exception e)
 			{
 				sendMessage("Did you enter the correct number of arguments?", channel);
 				e.printStackTrace();
@@ -59,7 +73,7 @@ public class CommandSnapChat extends Command
 			try
 			{
 				sendMessage("Password: " + UnacceptableBot.getSnapchat().getPass(), channel);
-			} catch (Exception e)
+			} catch (final Exception e)
 			{
 				e.printStackTrace();
 			}
@@ -79,7 +93,7 @@ public class CommandSnapChat extends Command
 		{
 			UnacceptableBot.setSnapchat(null);
 			sendMessage("Reseting handler..", channel);
-			SnapchatHandler replacement = new SnapchatHandler();
+			final SnapchatHandler replacement = new SnapchatHandler();
 			sendMessage("Creating new handler..", channel);
 			UnacceptableBot.setSnapchat(replacement);
 			sendMessage("Setting handler..", channel);
@@ -87,7 +101,7 @@ public class CommandSnapChat extends Command
 			{
 				UnacceptableBot.getSnapchat().init();
 				sendMessage("Handler Init..", channel);
-			} catch (Exception e)
+			} catch (final Exception e)
 			{
 				sendMessage("Handler init failed: " + e.getCause(), channel);
 				e.printStackTrace();
@@ -102,26 +116,8 @@ public class CommandSnapChat extends Command
 	}
 
 	@Override
-	public String[] getAliases()
-	{
-		return new String[] { "sc", "snap", "snapchat" };
-	}
-
-	@Override
 	public int requiredArguments()
 	{
 		return 1;
-	}
-
-	@Override
-	public Level getAccessLevel()
-	{
-		return Level.SUPERADMIN;
-	}
-
-	@Override
-	public String getHelp()
-	{
-		return "System command";
 	}
 }

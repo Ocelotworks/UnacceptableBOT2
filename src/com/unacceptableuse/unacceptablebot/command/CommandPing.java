@@ -8,7 +8,7 @@ import org.pircbotx.Channel;
 import org.pircbotx.User;
 
 /**
- * 
+ *
  * @author Edward
  *
  */
@@ -16,9 +16,21 @@ public class CommandPing extends Command
 {
 
 	@Override
-	public void performCommand(User sender, Channel channel, String message, String[] args)
+	public String[] getAliases()
 	{
-		String address = message.replace(args[0] + " ", "").replace("http://", "");
+		return new String[] { "ping" };
+	}
+
+	@Override
+	public String getHelp()
+	{
+		return "Usage: ping <url> | Pings the given URL.";
+	}
+
+	@Override
+	public void performCommand(final User sender, final Channel channel, final String message, final String[] args)
+	{
+		final String address = message.replace(args[0] + " ", "").replace("http://", "");
 		sendMessage("Pinging " + address + "...", channel);
 
 		int ping = 0;
@@ -35,25 +47,11 @@ public class CommandPing extends Command
 				ping = (int) (endTime - startTime);
 				sendMessage(address + " responded in " + ping + "ms.", channel);
 			} else
-			{
 				sendMessage("HTTP Error " + urlConn.getResponseCode(), channel);
-			}
-		} catch (IOException e)
+		} catch (final IOException e)
 		{
 			sendMessage("Unable to connect to " + address + ".", channel);
 		}
-	}
-
-	@Override
-	public String[] getAliases()
-	{
-		return new String[] { "ping" };
-	}
-
-	@Override
-	public String getHelp()
-	{
-		return "Usage: ping <url> | Pings the given URL.";
 	}
 
 }

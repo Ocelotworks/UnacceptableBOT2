@@ -25,6 +25,111 @@ public class ConfigHandler
 	private Properties staticVars = null;
 
 	/**
+	 * @author Neil - dvd604
+	 * @param channel
+	 *            - The table to create
+	 * **/
+	public boolean createChannelTable(final String channel) throws SQLException
+	{
+		try
+		{
+			return sql.excecute("CREATE TABLE IF NOT EXISTS `teknogeek_unacceptablebot`.`" + channel + "` (ID int NOT NULL AUTO_INCREMENT, Time text,Username text,Message text, PRIMARY KEY (ID))");
+		} catch (final SQLException e)
+		{
+			e.printStackTrace();
+			System.err.println("Error occurred making channel table");
+			return false;
+		}
+
+	}
+
+	public boolean getBoolean(final String key)
+	{
+		final String result = sql.getSetting(key);
+		return result == null ? false : Boolean.parseBoolean(result);
+	}
+
+	public String getChannels()
+	{
+		return sql.getChannels("Channel_list");
+	}
+
+	public float getFloat(final String key)
+	{
+		return Float.parseFloat(sql.getSetting(key));
+	}
+
+	public String getHomeChannel()
+	{
+		return sql.getSetting("homeChannel");
+	}
+
+	public Integer getInteger(final String key)
+	{
+		try
+		{
+			return Integer.parseInt(sql.getSetting(key));
+		} catch (final NumberFormatException e)
+		{
+			return 0;
+		}
+	}
+
+	/**
+	 * @author Neil - dvd604
+	 * @param channel
+	 *            - The channel to return the log for
+	 * @param log
+	 *            - Int, the row of the table to return. See method body for help
+	 * **/
+	public ResultSet getLog(final String channel, final int log)
+	{
+		try
+		{
+			// This gets the logth record. It requires some black magic before
+			// handing it a number
+			// Similar to the stuff I did in the first fillmein.
+			final ResultSet rs = sql.query("SELECT Time,Username,Message FROM `teknogeek_unacceptablebot`.`" + channel + "` ORDER BY ID LIMIT " + log + ",1");
+			return rs;
+		} catch (final SQLException e)
+		{
+			e.printStackTrace();
+
+		}
+		return null;
+	}
+
+	public long getLong(final String key)
+	{
+		return Long.parseLong(sql.getSetting(key));
+	}
+
+	public String getPassword(final String key)
+	{
+		return staticVars.getProperty(key);
+	}
+
+	public String getString(final String key)
+	{
+		return sql.getSetting(key);
+	}
+
+	public int getUserLevel(final User user)
+	{
+		return user.isIrcop() ? 10 : user.isVerified() ? sql.getAccessLevel(user.getNick()) : 0;
+	}
+
+	public void increment(final String key)
+	{
+		increment(key, 1);
+	}
+
+	public void increment(final String key, final int amt)
+	{
+		sql.incrementValue(key, amt);
+	}
+
+	/**
 	 * Initializes the configurations, {@link MySQLConnection} and {@link Properties}
 	 */
 	public void init()
@@ -34,11 +139,11 @@ public class ConfigHandler
 		{
 			staticVars.load(new FileInputStream(new File("static.properties")));
 			System.out.println(staticVars.getProperty("mysql"));
-		} catch (FileNotFoundException e)
+		} catch (final FileNotFoundException e)
 		{
 
 			e.printStackTrace();
-		} catch (IOException e)
+		} catch (final IOException e)
 		{
 
 			e.printStackTrace();
@@ -47,35 +152,20 @@ public class ConfigHandler
 		try
 		{
 			sql.connect();
-		} catch (ClassNotFoundException e1)
+		} catch (final ClassNotFoundException e1)
 		{
 
 			e1.printStackTrace();
-		} catch (SQLException e1)
+		} catch (final SQLException e1)
 		{
 
 			e1.printStackTrace();
 		}
 	}
 
-	/**
-	 * Updates the web status
-	 * 
-	 * @param ar
-	 *            An array of HealthStatus
-	 */
-	public void updateWebStatus(ArrayList<HealthStatus> ar)
+	public boolean isCommandDisabled(final String command, final String channel)
 	{
-		StringBuilder stb = new StringBuilder();
-		while (ar.iterator().hasNext())
-		{
-			HealthStatus hs = ar.iterator().next();
-			stb.append(hs.toString());
-			if (ar.iterator().hasNext())
-				stb.append(":");
-		}
-
-		setString("health", stb.toString());
+		return getBoolean("cd:" + command + ":" + channel);
 	}
 
 	public boolean isConnected()
@@ -83,92 +173,41 @@ public class ConfigHandler
 		return sql.isConnected();
 	}
 
-	public boolean isCommandDisabled(String command, String channel)
-	{
-		return getBoolean("cd:" + command + ":" + channel);
-	}
-
-	public int getUserLevel(User user)
-	{
-		return user.isIrcop() ? 10 : user.isVerified() ? sql.getAccessLevel(user.getNick()) : 0;
-	}
-
-	public void setUserLevel(User user, int level)
-	{
-		if (user.isVerified())
-			sql.setAccessLevel(user.getNick(), level);
-	}
-
-	public String getPassword(String key)
-	{
-		return staticVars.getProperty(key);
-	}
-
-	public boolean getBoolean(String key)
-	{
-		String result = sql.getSetting(key);
-		return result == null ? false : Boolean.parseBoolean(result);
-	}
-
-	public Integer getInteger(String key)
+	/**
+	 * @author Neil - dvd604
+	 * @param channel
+	 *            - The table to query.
+	 * **/
+	public ResultSet logQuery(final String channel)
 	{
 		try
 		{
-			return Integer.parseInt(sql.getSetting(key));
-		} catch (NumberFormatException e)
+			return sql.query("SELECT MAX(ID) FROM `teknogeek_unacceptablebot`.`" + channel + "`");
+		} catch (final SQLException e)
 		{
-			return 0;
+			e.printStackTrace();
+			return null;
 		}
 	}
 
-	public long getLong(String key)
-	{
-		return Long.parseLong(sql.getSetting(key));
-	}
-
-	public String getString(String key)
-	{
-		return sql.getSetting(key);
-	}
-
-	public void setLong(String key, long val)
-	{
-		sql.setSetting(key, String.valueOf(val));
-	}
-
-	public void setFloat(String key, float val)
-	{
-		sql.setSetting(key, String.valueOf(val));
-	}
-
-	public float getFloat(String key)
-	{
-		return Float.parseFloat(sql.getSetting(key));
-	}
-
-	public void setBoolean(String key, boolean bool)
+	public void setBoolean(final String key, final boolean bool)
 	{
 		sql.setSetting(key, String.valueOf(bool));
 	}
 
-	public void setInteger(String key, Integer integer)
+	public void setChannels(final String chans)
+	{
+		sql.setChannels("Channel_list", chans);
+	}
+
+	public void setFloat(final String key, final float val)
+	{
+		sql.setSetting(key, String.valueOf(val));
+	}
+
+	public void setInteger(final String key, final Integer integer)
 	{
 		sql.setSetting(key, String.valueOf(integer));
-	}
-
-	public void setString(String key, String string)
-	{
-		sql.setSetting(key, string);
-	}
-
-	public void increment(String key, int amt)
-	{
-		sql.incrementValue(key, amt);
-	}
-
-	public void increment(String key)
-	{
-		increment(key, 1);
 	}
 
 	/**
@@ -182,95 +221,56 @@ public class ConfigHandler
 	 * @param channel
 	 *            - the channel that the user sent the message to
 	 * **/
-	public boolean setLog(String time, String user, String message, String channel)
+	public boolean setLog(final String time, final String user, final String message, final String channel)
 	{
 		try
 		{
-			PreparedStatement ps = sql.getPreparedStatement("INSERT INTO `teknogeek_unacceptablebot`.`" + channel + "` (`Time`, `Username`, `Message`) VALUES (?, ?, ?)");
+			final PreparedStatement ps = sql.getPreparedStatement("INSERT INTO `teknogeek_unacceptablebot`.`" + channel + "` (`Time`, `Username`, `Message`) VALUES (?, ?, ?)");
 			ps.setString(1, time);
 			ps.setString(2, user);
 			ps.setString(3, message);
 			return ps.executeUpdate() == 0;
-		} catch (SQLException e)
+		} catch (final SQLException e)
 		{
 			e.printStackTrace();
 			return false;
 		}
 	}
 
-	/**
-	 * @author Neil - dvd604
-	 * @param channel
-	 *            - The channel to return the log for
-	 * @param log
-	 *            - Int, the row of the table to return. See method body for help
-	 * **/
-	public ResultSet getLog(String channel, int log)
+	public void setLong(final String key, final long val)
 	{
-		try
-		{
-			// This gets the logth record. It requires some black magic before
-			// handing it a number
-			// Similar to the stuff I did in the first fillmein.
-			ResultSet rs = sql.query("SELECT Time,Username,Message FROM `teknogeek_unacceptablebot`.`" + channel + "` ORDER BY ID LIMIT " + log + ",1");
-			return rs;
-		} catch (SQLException e)
-		{
-			e.printStackTrace();
-
-		}
-		return null;
+		sql.setSetting(key, String.valueOf(val));
 	}
 
-	public void setChannels(String chans)
+	public void setString(final String key, final String string)
 	{
-		sql.setChannels("Channel_list", chans);
+		sql.setSetting(key, string);
 	}
 
-	public String getChannels()
+	public void setUserLevel(final User user, final int level)
 	{
-		return sql.getChannels("Channel_list");
+		if (user.isVerified())
+			sql.setAccessLevel(user.getNick(), level);
 	}
 
 	/**
-	 * @author Neil - dvd604
-	 * @param channel
-	 *            - The table to create
-	 * **/
-	public boolean createChannelTable(String channel) throws SQLException
+	 * Updates the web status
+	 *
+	 * @param ar
+	 *            An array of HealthStatus
+	 */
+	public void updateWebStatus(final ArrayList<HealthStatus> ar)
 	{
-		try
+		final StringBuilder stb = new StringBuilder();
+		while (ar.iterator().hasNext())
 		{
-			return sql.excecute("CREATE TABLE IF NOT EXISTS `teknogeek_unacceptablebot`.`" + channel + "` (ID int NOT NULL AUTO_INCREMENT, Time text,Username text,Message text, PRIMARY KEY (ID))");
-		} catch (SQLException e)
-		{
-			e.printStackTrace();
-			System.err.println("Error occurred making channel table");
-			return false;
+			final HealthStatus hs = ar.iterator().next();
+			stb.append(hs.toString());
+			if (ar.iterator().hasNext())
+				stb.append(":");
 		}
 
-	}
-
-	/**
-	 * @author Neil - dvd604
-	 * @param channel
-	 *            - The table to query.
-	 * **/
-	public ResultSet logQuery(String channel)
-	{
-		try
-		{
-			return sql.query("SELECT MAX(ID) FROM `teknogeek_unacceptablebot`.`" + channel + "`");
-		} catch (SQLException e)
-		{
-			e.printStackTrace();
-			return null;
-		}
-	}
-
-	public String getHomeChannel()
-	{
-		return sql.getSetting("homeChannel");
+		setString("health", stb.toString());
 	}
 
 }

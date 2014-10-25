@@ -5,14 +5,14 @@ import com.unacceptableuse.unacceptablebot.UnacceptableBot;
 public class Snap
 {
 
-	String toUser = "";
+	String channelRequested = "";
 	String imageAddress = "";
 	String imageName = "";
-	String channelRequested = "";
-	String userSentBy = "";
 	public boolean sent = false;
+	String toUser = "";
+	String userSentBy = "";
 
-	public Snap(String user, String address, String name, String channel, String sender)
+	public Snap(final String user, final String address, final String name, final String channel, final String sender)
 	{
 		toUser = user;
 		imageAddress = address;

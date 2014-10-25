@@ -6,26 +6,12 @@ import org.pircbotx.User;
 import com.unacceptableuse.unacceptablebot.UnacceptableBot;
 
 /**
- * 
+ *
  * @author Neil
  *
  */
 public class CommandHelp extends Command
 {
-
-	@Override
-	public void performCommand(User sender, Channel channel, String message, String[] args)
-	{
-		Command command = UnacceptableBot.getCommandHandler().getCommand(args[1]);
-
-		if (command != null)
-		{
-			sendMessage(command.getHelp(), channel);
-		} else
-		{
-			sendMessage("Command, " + args[1] + ", not found.", channel);
-		}
-	}
 
 	@Override
 	public String[] getAliases()
@@ -39,6 +25,18 @@ public class CommandHelp extends Command
 		return "Usage help <command> | Returns: information about the specified command.";
 	}
 
+	@Override
+	public void performCommand(final User sender, final Channel channel, final String message, final String[] args)
+	{
+		final Command command = UnacceptableBot.getCommandHandler().getCommand(args[1]);
+
+		if (command != null)
+			sendMessage(command.getHelp(), channel);
+		else
+			sendMessage("Command, " + args[1] + ", not found.", channel);
+	}
+
+	@Override
 	public int requiredArguments()
 	{
 		return 1;

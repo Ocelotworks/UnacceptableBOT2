@@ -16,30 +16,42 @@ import com.unacceptableuse.unacceptablebot.UnacceptableBot;
 public class CommandDynamic extends Command
 {
 
-	private String alias, format;
+	private final String alias, format;
 
-	public CommandDynamic(String alias, String format)
+	public CommandDynamic(final String alias, final String format)
 	{
 		this.alias = alias;
 		this.format = format;
 	}
 
+	@Override
+	public String[] getAliases()
+	{
+		return new String[] { alias };
+	}
+
+	@Override
+	public String getHelp()
+	{
+		return "System command";
+	}
+
 	@SuppressWarnings("rawtypes")
 	@Override
-	public void performCommand(User sender, Channel channel, String message, String[] args)
+	public void performCommand(final User sender, final Channel channel, final String message, final String[] args)
 	{
-		JsonParser parser = new JsonParser();
+		final JsonParser parser = new JsonParser();
 
-		JsonReader jr = new JsonReader(new StringReader(format));
+		final JsonReader jr = new JsonReader(new StringReader(format));
 		jr.setLenient(true);
-		JsonArray ja = parser.parse(jr).getAsJsonArray();
+		final JsonArray ja = parser.parse(jr).getAsJsonArray();
 
 		// [{text:"This is an example of a text thing"}, {text:"You can add two together too", performCommand:"!image this could probably be done better"}]
 
-		for (JsonElement je : ja)
+		for (final JsonElement je : ja)
 		{
-			JsonObject jo = je.getAsJsonObject();
-			for (Entry e : jo.entrySet())
+			final JsonObject jo = je.getAsJsonObject();
+			for (final Entry e : jo.entrySet())
 			{
 				switch (e.getKey().toString())
 				{
@@ -63,7 +75,7 @@ public class CommandDynamic extends Command
 
 				case "choose":
 				{
-					JsonArray cja = parser.parse(e.getValue().toString()).getAsJsonArray();
+					final JsonArray cja = parser.parse(e.getValue().toString()).getAsJsonArray();
 					cja.get(UnacceptableBot.rand.nextInt(cja.size()));
 				}
 
@@ -77,18 +89,6 @@ public class CommandDynamic extends Command
 			}
 		}
 
-	}
-
-	@Override
-	public String[] getAliases()
-	{
-		return new String[] { alias };
-	}
-
-	@Override
-	public String getHelp()
-	{
-		return "System command";
 	}
 
 }

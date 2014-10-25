@@ -10,10 +10,9 @@ public class CommandTwat extends Command
 {
 
 	@Override
-	public void performCommand(User sender, Channel channel, String message, String[] args)
+	public Level getAccessLevel()
 	{
-		UnacceptableBot.twatMode = !UnacceptableBot.twatMode;
-		sendMessage("Twat mode: " + UnacceptableBot.twatMode, channel);
+		return Level.ADMIN;
 	}
 
 	@Override
@@ -23,15 +22,16 @@ public class CommandTwat extends Command
 	}
 
 	@Override
-	public Level getAccessLevel()
-	{
-		return Level.ADMIN;
-	}
-
-	@Override
 	public String getHelp()
 	{
 		return "System command";
+	}
+
+	@Override
+	public void performCommand(final User sender, final Channel channel, final String message, final String[] args)
+	{
+		UnacceptableBot.twatMode = !UnacceptableBot.twatMode;
+		sendMessage("Twat mode: " + UnacceptableBot.twatMode, channel);
 	}
 
 }

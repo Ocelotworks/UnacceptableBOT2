@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.unacceptableuse.unacceptablebot.command;
 
@@ -20,41 +20,63 @@ import org.pircbotx.User;
 
 /**
  * @author Neil
- * 
+ *
  */
 public class CommandSeuss extends Command
 {
 
-	@Override
-	public void performCommand(User sender, Channel channel, String message, String[] args)
+	public static int countLines(final String filename) throws IOException
 	{
-		switch (args[1])
+		final InputStream is = new BufferedInputStream(new FileInputStream(filename));
+		try
 		{
-		default:
-		{
-			try
+			final byte[] c = new byte[1024];
+			int count = 0;
+			int readChars = 0;
+			boolean empty = true;
+			while ((readChars = is.read(c)) != -1)
 			{
-				sendMessage(getLine(args[1]), channel);
-			} catch (IOException e)
-			{
-				e.printStackTrace();
+				empty = false;
+				for (int i = 0; i < readChars; ++i)
+					if (c[i] == '\n')
+						++count;
 			}
-			break;
-		}
-		case ("list"):
+			return ((count == 0) && !empty) ? 1 : count;
+		} finally
 		{
-			File folder = new File("books/");
-			File[] listOfFiles = folder.listFiles();
-			String books = "";
-			for (int i = 0; i < listOfFiles.length; i++)
-			{
-				books.concat(listOfFiles[i].getName());
-			}
-			sendMessage("Books: ".concat(books), channel);
-			break;
+			is.close();
 		}
+	}
+
+	public static String getLine(final String args) throws IOException
+	{
+		final File file = new File("books/", args);
+		final int maxLines = countLines("books/" + args);
+		int rand = new Random().nextInt(maxLines);
+		if (rand == maxLines)
+			rand = rand + 1;
+
+		BufferedReader in = null;
+		final List<String> fileList = new ArrayList<String>();
+		try
+		{
+			in = new BufferedReader(new FileReader(file));
+			String str;
+			while ((str = in.readLine()) != null)
+				fileList.add(str);
+		} catch (final FileNotFoundException e)
+		{
+			e.printStackTrace();
+		} catch (final IOException e)
+		{
+			e.printStackTrace();
+		} finally
+		{
+			if (in != null)
+				in.close();
 		}
 
+		return fileList.get(rand);
 	}
 
 	@Override
@@ -64,78 +86,44 @@ public class CommandSeuss extends Command
 	}
 
 	@Override
-	public int requiredArguments()
-	{
-		return 1;
-	}
-
-	public static String getLine(String args) throws IOException
-	{
-		File file = new File("books/", args);
-		int maxLines = countLines("books/" + args);
-		int rand = new Random().nextInt(maxLines);
-		if (rand == maxLines)
-		{
-			rand = rand + 1;
-		}
-
-		BufferedReader in = null;
-		List<String> fileList = new ArrayList<String>();
-		try
-		{
-			in = new BufferedReader(new FileReader(file));
-			String str;
-			while ((str = in.readLine()) != null)
-			{
-				fileList.add(str);
-			}
-		} catch (FileNotFoundException e)
-		{
-			e.printStackTrace();
-		} catch (IOException e)
-		{
-			e.printStackTrace();
-		} finally
-		{
-			if (in != null)
-			{
-				in.close();
-			}
-		}
-
-		return fileList.get(rand);
-	}
-
-	public static int countLines(String filename) throws IOException
-	{
-		InputStream is = new BufferedInputStream(new FileInputStream(filename));
-		try
-		{
-			byte[] c = new byte[1024];
-			int count = 0;
-			int readChars = 0;
-			boolean empty = true;
-			while ((readChars = is.read(c)) != -1)
-			{
-				empty = false;
-				for (int i = 0; i < readChars; ++i)
-				{
-					if (c[i] == '\n')
-					{
-						++count;
-					}
-				}
-			}
-			return (count == 0 && !empty) ? 1 : count;
-		} finally
-		{
-			is.close();
-		}
-	}
-
-	@Override
 	public String getHelp()
 	{
 		return "Usage: seuss <bookName|list> | Result: Either pick a line of a Dr. Seuss book at random, or list all availble Dr. Seuss books ";
+	}
+
+	@Override
+	public void performCommand(final User sender, final Channel channel, final String message, final String[] args)
+	{
+		switch (args[1])
+		{
+		default:
+		{
+			try
+			{
+				sendMessage(getLine(args[1]), channel);
+			} catch (final IOException e)
+			{
+				e.printStackTrace();
+			}
+			break;
+		}
+		case ("list"):
+		{
+			final File folder = new File("books/");
+			final File[] listOfFiles = folder.listFiles();
+			final String books = "";
+			for (final File listOfFile : listOfFiles)
+				books.concat(listOfFile.getName());
+			sendMessage("Books: ".concat(books), channel);
+			break;
+		}
+		}
+
+	}
+
+	@Override
+	public int requiredArguments()
+	{
+		return 1;
 	}
 }

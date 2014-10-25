@@ -13,16 +13,28 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 /**
- * 
+ *
  * @author Joel
  *
  */
 public class CommandDefine extends Command
 {
 
+	@Override
+	public String[] getAliases()
+	{
+		return new String[] { "define" };
+	}
+
+	@Override
+	public String getHelp()
+	{
+		return "Usage: define <word> | Result: Returns the lookup for the word ";
+	}
+
 	// http://api.wordnik.com:80/v4/word.json/hello/definitions?limit=1&includeRelated=false&sourceDictionaries=webster&useCanonical=false&includeTags=false&api_key=a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5
 	@Override
-	public void performCommand(User sender, Channel channel, String message, String[] args)
+	public void performCommand(final User sender, final Channel channel, final String message, final String[] args)
 	{
 		String definition = null;
 		String word = null;
@@ -48,50 +60,34 @@ public class CommandDefine extends Command
 			// open the stream and put it into BufferedReader
 			BufferedReader br = null;
 			br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-			StringBuilder stb = new StringBuilder();
+			final StringBuilder stb = new StringBuilder();
 			String line;
 			while ((line = br.readLine()) != null)
-			{
 				stb.append(line);
-			}
 
 			try
 			{
-				JsonElement JElement = new com.google.gson.JsonParser().parse(stb.toString());
-				JsonArray array = JElement.getAsJsonArray();
-				JsonObject obj = array.get(0).getAsJsonObject();
+				final JsonElement JElement = new com.google.gson.JsonParser().parse(stb.toString());
+				final JsonArray array = JElement.getAsJsonArray();
+				final JsonObject obj = array.get(0).getAsJsonObject();
 				definition = obj.get("text").getAsString();
 				word = obj.get("word").getAsString();
-			} catch (ClassCastException e)
+			} catch (final ClassCastException e)
 			{
 				sendMessage(word + " not found.", channel);
 			}
 
 			if (definition != null)
-			{
 				sendMessage(word + ": " + definition, channel);
-			}
-		} catch (Exception e)
+		} catch (final Exception e)
 		{
 			e.printStackTrace();
 		}
 	}
 
 	@Override
-	public String[] getAliases()
-	{
-		return new String[] { "define" };
-	}
-
-	@Override
 	public int requiredArguments()
 	{
 		return 1;
-	}
-
-	@Override
-	public String getHelp()
-	{
-		return "Usage: define <word> | Result: Returns the lookup for the word ";
 	}
 }

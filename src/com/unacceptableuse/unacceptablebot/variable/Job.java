@@ -2,9 +2,9 @@ package com.unacceptableuse.unacceptablebot.variable;
 
 public enum Job
 {
-	UPDATE_CHANS, RESTART, SHUTDOWN, SEND_MESSAGE;
+	RESTART, SEND_MESSAGE, SHUTDOWN, UPDATE_CHANS;
 
-	public static Job getJob(String j)
+	public static Job getJob(final String j)
 	{
 		return Job.valueOf(j);
 	}

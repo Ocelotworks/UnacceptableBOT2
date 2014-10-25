@@ -11,7 +11,25 @@ public class CommandDebug extends Command
 {
 
 	@Override
-	public void performCommand(User sender, Channel channel, String message, String[] args)
+	public Level getAccessLevel()
+	{
+		return Level.SUPERADMIN;
+	}
+
+	@Override
+	public String[] getAliases()
+	{
+		return new String[] { "debug" };
+	}
+
+	@Override
+	public String getHelp()
+	{
+		return "sock|commands|irc";
+	}
+
+	@Override
+	public void performCommand(final User sender, final Channel channel, final String message, final String[] args)
 	{
 		if (args[1].equalsIgnoreCase("sock"))
 		{
@@ -23,9 +41,8 @@ public class CommandDebug extends Command
 			{
 				final WebSocketHandler w = UnacceptableBot.getWebSocketHandler();
 				if (args[2].equalsIgnoreCase("status"))
-				{
 					sendMessage("WebSocket on " + w.getAddress().getHostString() + ":" + w.getPort() + " connected to " + w.getConnectedClients() + " clients.", channel);
-				} else if (args[2].equalsIgnoreCase("send"))
+				else if (args[2].equalsIgnoreCase("send"))
 				{
 					sendMessage("Sending " + args[3] + " to all connected clients.", channel);
 					w.logMessage(args[3]);
@@ -38,14 +55,11 @@ public class CommandDebug extends Command
 			{
 				sendMessage("Usage: !debug commands reload| ", channel);
 				return;
-			} else
+			} else if (args[2].equalsIgnoreCase("reload"))
 			{
-				if (args[2].equalsIgnoreCase("reload"))
-				{
-					UnacceptableBot.getCommandHandler()._commands.clear();
-					UnacceptableBot.getCommandHandler().init();
-					sendMessage("Commands reloaded!", channel);
-				}
+				UnacceptableBot.getCommandHandler()._commands.clear();
+				UnacceptableBot.getCommandHandler().init();
+				sendMessage("Commands reloaded!", channel);
 			}
 
 		} else if (args[1].equalsIgnoreCase("irc"))
@@ -55,7 +69,6 @@ public class CommandDebug extends Command
 				sendMessage("Usage: !debug irc status|nick|action|mode|notice|invite|message", channel);
 				return;
 			} else
-			{
 				switch (args[2].toLowerCase())
 				{
 				case "nick":
@@ -82,7 +95,6 @@ public class CommandDebug extends Command
 				default:
 					sendMessage("Unknown option. See !debug irc", channel);
 				}
-			}
 		} else if (args[1].equalsIgnoreCase("bot"))
 		{
 			// if(args.length < 3)
@@ -103,24 +115,6 @@ public class CommandDebug extends Command
 			// }
 			// }
 		}
-	}
-
-	@Override
-	public String[] getAliases()
-	{
-		return new String[] { "debug" };
-	}
-
-	@Override
-	public String getHelp()
-	{
-		return "sock|commands|irc";
-	}
-
-	@Override
-	public Level getAccessLevel()
-	{
-		return Level.SUPERADMIN;
 	}
 
 }

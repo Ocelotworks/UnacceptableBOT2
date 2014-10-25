@@ -7,7 +7,7 @@ import com.unacceptableuse.unacceptablebot.UnacceptableBot;
 import com.unacceptableuse.unacceptablebot.variable.Level;
 
 /**
- * 
+ *
  * @author Neil
  *
  */
@@ -15,17 +15,9 @@ public class CommandListChans extends Command
 {
 
 	@Override
-	public void performCommand(User sender, Channel channel, String message, String[] args)
+	public Level getAccessLevel()
 	{
-
-		// When you complain about my code a child in Africa dies because of Ebola
-		String channels = "";
-		for (String channelStr : UnacceptableBot.getChannels())
-		{
-			channels.concat(", ".concat(channelStr));
-		}
-		sendMessage("Channels: ".concat(channels), channel);
-
+		return Level.ADMIN;
 	}
 
 	@Override
@@ -35,14 +27,20 @@ public class CommandListChans extends Command
 	}
 
 	@Override
-	public Level getAccessLevel()
-	{
-		return Level.ADMIN;
-	}
-
-	@Override
 	public String getHelp()
 	{
 		return "System command";
+	}
+
+	@Override
+	public void performCommand(final User sender, final Channel channel, final String message, final String[] args)
+	{
+
+		// When you complain about my code a child in Africa dies because of Ebola
+		final String channels = "";
+		for (final String channelStr : UnacceptableBot.getChannels())
+			channels.concat(", ".concat(channelStr));
+		sendMessage("Channels: ".concat(channels), channel);
+
 	}
 }

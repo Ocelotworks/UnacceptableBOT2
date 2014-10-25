@@ -14,65 +14,73 @@ public class CommandGitInfo extends Command
 {
 
 	@Override
-	public void performCommand(User sender, Channel channel, String message, String[] args)
+	public String[] getAliases()
 	{
-		String user = args[1];
+		return new String[] { "gitinfo" };
+	}
 
-		JsonParser parser = new JsonParser();
+	@Override
+	public String getHelp()
+	{
+		return "<username> - Shows infomation on the git user";
+	}
 
-		JsonObject jo = parser.parse(new InputStreamReader(UnacceptableBot.getUrlContents("https://osrc.dfm.io/" + user + ".json"))).getAsJsonObject();
+	@Override
+	public void performCommand(final User sender, final Channel channel, final String message, final String[] args)
+	{
+		final String user = args[1];
+
+		final JsonParser parser = new JsonParser();
+
+		final JsonObject jo = parser.parse(new InputStreamReader(UnacceptableBot.getUrlContents("https://osrc.dfm.io/" + user + ".json"))).getAsJsonObject();
 
 		try
 		{
 			if (user.contains("/"))
 			{
-				JsonArray contributors = jo.get("contributors").getAsJsonArray();
+				final JsonArray contributors = jo.get("contributors").getAsJsonArray();
 				StringBuilder stb = new StringBuilder();
 				for (int i = 0; i < contributors.size(); i++)
 				{
-					JsonObject contributor = contributors.get(i).getAsJsonObject();
-					stb.append(contributor.get("name").getAsString() + " made " + contributor.get("count") + " changes" + (i < contributors.size() - 1 ? i == contributors.size() - 2 ? " and " : ", " : "."));
+					final JsonObject contributor = contributors.get(i).getAsJsonObject();
+					stb.append(contributor.get("name").getAsString() + " made " + contributor.get("count") + " changes" + (i < (contributors.size() - 1) ? i == (contributors.size() - 2) ? " and " : ", " : "."));
 				}
 				sendMessage(stb.toString(), channel);
 
-				JsonArray recommendations = jo.get("recommendations").getAsJsonArray();
+				final JsonArray recommendations = jo.get("recommendations").getAsJsonArray();
 				stb = new StringBuilder();
 				stb.append("Similar to " + user + " are: ");
 				for (int i = 0; i < recommendations.size(); i++)
 				{
-					String recomendation = recommendations.get(i).getAsString();
-					stb.append(recomendation + (i < recommendations.size() - 1 ? i == recommendations.size() - 2 ? " and " : ", " : "."));
+					final String recomendation = recommendations.get(i).getAsString();
+					stb.append(recomendation + (i < (recommendations.size() - 1) ? i == (recommendations.size() - 2) ? " and " : ", " : "."));
 				}
 				sendMessage(stb.toString(), channel);
 			} else
 			{
 				// ACTIVE REPOS
-				JsonArray repos = jo.get("repositories").getAsJsonArray();
+				final JsonArray repos = jo.get("repositories").getAsJsonArray();
 				StringBuilder stb = new StringBuilder();
 				stb.append(user + " is most actively contributing to ");
 				for (int i = 0; i < repos.size(); i++)
-				{
-					stb.append(repos.get(i).getAsJsonObject().get("repo").getAsString() + (i < repos.size() - 1 ? i == repos.size() - 2 ? " and " : ", " : "."));
-				}
+					stb.append(repos.get(i).getAsJsonObject().get("repo").getAsString() + (i < (repos.size() - 1) ? i == (repos.size() - 2) ? " and " : ", " : "."));
 				sendMessage(stb.toString(), channel);
 
 				// CONNECTED USERS
-				JsonArray friends = jo.get("connected_users").getAsJsonArray();
+				final JsonArray friends = jo.get("connected_users").getAsJsonArray();
 				stb = new StringBuilder();
 				stb.append(user + " is probably friends with ");
 				for (int i = 0; i < friends.size(); i++)
-				{
-					stb.append(friends.get(i).getAsJsonObject().get("name").getAsString() + (i < friends.size() - 1 ? i == friends.size() - 2 ? " and " : ", " : "."));
-				}
+					stb.append(friends.get(i).getAsJsonObject().get("name").getAsString() + (i < (friends.size() - 1) ? i == (friends.size() - 2) ? " and " : ", " : "."));
 				sendMessage(stb.toString(), channel);
 
 				// ACTIVITY
-				JsonArray activity = jo.get("usage").getAsJsonObject().get("events").getAsJsonArray();
+				final JsonArray activity = jo.get("usage").getAsJsonObject().get("events").getAsJsonArray();
 				stb = new StringBuilder();
 				stb.append(user + " has ");
 				for (int i = 0; i < activity.size(); i++)
 				{
-					JsonObject event = activity.get(i).getAsJsonObject();
+					final JsonObject event = activity.get(i).getAsJsonObject();
 					switch (event.get("type").getAsString())
 					{
 					case "PushEvent":
@@ -91,29 +99,17 @@ public class CommandGitInfo extends Command
 						stb.append(event.get("total").getAsInt() + " other things");
 						break;
 					}
-					stb.append(i < activity.size() - 1 ? i == activity.size() - 2 ? " and " : ", " : ".");
+					stb.append(i < (activity.size() - 1) ? i == (activity.size() - 2) ? " and " : ", " : ".");
 				}
 				sendMessage(stb.toString(), channel);
 			}
 
-		} catch (Exception e)
+		} catch (final Exception e)
 		{
 			e.printStackTrace();
 			sendMessage(e.toString() + ": " + jo.get("message").getAsString(), channel);
 		}
 
-	}
-
-	@Override
-	public String[] getAliases()
-	{
-		return new String[] { "gitinfo" };
-	}
-
-	@Override
-	public String getHelp()
-	{
-		return "<username> - Shows infomation on the git user";
 	}
 
 	@Override

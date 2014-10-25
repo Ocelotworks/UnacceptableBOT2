@@ -12,7 +12,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 /**
- * 
+ *
  * @author Joel
  *
  */
@@ -20,19 +20,28 @@ public class CommandLive extends Command
 {
 
 	@Override
-	public void performCommand(User sender, Channel channel, String message, String[] args)
+	public String[] getAliases()
+	{
+		return new String[] { "live" };
+	}
+
+	@Override
+	public String getHelp()
+	{
+		return "Usage: live <twitch user>  | Result: Checks if the specified twitch streamer is live ";
+	}
+
+	@Override
+	public void performCommand(final User sender, final Channel channel, final String message, final String[] args)
 	{
 
 		String result = null;
 
 		sendMessage("Checking live status...", channel);
-		String liveUsername = message.substring(6);
+		final String liveUsername = message.substring(6);
 
 		try
 		{
-			@SuppressWarnings("unused")
-			int i = 0;
-
 			URL url = null;
 
 			url = new URL("https://api.twitch.tv/kraken/streams/" + args[1]);
@@ -54,28 +63,24 @@ public class CommandLive extends Command
 			// open the stream and put it into BufferedReader
 			BufferedReader br = null;
 			br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-			StringBuilder stb = new StringBuilder();
+			final StringBuilder stb = new StringBuilder();
 			String line;
 			while ((line = br.readLine()) != null)
-			{
 				stb.append(line);
-			}
 
 			try
 			{
-				JsonElement JElement = new com.google.gson.JsonParser().parse(stb.toString());
+				final JsonElement JElement = new com.google.gson.JsonParser().parse(stb.toString());
 				JsonObject JObject = JElement.getAsJsonObject();
 				JObject = JObject.getAsJsonObject("stream");
 				result = JObject.toString();
-			} catch (ClassCastException e)
+			} catch (final ClassCastException e)
 			{
 				sendMessage(liveUsername + " is offline.", channel);
 			}
 			if (result != null)
-			{
 				sendMessage(liveUsername + " is live! http://twitch.tv/" + liveUsername, channel);
-			}
-		} catch (Exception e)
+		} catch (final Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -83,21 +88,9 @@ public class CommandLive extends Command
 	}
 
 	@Override
-	public String[] getAliases()
-	{
-		return new String[] { "live" };
-	}
-
-	@Override
 	public int requiredArguments()
 	{
 		return 1;
-	}
-
-	@Override
-	public String getHelp()
-	{
-		return "Usage: live <twitch user>  | Result: Checks if the specified twitch streamer is live ";
 	}
 
 }

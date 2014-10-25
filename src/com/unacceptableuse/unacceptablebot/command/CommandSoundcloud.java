@@ -13,19 +13,6 @@ public class CommandSoundcloud extends Command
 {
 
 	@Override
-	public void performCommand(User sender, Channel channel, String message, String[] args)
-	{
-		int index = message.contains("--index=") ? Integer.parseInt(message.split("index=")[1].split(" ")[0]) : 0;
-		String query = message.replace(args[0] + " ", "");
-
-		JsonArray je = UnacceptableBot.getParser().parse(new InputStreamReader(UnacceptableBot.getUrlContents("https://api.soundcloud.com/tracks.json?q=" + query + "&client_id=" + UnacceptableBot.getConfigHandler().getPassword("soundcloud_client")))).getAsJsonArray();
-		JsonObject jo = je.get(index).getAsJsonObject();
-
-		sendMessage(jo.get("title").getAsString() + ": " + jo.get("permalink_url").getAsString(), channel);
-
-	}
-
-	@Override
 	public String[] getAliases()
 	{
 		return new String[] { "soundcloud", "sc" };
@@ -35,6 +22,19 @@ public class CommandSoundcloud extends Command
 	public String getHelp()
 	{
 		return "todo";
+	}
+
+	@Override
+	public void performCommand(final User sender, final Channel channel, final String message, final String[] args)
+	{
+		final int index = message.contains("--index=") ? Integer.parseInt(message.split("index=")[1].split(" ")[0]) : 0;
+		final String query = message.replace(args[0] + " ", "");
+
+		final JsonArray je = UnacceptableBot.getParser().parse(new InputStreamReader(UnacceptableBot.getUrlContents("https://api.soundcloud.com/tracks.json?q=" + query + "&client_id=" + UnacceptableBot.getConfigHandler().getPassword("soundcloud_client")))).getAsJsonArray();
+		final JsonObject jo = je.get(index).getAsJsonObject();
+
+		sendMessage(jo.get("title").getAsString() + ": " + jo.get("permalink_url").getAsString(), channel);
+
 	}
 
 }

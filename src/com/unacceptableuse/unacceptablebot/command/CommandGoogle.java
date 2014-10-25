@@ -4,24 +4,12 @@ import org.pircbotx.Channel;
 import org.pircbotx.User;
 
 /**
- * 
+ *
  * @author Joel?
  *
  */
 public class CommandGoogle extends Command
 {
-
-	@Override
-	public void performCommand(User sender, Channel channel, String message, String[] args)
-	{
-		String add = "http://www.lmgtfy.com/?q=";
-		for (int i = 1; i < args.length; i++)
-		{
-			add += args[i] + "+";
-		}
-		add = add.substring(0, add.length() - 1); // Wouldn't it be better to use StringBuilder here? - Peter
-		sendMessage(add, channel);
-	}
 
 	@Override
 	public String[] getAliases()
@@ -30,15 +18,25 @@ public class CommandGoogle extends Command
 	}
 
 	@Override
-	public int requiredArguments()
-	{
-		return 1;
-	}
-
-	@Override
 	public String getHelp()
 	{
 		return "Usage: google <terms> | Result: Produces a LMGTFY link using the specified terms";
+	}
+
+	@Override
+	public void performCommand(final User sender, final Channel channel, final String message, final String[] args)
+	{
+		String add = "http://www.lmgtfy.com/?q=";
+		for (int i = 1; i < args.length; i++)
+			add += args[i] + "+";
+		add = add.substring(0, add.length() - 1); // Wouldn't it be better to use StringBuilder here? - Peter
+		sendMessage(add, channel);
+	}
+
+	@Override
+	public int requiredArguments()
+	{
+		return 1;
 	}
 
 }

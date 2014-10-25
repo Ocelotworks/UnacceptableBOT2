@@ -52,25 +52,251 @@ import com.unacceptableuse.unacceptablebot.variable.HealthStatus;
 public class UnacceptableBot extends ListenerAdapter
 {
 
-	private static CommandHandler handler = new CommandHandler();
+	private static PircBotX bot = null;
+	public static ArrayList<String> channels = new ArrayList<String>();
 	private static ConfigHandler config = new ConfigHandler();
+	private static CommandHandler handler = new CommandHandler();
+	private static JsonParser parser;
+	public static Random rand = new Random();
+	public static HashMap<String, ArrayList<String>> relay = new HashMap<String, ArrayList<String>>();
+	public static ArrayList<String> sexQuotes = new ArrayList<String>();
 	private static SnapchatHandler snapchat = new SnapchatHandler();
 	private static WebSocketHandler socks = new WebSocketHandler();
-	public static Random rand = new Random();
-	public static ArrayList<String> channels = new ArrayList<String>();
-	public static HashMap<String, ArrayList<String>> relay = new HashMap<String, ArrayList<String>>();
-	private int messageCount = 0;
-	public static ArrayList<String> sexQuotes = new ArrayList<String>();
-	private static PircBotX bot = null;
-	private boolean loadChansFromDB = false; // When using ZNC this should be false to avoid dual entries in the database!
-	public static boolean twatMode = false;
 	private static Timer timer = null;
+	public static boolean twatMode = false;
 	private static HealthStatus ZNCStatus = new HealthStatus("ZNC", "Connected", "export");
-	private static JsonParser parser;
+
+	private static void doReddit(final String message, final String channel, final User sender)
+	{
+		// TODO: fancy regex for this lol still not done it
+		if (message.contains("whoop there it is") || message.contains("whoop, there it is"))
+		{
+			log("INFO", "REDDIT", "Whoop there it is detected");
+			bot.sendIRC().message(channel, Colors.BOLD + "WHO THE FUCK SAID THAT?");
+		}
+		try
+		{
+
+			if (message.contains("/r/") && (config.getUserLevel(sender) >= 0))
+				if (message.contains("reddit.com") && message.contains("/comments/"))
+				{
+					log("INFO", "REDDIT", "Reddit link " + message);
+					final String reddit = "http://api." + message.substring(message.indexOf("reddit.com"), message.lastIndexOf("/"));
+					final InputStream is = getUrlContents(reddit);
+					final JsonParser parser = new JsonParser();
+					final JsonArray ja = parser.parse(new InputStreamReader(is)).getAsJsonArray();
+
+					final JsonObject data = ja.get(0).getAsJsonObject().get("data").getAsJsonObject().get("children").getAsJsonArray().get(0).getAsJsonObject().get("data").getAsJsonObject(); // Holy JSON batman
+
+					String title = data.get("title").getAsString();
+					while (title.startsWith(".") || title.startsWith("!"))
+						if (title.startsWith("."))
+							title = title.replaceFirst(Pattern.quote("."), "");
+						else if (title.startsWith("!"))
+							title = title.replaceFirst(Pattern.quote("!"), "");
+
+					bot.sendIRC().message(channel, Colors.BOLD + title + Colors.NORMAL + " (" + data.get("domain").getAsString() + (data.get("over_18").getAsBoolean() ? ") " + Colors.RED + "NSFW" : ")"));
+
+				} else
+				{
+					log("INFO", "REDDIT", "Subreddit " + message);
+					final String subreddit = message.split("/r/")[1].split(" ")[0];
+					final InputStream is = getUrlContents("http://api.reddit.com/r/" + subreddit.replace(",", "").replace(".", "") + "/about");
+					final JsonParser parser = new JsonParser();
+
+					final String subredditDesc = parser.parse(new InputStreamReader(is)).getAsJsonObject().get("data").getAsJsonObject().get("public_description").getAsString();
+					bot.sendIRC().message(channel, Colors.BOLD + "http://reddit.com/r/" + subreddit + " - " + subredditDesc);
+				}
+
+			if (message.contains("/u/") && !message.contains("reddit.com") && (config.getUserLevel(sender) >= 0))
+			{
+				log("INFO", "REDDIT", "Redditor " + message);
+				final String user = message.split("/u/")[1].split(" ")[0];
+				final InputStream is = getUrlContents("http://api.reddit.com/u/" + user.replace(",", "").replace(".", "") + "/about");
+				final com.google.gson.JsonParser parser = new com.google.gson.JsonParser();
+
+				final JsonObject jo = parser.parse(new InputStreamReader(is)).getAsJsonObject().get("data").getAsJsonObject();
+
+				final int linkKarma = jo.get("link_karma").getAsInt();
+				final int commentKarma = jo.get("comment_karma").getAsInt();
+				bot.sendIRC().message(channel, Colors.NORMAL + Colors.BOLD + "http://reddit.com/u/" + user + " - " + linkKarma + " Link Karma. " + commentKarma + " Comment Karma.");
+			}
+		} catch (final Exception e)
+		{
+		}
+	}
+
+	private static void doYoutube(final String message, final String channel)
+	{
+		final String pattern = "(?<=watch\\?v=|/videos/|embed\\/)[^#\\&\\?]*";
+
+		final Pattern compiledPattern = Pattern.compile(pattern);
+		final Matcher matcher = compiledPattern.matcher(message);
+
+		if (matcher.find())
+			try
+		{
+				final InputStream is = getHTTPSUrlContents("https://gdata.youtube.com/feeds/api/videos/" + matcher.group().replace("", "").replace(",", "").replace(".", "").split(" ")[0] + "?v=2&alt=json");
+				final com.google.gson.JsonParser parser = new com.google.gson.JsonParser();
+
+				final JsonObject jo = parser.parse(new InputStreamReader(is)).getAsJsonObject().get("entry").getAsJsonObject();
+				final String title = jo.get("title").getAsJsonObject().get("$t").getAsString();
+				final float mins = Float.parseFloat(jo.get("media$group").getAsJsonObject().get("yt$duration").getAsString()) / 60;
+				bot.sendIRC().message(channel, Colors.BOLD + "Youtube link: " + title + " [" + mins + "]");
+				is.close();
+		} catch (final Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
+
+	public static PircBotX getBot()
+	{
+		return bot;
+	}
+
+	public static ArrayList<String> getChannels()
+	{
+		return channels;
+	}
+
+	public static CommandHandler getCommandHandler()
+	{
+		return handler;
+	}
+
+	public static ConfigHandler getConfigHandler()
+	{
+		return config;
+	}
+
+	public static InputStream getHTTPSUrlContents(final String surl)
+	{
+		URL url;
+
+		try
+		{
+			url = new URL(surl);
+			final HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
+			final InputStream is = conn.getInputStream();
+
+			return is;
+
+		} catch (final Exception e)
+		{
+			log("ERROR", "getHTTPSUrlContents", "Unable to connect to " + surl + ": " + e.toString());
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public static JsonParser getParser()
+	{
+		return parser;
+	}
+
+	public static SnapchatHandler getSnapchat()
+	{
+		return snapchat;
+	}
+
+	public static InputStream getUrlContents(final String surl)
+	{
+		/*
+		 * Instead of: InputStream is = getUrlContents(url); parser.parse(new InputStreamReader(is));
+		 *
+		 * You can use: parser.parse(new URL(url).openStream())
+		 *
+		 * And instead of creating a new JsonParser before every parse, you can make a static global parser.
+		 */
+		URL url;
+
+		try
+		{
+			url = new URL(surl);
+			final URLConnection conn = url.openConnection();
+			final InputStream is = conn.getInputStream();
+
+			return is;
+		} catch (final Exception e)
+		{
+			log("ERROR", "getUrlContents", "Unable to connect to " + surl + ": " + e.toString());
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public static WebSocketHandler getWebSocketHandler()
+	{
+		return socks;
+	}
+
+	public static HealthStatus getZNCStatus()
+	{
+		return ZNCStatus;
+	}
+
+	private static void handleNewBuild()
+	{
+		config.increment("build");
+		System.out.println("Is build " + config.getInteger("build"));
+
+		// TODO: Help file uploading
+
+	}
+
+	public static void log(final String level, final String origin, final String message)
+	{
+
+		getWebSocketHandler().logMessage("[" + level + "]" + " " + message);
+		System.out.println("[" + level + "]" + " " + message);
+
+		// try {
+		// getConfigHandler().createChannelTable("SYSTEM");
+		// getConfigHandler().setLog(new Date().toString(), origin,
+		// "[" + level + "]" + " " + message, "SYSTEM");
+		// } catch (Exception e) {
+		// e.printStackTrace();
+		// }
+
+	}
+
+	/**
+	 *
+	 * @param username
+	 *            The nickname to auth as
+	 * @param password
+	 *            The password to auth with
+	 */
+	public static void nickAuth(final String username, final String password)
+	{
+		if (!getConfigHandler().getString("botName").equals(username)) // If the bot name set in the database is not equal to the one we need....
+			getConfigHandler().setString("botName", username); // Then there must be a mistake somewhere... So we assume the database is wrong
+
+		if (!getBot().getNick().equals(username)) // If the nickname isn't already the username we want
+			getBot().sendIRC().changeNick(username); // Then we change it to what we are trying to authenticate as
+
+		getBot().sendIRC().message("nickserv", "IDENTIFY " + password); // Actually authenticating
+
+	}
+
+	public static void setBot(final PircBotX bot)
+	{
+		UnacceptableBot.bot = bot;
+	}
+
+	public static void setSnapchat(final SnapchatHandler sc)
+	{
+		snapchat = sc;
+	}
+
+	private final boolean loadChansFromDB = false; // When using ZNC this should be false to avoid dual entries in the database!
+
+	private int messageCount = 0;
 
 	/**
 	 * Starts the init process of everything
-	 * 
+	 *
 	 * @author UnacceptableUse
 	 */
 	public UnacceptableBot()
@@ -79,7 +305,7 @@ public class UnacceptableBot extends ListenerAdapter
 		try
 		{
 			initHandlers();
-		} catch (Exception e)
+		} catch (final Exception e)
 		{
 			log("SEVERE", "HINIT", "A handler failed to initialize! " + e.toString() + ". Attempting to continue, but it doesn't look good.");
 			e.printStackTrace();
@@ -88,15 +314,15 @@ public class UnacceptableBot extends ListenerAdapter
 		try
 		{
 			System.out.println("Generating MD5 Checksum...");
-			MessageDigest md = MessageDigest.getInstance("MD5");
+			final MessageDigest md = MessageDigest.getInstance("MD5");
 
-			InputStream is = Files.newInputStream(Paths.get("unacceptablebot2.jar"));
-			DigestInputStream dis = new DigestInputStream(is, md);
+			final InputStream is = Files.newInputStream(Paths.get("unacceptablebot2.jar"));
+			final DigestInputStream dis = new DigestInputStream(is, md);
 
-			MessageDigest mdg = dis.getMessageDigest();
+			final MessageDigest mdg = dis.getMessageDigest();
 
-			String newDigest = String.valueOf(mdg.digest());
-			String oldDigest = config.getString("checksum");
+			final String newDigest = String.valueOf(mdg.digest());
+			final String oldDigest = config.getString("checksum");
 
 			System.out.println("MD5: " + newDigest);
 
@@ -107,7 +333,7 @@ public class UnacceptableBot extends ListenerAdapter
 				handleNewBuild();
 			}
 
-		} catch (Exception e)
+		} catch (final Exception e)
 		{
 			System.err.println("There was an error generating the MD5 Checksum. Not sure if new build or not...");
 			e.printStackTrace();
@@ -122,21 +348,30 @@ public class UnacceptableBot extends ListenerAdapter
 
 		if (loadChansFromDB)
 		{
-			String channelsStr = config.getChannels();
-			String[] channels = channelsStr.split(",");
+			final String channelsStr = config.getChannels();
+			final String[] channels = channelsStr.split(",");
 			config.setLong("connectedChannels", channels.length);
-			for (int i = 0; i < channels.length; i++)
+			for (final String channel : channels)
 			{
-				String currentChannel = channels[i].replace(",", "");
+				final String currentChannel = channel.replace(",", "");
 				UnacceptableBot.channels.add(currentChannel);
 			}
 		}
 
 	}
 
+	public void doChannelSave()
+	{
+		final String chanStr = "";
+		for (int i = 0; i < channels.size(); i++)
+			chanStr.concat(",".concat(channels.get(i)));
+		if (chanStr != "")
+			config.setChannels(chanStr);
+	}
+
 	/**
 	 * Handlers should be started in order of priority, because I said so.
-	 * 
+	 *
 	 * @throws Exception
 	 *             Any exceptions thrown by the handlers should be handled with extreme panic
 	 */
@@ -149,20 +384,57 @@ public class UnacceptableBot extends ListenerAdapter
 		parser = new JsonParser();
 	}
 
+	private void loadSexQuotes()
+	{
+		try
+		{
+			final BufferedReader br = new BufferedReader(new FileReader(new File("sexquotes.txt")));
+			String line = "missingno";
+			while ((line = br.readLine()) != null)
+				sexQuotes.add(line);
+			br.close();
+
+		} catch (final IOException e)
+		{
+
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void onInvite(final InviteEvent event)
+	{
+		log("INFO", "INVITE", event.getUser() + " invited bot to " + event.getChannel());
+		event.getBot().sendIRC().joinChannel(event.getChannel());
+	}
+
+	@Override
+	public void onJoin(final JoinEvent event)
+	{
+		if (relay.containsKey(event.getChannel().getName()))
+			for (final String to : relay.get(event.getChannel().getName()))
+				bot.sendIRC().message(to, event.getUser().getNick() + " joined " + event.getChannel().getName());
+
+		if (event.getUser().equals(event.getBot().getUserBot()))
+		{
+			channels.add(event.getChannel().getName());
+			log("INFO", "JOIN", "Joined channel " + event.getChannel().getName());
+		}
+
+	}
+
 	@Override
 	public void onMessage(final MessageEvent event) throws Exception
 	{
 		if (relay.containsKey(event.getChannel().getName().toLowerCase()) && !event.getMessage().startsWith("!stoprelay"))
 		{
-			String user = event.getUser().getNick().toLowerCase();
+			final String user = event.getUser().getNick().toLowerCase();
 			/*
 			 * .replace("a", "ᴀ") .replace("b", "ʙ") .replace("b", "ᴄ") .replace("d", "ᴅ") .replace("e", "ᴇ") .replace("f", "f") .replace("g", "ɢ") .replace("h", "ʜ") .replace("i", "ɪ") .replace("j", "ᴊ") .replace("k", "ᴋ") .replace("l", "ʟ") .replace("m", "ᴍ") .replace("n", "ɴ") .replace("o", "ᴏ") .replace("p", "ᴘ") .replace("q", "q") .replace("r", "ʀ") .replace("s", "s") .replace("t", "ᴛ") .replace("u", "ᴜ") .replace("v", "ᴠ") .replace("w", "ᴡ") .replace("x", "x") .replace("y", "ʏ") .replace("z", "ᴢ");
 			 */
 
-			for (String to : relay.get(event.getChannel().getName().toLowerCase()))
-			{
+			for (final String to : relay.get(event.getChannel().getName().toLowerCase()))
 				bot.sendIRC().message(to, event.getChannel().getName() + " - <" + user + "> " + event.getMessage());
-			}
 		}
 
 		if (event.getUser().getNick().equals("[MC]-DogeFest") && event.getMessage().contains("<"))
@@ -172,57 +444,43 @@ public class UnacceptableBot extends ListenerAdapter
 		}
 
 		if (event.getMessage().equalsIgnoreCase("test"))
-		{
 			bot.sendIRC().message(event.getChannel().getName(), "icles");
-		}
 
 		if (event.getMessage().charAt(0) == '!')
 		{
 			if (event.getMessage().startsWith("!"))
-			{
 				handler.processMessage(event);
-			} else if (event.getChannel().getName().equals("#doge-coin"))
-			{
+			else if (event.getChannel().getName().equals("#doge-coin"))
 				if (event.getUser().getNick().equals("DogeWallet") && event.getMessage().contains("sent " + getConfigHandler().getString("botName")))
-				{
 					event.getBot().sendIRC().message("DogeWallet", ".balance");
-				}
-			}
-		} else
-		{
-			// Message is not command, so we'll do a check for twat mode, and check spellings :>
+		} else // Message is not command, so we'll do a check for twat mode, and check spellings :>
 			if (twatMode)
 			{
 				if (!(SpellCheckHandler.getSuggestions(event.getMessage(), 1)).equals(event.getMessage().toLowerCase()))
-				{
 					try
-					{
+				{
 						bot.sendIRC().message(event.getChannel().getName(), "*".concat(SpellCheckHandler.getSuggestions(event.getMessage(), 1).concat("?")));
-					} catch (Exception e)
-					{
+				} catch (final Exception e)
+				{
 
-					}
 				}
 				stopBeingATwat(event.getMessage(), event.getChannel().getName(), event.getUser(), event.getBot());
 			}
-		}
 		if (event.getChannel().getName().equals("##boywanders"))
 		{
 			// 0
 			// <WANDERBOT>:<USER> !
-			String[] messageStr = event.getMessage().split(" ");
+			final String[] messageStr = event.getMessage().split(" ");
 			if (messageStr[1].startsWith("."))
 			{
 				@SuppressWarnings("unchecked")
-				MessageEvent evt = new MessageEvent(event.getBot(), event.getChannel(), event.getUser(), messageStr[1]);
+				final MessageEvent evt = new MessageEvent(event.getBot(), event.getChannel(), event.getUser(), messageStr[1]);
 				handler.processMessage(evt);
 			}
 		} else if (event.getChannel().getName().equals("##Ocelotworks"))
 		{
 			if (event.getMessage().equals("new topic plz"))
-			{
 				messageCount = 100;
-			}
 			if (event.getMessage().equals("reload those sweet sex phrases bro"))
 			{
 				sexQuotes.clear();
@@ -252,7 +510,6 @@ public class UnacceptableBot extends ListenerAdapter
 		// }
 
 		if (event.getUser().equals("*status"))
-		{
 			if (ZNCStatus.isCritical())
 			{
 				if (event.getMessage().contains("Connected"))
@@ -265,97 +522,31 @@ public class UnacceptableBot extends ListenerAdapter
 				ZNCStatus.setCritical(true);
 				ZNCStatus.setStatus(event.getMessage());
 			}
-		}
 
 		if (event.getUser().getNick().equals("DogeWallet"))
-		{
 			if (event.getMessage().contains("Active"))
 			{
-				int activeUsers = Integer.parseInt(event.getMessage().split(": ")[1]);
+				final int activeUsers = Integer.parseInt(event.getMessage().split(": ")[1]);
 				if (activeUsers == 0)
-				{
 					event.getBot().sendIRC().message("#doge-coin", ">> There are no active users, so soak cannot happen :( <<");
-				} else
+				else
 				{
-					long amtToSoak = ((getConfigHandler().getLong("dogeWalletBalance") - (getConfigHandler().getInteger("faucetReserve") + getConfigHandler().getInteger("profitReserve"))) / activeUsers);
+					final long amtToSoak = ((getConfigHandler().getLong("dogeWalletBalance") - (getConfigHandler().getInteger("faucetReserve") + getConfigHandler().getInteger("profitReserve"))) / activeUsers);
 					event.getBot().sendIRC().message("#doge-coin", ".soak " + amtToSoak);
 					getConfigHandler().increment("stat:totalSoaked", (int) amtToSoak);
 				}
 			} else
 			{
-				float balance = Float.parseFloat(event.getMessage());
+				final float balance = Float.parseFloat(event.getMessage());
 				final int tipOver = getConfigHandler().getInteger("faucetReserve") + getConfigHandler().getInteger("profitReserve") + getConfigHandler().getInteger("soakThreshold");
 				getConfigHandler().setFloat("dogeWalletBalance", balance);
 
 				if (balance > tipOver)
-				{
 					event.getBot().sendIRC().message("DogeWallet", ".active");
-				} else
-				{
+				else
 					event.getBot().sendIRC().message("#doge-coin", ">> Only " + (tipOver - balance) + " Doge needed to soak! <<");
-				}
 
 			}
-		}
-	}
-
-	private static void handleNewBuild()
-	{
-		config.increment("build");
-		System.out.println("Is build " + config.getInteger("build"));
-
-		// TODO: Help file uploading
-
-	}
-
-	/**
-	 * 
-	 * @param username
-	 *            The nickname to auth as
-	 * @param password
-	 *            The password to auth with
-	 */
-	public static void nickAuth(String username, String password)
-	{
-		if (!getConfigHandler().getString("botName").equals(username)) // If the bot name set in the database is not equal to the one we need....
-			getConfigHandler().setString("botName", username); // Then there must be a mistake somewhere... So we assume the database is wrong
-
-		if (!getBot().getNick().equals(username)) // If the nickname isn't already the username we want
-			getBot().sendIRC().changeNick(username); // Then we change it to what we are trying to authenticate as
-
-		getBot().sendIRC().message("nickserv", "IDENTIFY " + password); // Actually authenticating
-
-	}
-
-	public static HealthStatus getZNCStatus()
-	{
-		return ZNCStatus;
-	}
-
-	@Override
-	public void onInvite(final InviteEvent event)
-	{
-		log("INFO", "INVITE", event.getUser() + " invited bot to " + event.getChannel());
-		event.getBot().sendIRC().joinChannel(event.getChannel());
-	}
-
-	@Override
-	public void onJoin(final JoinEvent event)
-	{
-		if (relay.containsKey(event.getChannel().getName()))
-		{
-			for (String to : relay.get(event.getChannel().getName()))
-			{
-				bot.sendIRC().message(to, event.getUser().getNick() + " joined " + event.getChannel().getName());
-			}
-		}
-
-		if (event.getUser().equals(event.getBot().getUserBot()))
-		{
-			channels.add(event.getChannel().getName());
-			log("INFO", "JOIN", "Joined channel " + event.getChannel().getName());
-		}
-
 	}
 
 	@Override
@@ -368,278 +559,43 @@ public class UnacceptableBot extends ListenerAdapter
 		}
 	}
 
-	public void doChannelSave()
-	{
-		String chanStr = "";
-		for (int i = 0; i < channels.size(); i++)
-		{
-			chanStr.concat(",".concat(channels.get(i)));
-		}
-		if (chanStr != "")
-		{
-			config.setChannels(chanStr);
-		}
-	}
-
 	/**
 	 * Record the message to the database
-	 * 
+	 *
 	 * @author Neil
 	 * **/
 	private void recordMessage(final MessageEvent event) throws SQLException
 	{
-		String message = event.getMessage();
-		Channel channel = event.getChannel();
-		User sender = event.getUser();
-		Calendar calendar = Calendar.getInstance();
+		final String message = event.getMessage();
+		final Channel channel = event.getChannel();
+		final User sender = event.getUser();
+		final Calendar calendar = Calendar.getInstance();
 		calendar.setTime(new Date());
-		int hours = calendar.get(Calendar.HOUR_OF_DAY);
-		int minutes = calendar.get(Calendar.MINUTE);
-		int date = calendar.get(Calendar.DATE);
-		int month = calendar.get(Calendar.MONTH);
+		final int hours = calendar.get(Calendar.HOUR_OF_DAY);
+		final int minutes = calendar.get(Calendar.MINUTE);
+		final int date = calendar.get(Calendar.DATE);
+		final int month = calendar.get(Calendar.MONTH);
 		final String[] months = new String[] { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
-		String stringMonth = months[month];
-		String dateTime = date + " " + stringMonth + ", " + hours + ":" + minutes;
+		final String stringMonth = months[month];
+		final String dateTime = date + " " + stringMonth + ", " + hours + ":" + minutes;
 		config.createChannelTable(channel.getName());
 		config.setLog(dateTime, sender.getNick(), message, channel.getName());
 	}
 
-	private static void doYoutube(String message, String channel)
-	{
-		String pattern = "(?<=watch\\?v=|/videos/|embed\\/)[^#\\&\\?]*";
-
-		Pattern compiledPattern = Pattern.compile(pattern);
-		Matcher matcher = compiledPattern.matcher(message);
-
-		if (matcher.find())
-		{
-			try
-			{
-				InputStream is = getHTTPSUrlContents("https://gdata.youtube.com/feeds/api/videos/" + matcher.group().replace("", "").replace(",", "").replace(".", "").split(" ")[0] + "?v=2&alt=json");
-				com.google.gson.JsonParser parser = new com.google.gson.JsonParser();
-
-				JsonObject jo = parser.parse(new InputStreamReader(is)).getAsJsonObject().get("entry").getAsJsonObject();
-				String title = jo.get("title").getAsJsonObject().get("$t").getAsString();
-				float mins = Float.parseFloat(jo.get("media$group").getAsJsonObject().get("yt$duration").getAsString()) / 60;
-				bot.sendIRC().message(channel, Colors.BOLD + "Youtube link: " + title + " [" + mins + "]");
-				is.close();
-			} catch (Exception e)
-			{
-				e.printStackTrace();
-			}
-		}
-	}
-
-	private static void doReddit(String message, String channel, User sender)
-	{
-		// TODO: fancy regex for this lol still not done it
-		if (message.contains("whoop there it is") || message.contains("whoop, there it is"))
-		{
-			log("INFO", "REDDIT", "Whoop there it is detected");
-			bot.sendIRC().message(channel, Colors.BOLD + "WHO THE FUCK SAID THAT?");
-		}
-		try
-		{
-
-			if (message.contains("/r/") && config.getUserLevel(sender) >= 0)
-			{
-				if (message.contains("reddit.com") && message.contains("/comments/"))
-				{
-					log("INFO", "REDDIT", "Reddit link " + message);
-					String reddit = "http://api." + message.substring(message.indexOf("reddit.com"), message.lastIndexOf("/"));
-					InputStream is = getUrlContents(reddit);
-					JsonParser parser = new JsonParser();
-					JsonArray ja = parser.parse(new InputStreamReader(is)).getAsJsonArray();
-
-					JsonObject data = ja.get(0).getAsJsonObject().get("data").getAsJsonObject().get("children").getAsJsonArray().get(0).getAsJsonObject().get("data").getAsJsonObject(); // Holy JSON batman
-
-					String title = data.get("title").getAsString();
-					while (title.startsWith(".") || title.startsWith("!"))
-					{
-						if (title.startsWith("."))
-						{
-							title = title.replaceFirst(Pattern.quote("."), "");
-						} else if (title.startsWith("!"))
-						{
-							title = title.replaceFirst(Pattern.quote("!"), "");
-						}
-					}
-
-					bot.sendIRC().message(channel, Colors.BOLD + title + Colors.NORMAL + " (" + data.get("domain").getAsString() + (data.get("over_18").getAsBoolean() ? ") " + Colors.RED + "NSFW" : ")"));
-
-				} else
-				{
-					log("INFO", "REDDIT", "Subreddit " + message);
-					String subreddit = message.split("/r/")[1].split(" ")[0];
-					InputStream is = getUrlContents("http://api.reddit.com/r/" + subreddit.replace(",", "").replace(".", "") + "/about");
-					JsonParser parser = new JsonParser();
-
-					String subredditDesc = parser.parse(new InputStreamReader(is)).getAsJsonObject().get("data").getAsJsonObject().get("public_description").getAsString();
-					bot.sendIRC().message(channel, Colors.BOLD + "http://reddit.com/r/" + subreddit + " - " + subredditDesc);
-				}
-			}
-
-			if (message.contains("/u/") && !message.contains("reddit.com") && config.getUserLevel(sender) >= 0)
-			{
-				log("INFO", "REDDIT", "Redditor " + message);
-				String user = message.split("/u/")[1].split(" ")[0];
-				InputStream is = getUrlContents("http://api.reddit.com/u/" + user.replace(",", "").replace(".", "") + "/about");
-				com.google.gson.JsonParser parser = new com.google.gson.JsonParser();
-
-				JsonObject jo = parser.parse(new InputStreamReader(is)).getAsJsonObject().get("data").getAsJsonObject();
-
-				int linkKarma = jo.get("link_karma").getAsInt();
-				int commentKarma = jo.get("comment_karma").getAsInt();
-				bot.sendIRC().message(channel, Colors.NORMAL + Colors.BOLD + "http://reddit.com/u/" + user + " - " + linkKarma + " Link Karma. " + commentKarma + " Comment Karma.");
-			}
-		} catch (Exception e)
-		{
-		}
-	}
-
-	public void stopBeingATwat(String message, String channel, User sender, PircBotX bot) throws SQLException
+	public void stopBeingATwat(final String message, final String channel, final User sender, final PircBotX bot) throws SQLException
 	{
 		if (message.toLowerCase(Locale.ENGLISH).equals("what"))
 		{
-			ConfigHandler config = UnacceptableBot.getConfigHandler();
-			ResultSet rs = config.logQuery(channel);
+			final ConfigHandler config = UnacceptableBot.getConfigHandler();
+			final ResultSet rs = config.logQuery(channel);
 			rs.next();
-			String id = rs.getString(1);
-			ResultSet logRS = UnacceptableBot.getConfigHandler().getLog(channel, Integer.parseInt(id) - 2);
+			final String id = rs.getString(1);
+			final ResultSet logRS = UnacceptableBot.getConfigHandler().getLog(channel, Integer.parseInt(id) - 2);
 			logRS.next();
 			if ((logRS.getString(3).charAt(0) != '.') && (logRS.getString(3).charAt(0) != '!'))
-			{
 				bot.sendIRC().message(channel, logRS.getString(3).toUpperCase(Locale.ENGLISH));
-			} else
-			{
+			else
 				bot.sendIRC().message(channel, sender.getNick() + " is a bad boy :(");
-			}
 		}
-	}
-
-	public static void log(String level, String origin, String message)
-	{
-
-		getWebSocketHandler().logMessage("[" + level + "]" + " " + message);
-		System.out.println("[" + level + "]" + " " + message);
-
-		// try {
-		// getConfigHandler().createChannelTable("SYSTEM");
-		// getConfigHandler().setLog(new Date().toString(), origin,
-		// "[" + level + "]" + " " + message, "SYSTEM");
-		// } catch (Exception e) {
-		// e.printStackTrace();
-		// }
-
-	}
-
-	public static InputStream getUrlContents(String surl)
-	{
-		/*
-		 * Instead of: InputStream is = getUrlContents(url); parser.parse(new InputStreamReader(is));
-		 * 
-		 * You can use: parser.parse(new URL(url).openStream())
-		 * 
-		 * And instead of creating a new JsonParser before every parse, you can make a static global parser.
-		 */
-		URL url;
-
-		try
-		{
-			url = new URL(surl);
-			URLConnection conn = url.openConnection();
-			InputStream is = conn.getInputStream();
-
-			return is;
-		} catch (Exception e)
-		{
-			log("ERROR", "getUrlContents", "Unable to connect to " + surl + ": " + e.toString());
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	public static InputStream getHTTPSUrlContents(String surl)
-	{
-		URL url;
-
-		try
-		{
-			url = new URL(surl);
-			HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
-			InputStream is = conn.getInputStream();
-
-			return is;
-
-		} catch (Exception e)
-		{
-			log("ERROR", "getHTTPSUrlContents", "Unable to connect to " + surl + ": " + e.toString());
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	private void loadSexQuotes()
-	{
-		try
-		{
-			BufferedReader br = new BufferedReader(new FileReader(new File("sexquotes.txt")));
-			String line = "missingno";
-			while ((line = br.readLine()) != null)
-			{
-				sexQuotes.add(line);
-			}
-			br.close();
-
-		} catch (IOException e)
-		{
-
-			e.printStackTrace();
-		}
-	}
-
-	public static JsonParser getParser()
-	{
-		return parser;
-	}
-
-	public static WebSocketHandler getWebSocketHandler()
-	{
-		return socks;
-	}
-
-	public static CommandHandler getCommandHandler()
-	{
-		return handler;
-	}
-
-	public static ConfigHandler getConfigHandler()
-	{
-		return config;
-	}
-
-	public static ArrayList<String> getChannels()
-	{
-		return channels;
-	}
-
-	public static SnapchatHandler getSnapchat()
-	{
-		return snapchat;
-	}
-
-	public static void setSnapchat(SnapchatHandler sc)
-	{
-		snapchat = sc;
-	}
-
-	public static PircBotX getBot()
-	{
-		return bot;
-	}
-
-	public static void setBot(PircBotX bot)
-	{
-		UnacceptableBot.bot = bot;
 	}
 }

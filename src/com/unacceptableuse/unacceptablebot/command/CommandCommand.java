@@ -11,16 +11,34 @@ import com.unacceptableuse.unacceptablebot.UnacceptableBot;
 import com.unacceptableuse.unacceptablebot.variable.Level;
 
 /**
- * 
+ *
  * @author Peter
  *
  */
 public class CommandCommand extends Command
 {
 
+	@Override
+	public Level getAccessLevel()
+	{
+		return Level.SUPERADMIN;
+	}
+
+	@Override
+	public String[] getAliases()
+	{
+		return new String[] { "command" };
+	}
+
+	@Override
+	public String getHelp()
+	{
+		return "Usage: command <linux command> | Result: Runs the linux command on the server";
+	}
+
 	@SuppressWarnings("unused")
 	@Override
-	public void performCommand(User sender, Channel channel, String message, String[] args)
+	public void performCommand(final User sender, final Channel channel, final String message, final String[] args)
 	{
 		if (message.contains("rm"))
 		{
@@ -35,15 +53,12 @@ public class CommandCommand extends Command
 
 		try
 		{
-			Process p = Runtime.getRuntime().exec(message.split(args[0] + " ")[1]);
-			BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()));
+			final Process p = Runtime.getRuntime().exec(message.split(args[0] + " ")[1]);
+			final BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()));
 			System.out.println(p.toString());
 			String line = "";
-			int lineCount = 0;
-
 			while ((line = br.readLine()) != null)
 			{
-				lineCount++;
 				sendMessage(line, channel);
 
 				/*
@@ -52,7 +67,7 @@ public class CommandCommand extends Command
 			}
 
 			br.close();
-		} catch (IOException e)
+		} catch (final IOException e)
 		{
 			sendMessage("The command " + args[1] + " was not recognized.", channel);
 		}
@@ -60,26 +75,8 @@ public class CommandCommand extends Command
 	}
 
 	@Override
-	public String[] getAliases()
-	{
-		return new String[] { "command" };
-	}
-
-	@Override
 	public int requiredArguments()
 	{
 		return 1;
-	}
-
-	@Override
-	public Level getAccessLevel()
-	{
-		return Level.SUPERADMIN;
-	}
-
-	@Override
-	public String getHelp()
-	{
-		return "Usage: command <linux command> | Result: Runs the linux command on the server";
 	}
 }

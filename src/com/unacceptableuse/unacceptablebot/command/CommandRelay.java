@@ -9,45 +9,16 @@ import com.unacceptableuse.unacceptablebot.UnacceptableBot;
 import com.unacceptableuse.unacceptablebot.variable.Level;
 
 /**
- * 
+ *
  * @author Edward
  *
  */
 public class CommandRelay extends Command
 {
 	@Override
-	public void performCommand(User sender, Channel channel, String message, String[] args)
+	public Level getAccessLevel()
 	{
-		String from = args[1].toLowerCase();
-		String to = args[2].toLowerCase();
-
-		if (to.equals(from))
-		{
-			return;
-		}
-
-		if (args[0].equalsIgnoreCase("!startrelay"))
-		{
-			if (!UnacceptableBot.relay.containsKey(from))
-			{
-				UnacceptableBot.relay.put(from, new ArrayList<String>());
-			}
-
-			if (!UnacceptableBot.relay.get(from).contains(to))
-			{
-				UnacceptableBot.relay.get(from).add(to);
-				sendMessage("Now relaying from " + from + ".", to);
-				sendMessage("Now relaying to " + to + ".", to);
-			}
-		} else if (args[0].equalsIgnoreCase("!stoprelay"))
-		{
-			if (UnacceptableBot.relay.containsKey(from))
-			{
-				UnacceptableBot.relay.get(from).remove(to);
-				sendMessage("No longer relaying from " + from + ".", to);
-				sendMessage("No longer relaying to " + to + ".", to);
-			}
-		}
+		return Level.ADMIN;
 	}
 
 	@Override
@@ -57,15 +28,38 @@ public class CommandRelay extends Command
 	}
 
 	@Override
-	public Level getAccessLevel()
-	{
-		return Level.ADMIN;
-	}
-
-	@Override
 	public String getHelp()
 	{
 		return "Usage: relay <from> <to> | Will relay all messages from the first channel to the second.";
+	}
+
+	@Override
+	public void performCommand(final User sender, final Channel channel, final String message, final String[] args)
+	{
+		final String from = args[1].toLowerCase();
+		final String to = args[2].toLowerCase();
+
+		if (to.equals(from))
+			return;
+
+		if (args[0].equalsIgnoreCase("!startrelay"))
+		{
+			if (!UnacceptableBot.relay.containsKey(from))
+				UnacceptableBot.relay.put(from, new ArrayList<String>());
+
+			if (!UnacceptableBot.relay.get(from).contains(to))
+			{
+				UnacceptableBot.relay.get(from).add(to);
+				sendMessage("Now relaying from " + from + ".", to);
+				sendMessage("Now relaying to " + to + ".", to);
+			}
+		} else if (args[0].equalsIgnoreCase("!stoprelay"))
+			if (UnacceptableBot.relay.containsKey(from))
+			{
+				UnacceptableBot.relay.get(from).remove(to);
+				sendMessage("No longer relaying from " + from + ".", to);
+				sendMessage("No longer relaying to " + to + ".", to);
+			}
 	}
 
 	@Override

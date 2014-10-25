@@ -6,18 +6,12 @@ import org.pircbotx.User;
 import com.unacceptableuse.unacceptablebot.UnacceptableBot;
 
 /**
- * 
+ *
  * @author Peter
  *
  */
 public class CommandWhoami extends Command
 {
-
-	@Override
-	public void performCommand(User sender, Channel channel, String message, String[] args)
-	{
-		sendMessage(sender.getNick() + " has UUID " + sender.getUserId() + " Level " + UnacceptableBot.getConfigHandler().getUserLevel(sender), channel);
-	}
 
 	@Override
 	public String[] getAliases()
@@ -30,6 +24,12 @@ public class CommandWhoami extends Command
 	public String getHelp()
 	{
 		return "Usage: whoami | Result: Returns user info";
+	}
+
+	@Override
+	public void performCommand(final User sender, final Channel channel, final String message, final String[] args)
+	{
+		sendMessage(sender.getNick() + " has UUID " + sender.getUserId() + " Level " + UnacceptableBot.getConfigHandler().getUserLevel(sender), channel);
 	}
 
 }

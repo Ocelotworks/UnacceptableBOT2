@@ -13,33 +13,12 @@ import org.w3c.dom.Node;
 import com.unacceptableuse.unacceptablebot.UnacceptableBot;
 
 /**
- * 
+ *
  * @author Peter
  *
  */
 public class CommandInsult extends Command
 {
-
-	@Override
-	public void performCommand(User sender, Channel channel, String message, String[] args)
-	{
-		InputStream is = UnacceptableBot.getUrlContents("http://www.insultme.co/scripts/insult.php");
-		try
-		{
-			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-			Document doc = dBuilder.parse(is);
-			doc.getDocumentElement().normalize();
-
-			Node nNode = doc.getElementsByTagName("result").item(0);
-			sendMessage(args.length > 1 ? nNode.getAttributes().getNamedItem("title").getNodeValue().replace("You're", args[1] + " is") : nNode.getAttributes().getNamedItem("title").getNodeValue().replace("UnacceptableBOT", "I'm"), channel);
-
-		} catch (Exception e)
-		{
-			sendMessage("ERROR: You're a bot crashing " + e.getMessage(), channel);
-			e.printStackTrace();
-		}
-	}
 
 	@Override
 	public String[] getAliases()
@@ -52,6 +31,27 @@ public class CommandInsult extends Command
 	public String getHelp()
 	{
 		return "Usage: insult [user] | Result: Generates an insult";
+	}
+
+	@Override
+	public void performCommand(final User sender, final Channel channel, final String message, final String[] args)
+	{
+		final InputStream is = UnacceptableBot.getUrlContents("http://www.insultme.co/scripts/insult.php");
+		try
+		{
+			final DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+			final DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+			final Document doc = dBuilder.parse(is);
+			doc.getDocumentElement().normalize();
+
+			final Node nNode = doc.getElementsByTagName("result").item(0);
+			sendMessage(args.length > 1 ? nNode.getAttributes().getNamedItem("title").getNodeValue().replace("You're", args[1] + " is") : nNode.getAttributes().getNamedItem("title").getNodeValue().replace("UnacceptableBOT", "I'm"), channel);
+
+		} catch (final Exception e)
+		{
+			sendMessage("ERROR: You're a bot crashing " + e.getMessage(), channel);
+			e.printStackTrace();
+		}
 	}
 
 }
