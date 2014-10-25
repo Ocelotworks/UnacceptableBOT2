@@ -136,7 +136,7 @@ public class SnapchatHandler
 	public void doOneInQueue()
 	{
 		for (final Snap snap : snaps)
-			if (snap.sent != true)
+			if (!snap.sent)
 			{
 				snap.send();
 				snap.sent = true;

@@ -267,7 +267,7 @@ public class ConfigHandler
 			final HealthStatus hs = ar.iterator().next();
 			stb.append(hs.toString());
 			if (ar.iterator().hasNext())
-				stb.append(":");
+				stb.append(':');
 		}
 
 		setString("health", stb.toString());

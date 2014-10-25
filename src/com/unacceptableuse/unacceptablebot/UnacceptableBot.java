@@ -89,10 +89,10 @@ public class UnacceptableBot extends ListenerAdapter
 					final JsonObject data = ja.get(0).getAsJsonObject().get("data").getAsJsonObject().get("children").getAsJsonArray().get(0).getAsJsonObject().get("data").getAsJsonObject(); // Holy JSON batman
 
 					String title = data.get("title").getAsString();
-					while (title.startsWith(".") || title.startsWith("!"))
-						if (title.startsWith("."))
+					while (title.charAt(0) == '.' || title.charAt(0) == '!')
+						if (title.charAt(0) == '.')
 							title = title.replaceFirst(Pattern.quote("."), "");
-						else if (title.startsWith("!"))
+						else if (title.charAt(0) == '!')
 							title = title.replaceFirst(Pattern.quote("!"), "");
 
 					bot.sendIRC().message(channel, Colors.BOLD + title + Colors.NORMAL + " (" + data.get("domain").getAsString() + (data.get("over_18").getAsBoolean() ? ") " + Colors.RED + "NSFW" : ")"));
@@ -121,9 +121,7 @@ public class UnacceptableBot extends ListenerAdapter
 				final int commentKarma = jo.get("comment_karma").getAsInt();
 				bot.sendIRC().message(channel, Colors.NORMAL + Colors.BOLD + "http://reddit.com/u/" + user + " - " + linkKarma + " Link Karma. " + commentKarma + " Comment Karma.");
 			}
-		} catch (final Exception e)
-		{
-		}
+		} catch (final Exception e){}
 	}
 
 	private static void doYoutube(final String message, final String channel)
@@ -365,7 +363,7 @@ public class UnacceptableBot extends ListenerAdapter
 		final String chanStr = "";
 		for (int i = 0; i < channels.size(); i++)
 			chanStr.concat(",".concat(channels.get(i)));
-		if (chanStr != "")
+		if (!chanStr.equals(""))
 			config.setChannels(chanStr);
 	}
 
@@ -448,7 +446,7 @@ public class UnacceptableBot extends ListenerAdapter
 
 		if (event.getMessage().charAt(0) == '!')
 		{
-			if (event.getMessage().startsWith("!"))
+			if (event.getMessage().charAt(0) == '!')
 				handler.processMessage(event);
 			else if (event.getChannel().getName().equals("#doge-coin"))
 				if (event.getUser().getNick().equals("DogeWallet") && event.getMessage().contains("sent " + getConfigHandler().getString("botName")))
@@ -460,10 +458,7 @@ public class UnacceptableBot extends ListenerAdapter
 					try
 				{
 						bot.sendIRC().message(event.getChannel().getName(), "*".concat(SpellCheckHandler.getSuggestions(event.getMessage(), 1).concat("?")));
-				} catch (final Exception e)
-				{
-
-				}
+				} catch (final Exception e){}
 				stopBeingATwat(event.getMessage(), event.getChannel().getName(), event.getUser(), event.getBot());
 			}
 		if (event.getChannel().getName().equals("##boywanders"))
@@ -471,7 +466,7 @@ public class UnacceptableBot extends ListenerAdapter
 			// 0
 			// <WANDERBOT>:<USER> !
 			final String[] messageStr = event.getMessage().split(" ");
-			if (messageStr[1].startsWith("."))
+			if (messageStr[1].charAt(0) == '.')
 			{
 				@SuppressWarnings("unchecked")
 				final MessageEvent evt = new MessageEvent(event.getBot(), event.getChannel(), event.getUser(), messageStr[1]);
