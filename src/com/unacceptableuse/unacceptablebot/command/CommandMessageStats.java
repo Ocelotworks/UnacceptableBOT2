@@ -35,7 +35,7 @@ public class CommandMessageStats extends Command
 
 		for (int i = 0; i < args.length; i++)
 			if (args[i].toLowerCase().contains("--channel") || args[i].toLowerCase().contains("-ch"))
-				targetChannel = args[i + 1].startsWith("#") ? args[i + 1] : "#" + args[i + 1];
+				targetChannel = args[i + 1].charAt(0) == '#' ? args[i + 1] : "#" + args[i + 1];
 				else if (args[i].toLowerCase().contains("--user") || args[i].toLowerCase().contains("-u"))
 					target = args[i + 1];
 
