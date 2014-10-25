@@ -49,7 +49,8 @@ import com.unacceptableuse.unacceptablebot.command.CommandWhoami;
 import com.unacceptableuse.unacceptablebot.command.CommandWolfram;
 import com.unacceptableuse.unacceptablebot.variable.Level;
 
-public class CommandHandler {
+public class CommandHandler
+{
 	public ArrayList<Command> _commands = new ArrayList<Command>();
 
 	/**
@@ -57,7 +58,8 @@ public class CommandHandler {
 	 * 
 	 * @author UnacceptableUse
 	 */
-	public void init() {
+	public void init()
+	{
 		System.out.println("Starting command registration");
 		// Keep this in alphabetical order.
 		addCommand(new CommandBroadcast());
@@ -101,7 +103,6 @@ public class CommandHandler {
 		addCommand(new CommandWolfram());
 		UnacceptableBot.log("DEBUG", "CMDREG", "Registered " + getCommands().size() + " commands successfully!");
 	}
-	
 
 	/**
 	 * Pass in onMessage for running commands
@@ -111,7 +112,8 @@ public class CommandHandler {
 	 *            - The MessageEvent containing user, channel etc
 	 */
 	@SuppressWarnings("rawtypes")
-	public void processMessage(MessageEvent event) {
+	public void processMessage(MessageEvent event)
+	{
 
 		String message = event.getMessage();
 		Channel channel = event.getChannel();
@@ -119,21 +121,29 @@ public class CommandHandler {
 
 		Command chosenCommand = getCommand(message.replaceFirst("!", "").split(" ")[0]);
 
-		if (chosenCommand == null) {
+		if (chosenCommand == null)
+		{
 			return; // These arn't the commands you are looking for...
-		} else {
-			if (chosenCommand.getAccessLevel() == Level.BANNED || UnacceptableBot.getConfigHandler().getUserLevel(sender) < Level.levelToInt(chosenCommand.getAccessLevel())) {
+		} else
+		{
+			if (chosenCommand.getAccessLevel() == Level.BANNED || UnacceptableBot.getConfigHandler().getUserLevel(sender) < Level.levelToInt(chosenCommand.getAccessLevel()))
+			{
 				event.getBot().sendIRC().message(event.getChannel().getName(), "You do not have permission to perform this command");
 				event.getBot().sendIRC().message(event.getChannel().getName(), "Needed Level: " + Level.levelToInt(chosenCommand.getAccessLevel()) + " | Your Level: " + UnacceptableBot.getConfigHandler().getUserLevel(sender));
-			} else {
-				if (chosenCommand.requiredArguments() > (event.getMessage().split(" ").length - 1)) {
+			} else
+			{
+				if (chosenCommand.requiredArguments() > (event.getMessage().split(" ").length - 1))
+				{
 					event.getBot().sendIRC().message(event.getChannel().getName(), "Insufficent Arguments. " + chosenCommand.getHelp());
-				} else {
+				} else
+				{
 					UnacceptableBot.getConfigHandler().increment("stat:commandsPerformed");
 					UnacceptableBot.log("INFO", "CMDPRF", "Command " + chosenCommand.getAliases()[0] + " performed by " + sender.getNick());
-					try {
+					try
+					{
 						chosenCommand.performCommand(sender, channel, message, message.split(" "));
-					} catch (Exception e) {
+					} catch (Exception e)
+					{
 						UnacceptableBot.log("ERROR", "CMDPRC", "Exception performing " + chosenCommand.getAliases()[0] + ": " + e.toString());
 						event.getBot().sendIRC().message(event.getChannel().getName(), "An error occurred. (" + e.toString() + ")");
 					}
@@ -148,7 +158,8 @@ public class CommandHandler {
 	 * @author UnacceptableUse
 	 * @return ArrayList
 	 */
-	public ArrayList<Command> getCommands() {
+	public ArrayList<Command> getCommands()
+	{
 		return _commands;
 	}
 
@@ -159,7 +170,8 @@ public class CommandHandler {
 	 * @param c
 	 *            - ArrayList to set
 	 */
-	public void setCommands(ArrayList<Command> c) {
+	public void setCommands(ArrayList<Command> c)
+	{
 		_commands = c;
 	}
 
@@ -167,33 +179,42 @@ public class CommandHandler {
 	 * Registers Command
 	 * 
 	 * @author UnacceptableUse
-	 * @param c Command to add.
+	 * @param c
+	 *            Command to add.
 	 */
-	public void addCommand(Command c) {
+	public void addCommand(Command c)
+	{
 		_commands.add(c);
 	}
-	
+
 	/**
 	 * Unregisters Command
 	 * 
 	 * @author UnacceptableUse
-	 * @param c Command to remove.
+	 * @param c
+	 *            Command to remove.
 	 */
-	public void removeCommand(Command c) {
+	public void removeCommand(Command c)
+	{
 		_commands.remove(c);
 	}
 
 	/**
 	 * Remove the <b>first</b> command that has the alias <code>c</code>
 	 * 
-	 * @param c The command (without the "!" prefix).
+	 * @param c
+	 *            The command (without the "!" prefix).
 	 * @author UnacceptableUse
 	 * @return True if the command was found and removed successfully.
 	 */
-	public boolean removeCommand(String c) {
-		for (Command command : getCommands()) {
-			for (String s : command.getAliases()) {
-				if (s.equalsIgnoreCase(c)) {
+	public boolean removeCommand(String c)
+	{
+		for (Command command : getCommands())
+		{
+			for (String s : command.getAliases())
+			{
+				if (s.equalsIgnoreCase(c))
+				{
 					removeCommand(command);
 					return true;
 				}
@@ -205,14 +226,19 @@ public class CommandHandler {
 	/**
 	 * Get the <b>first</b> command that has the alias <code>c</code>
 	 * 
-	 * @param c The command (without the "!" prefix).
+	 * @param c
+	 *            The command (without the "!" prefix).
 	 * @author UnacceptableUse
 	 * @return The command object with the alias <code>c</code>
 	 */
-	public Command getCommand(String c) {
-		for (Command command : getCommands()) {
-			for (String s : command.getAliases()) {
-				if (s.toLowerCase().equals(c)) {
+	public Command getCommand(String c)
+	{
+		for (Command command : getCommands())
+		{
+			for (String s : command.getAliases())
+			{
+				if (s.toLowerCase().equals(c))
+				{
 					return command;
 				}
 			}

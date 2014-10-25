@@ -14,42 +14,37 @@ import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 import twitter4j.conf.ConfigurationBuilder;
 
-public class CommandTwitter extends Command {
+public class CommandTwitter extends Command
+{
 
 	@Override
-	public void performCommand(User sender, Channel channel, String message,
-			String[] args) {
-		try {
+	public void performCommand(User sender, Channel channel, String message, String[] args)
+	{
+		try
+		{
 			ConfigurationBuilder cb = new ConfigurationBuilder();
-			cb.setDebugEnabled(true)
-					.setOAuthConsumerKey("qkjJsZ6OfDaOGN0HHuqXUitsb")
-					.setOAuthConsumerSecret(
-							UnacceptableBot.getConfigHandler().getString(
-									"twitPrivKey"))
-					.setOAuthAccessToken(
-							"https://api.twitter.com/oauth/access_token")
-					.setOAuthAccessTokenSecret(
-							"https://api.twitter.com/oauth/authorize");
-			Twitter unauthenticatedTwitter = new TwitterFactory(cb.build())
-					.getInstance();
+			cb.setDebugEnabled(true).setOAuthConsumerKey("qkjJsZ6OfDaOGN0HHuqXUitsb").setOAuthConsumerSecret(UnacceptableBot.getConfigHandler().getString("twitPrivKey")).setOAuthAccessToken("https://api.twitter.com/oauth/access_token").setOAuthAccessTokenSecret("https://api.twitter.com/oauth/authorize");
+			Twitter unauthenticatedTwitter = new TwitterFactory(cb.build()).getInstance();
 			// First param of Paging() is the page number, second is the number
 			// per page (this is capped around 200 I think.
 			Paging paging = new Paging(1, 100);
-			List<Status> statuses = unauthenticatedTwitter.getUserTimeline(
-					args[0], paging);
+			List<Status> statuses = unauthenticatedTwitter.getUserTimeline(args[0], paging);
 			sendMessage(statuses.get(0).getText(), channel);
-		} catch (TwitterException e) {
+		} catch (TwitterException e)
+		{
 			e.printStackTrace();
 		}
 	}
 
 	@Override
-	public String[] getAliases() {
+	public String[] getAliases()
+	{
 		return new String[] { "twitter" };
 	}
 
 	@Override
-	public String getHelp() {
+	public String getHelp()
+	{
 		return "Twitter API hook";
 	}
 

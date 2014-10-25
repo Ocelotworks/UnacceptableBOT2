@@ -14,21 +14,21 @@ public class CommandWhoami extends Command
 {
 
 	@Override
-	public void performCommand(User sender, Channel channel, String message,
-			String[] args)
+	public void performCommand(User sender, Channel channel, String message, String[] args)
 	{
-		sendMessage(sender.getNick()+" has UUID "+sender.getUserId()+" Level "+UnacceptableBot.getConfigHandler().getUserLevel(sender), channel);
+		sendMessage(sender.getNick() + " has UUID " + sender.getUserId() + " Level " + UnacceptableBot.getConfigHandler().getUserLevel(sender), channel);
 	}
 
 	@Override
 	public String[] getAliases()
 	{
-		
-		return new String[]{"whoami"};
+
+		return new String[] { "whoami" };
 	}
 
 	@Override
-	public String getHelp() {
+	public String getHelp()
+	{
 		return "Usage: whoami | Result: Returns user info";
 	}
 

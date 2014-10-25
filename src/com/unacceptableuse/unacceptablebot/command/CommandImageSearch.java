@@ -19,55 +19,71 @@ import com.google.gson.JsonParser;
  * @author Edward
  *
  */
-public class CommandImageSearch extends Command {
+public class CommandImageSearch extends Command
+{
 
 	@Override
-	public void performCommand(User sender, Channel channel, String message, String[] args) {
+	public void performCommand(User sender, Channel channel, String message, String[] args)
+	{
 		int nth = 0;
 		Boolean rehost = false;
-		
-		for(int i = 0; i < args.length; i++) {
-			if(args[i].toLowerCase().startsWith("--n")) {
-				try {
+
+		for (int i = 0; i < args.length; i++)
+		{
+			if (args[i].toLowerCase().startsWith("--n"))
+			{
+				try
+				{
 					nth = Integer.parseInt(args[i + 1]) - 1;
-					if(nth < 0 || nth > 7) {
+					if (nth < 0 || nth > 7)
+					{
 						sendMessage("Number must be between 1 and 8.", channel);
 						return;
 					}
-				} catch (NumberFormatException nfe) {
+				} catch (NumberFormatException nfe)
+				{
 					sendMessage(args[i + 1] + "is not a number.", channel);
 					return;
 				}
-			} else if(args[i].toLowerCase().startsWith("--r")) {
+			} else if (args[i].toLowerCase().startsWith("--r"))
+			{
 				rehost = true;
 			}
 		}
-		
+
 		String query = message.substring(message.indexOf(" ") + 1, message.indexOf("--") == -1 ? message.length() - 1 : message.indexOf(" --"));
-				
+
 		JsonParser json = new JsonParser();
-		
+
 		String url = "";
-		try {
+		try
+		{
 			InputStream is = new URL("http://ajax.googleapis.com/ajax/services/search/images?v=13.0&rsz=8&q=" + query.replace(" ", "%20").replace("&", "and")).openStream();
 			url = json.parse(new InputStreamReader(is)).getAsJsonObject().get("responseData").getAsJsonObject().get("results").getAsJsonArray().get(nth).getAsJsonObject().get("url").getAsString();
-		} catch (Exception e) {
-			if(e.getMessage().equals("Index: 0, Size: 0")) {
+		} catch (Exception e)
+		{
+			if (e.getMessage().equals("Index: 0, Size: 0"))
+			{
 				sendMessage("No results found.", channel);
-			} else {
+			} else
+			{
 				sendMessage(e.getMessage(), channel);
 			}
 			return;
 		}
-		
-		try {
-			if (rehost) {
-				try {
+
+		try
+		{
+			if (rehost)
+			{
+				try
+				{
 					HttpURLConnection httpcon = (HttpURLConnection) new URL("http://upload.gfycat.com/transcode?fetchUrl=" + url).openConnection();
 					httpcon.addRequestProperty("User-Agent", "Mozilla/4.0");
 					String gfy = json.parse(new InputStreamReader(httpcon.getInputStream())).getAsJsonObject().get("gfyName").getAsString();
 					url = "http://gfycat.com/" + gfy;
-				} catch (NullPointerException notagif) {
+				} catch (NullPointerException notagif)
+				{
 					URL api;
 					api = new URL("https://api.imgur.com/3/image");
 					HttpURLConnection conn = (HttpURLConnection) api.openConnection();
@@ -80,45 +96,53 @@ public class CommandImageSearch extends Command {
 					conn.setRequestProperty("Authorization", "Client-ID " + "0b47321417f7173");
 					conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
 					conn.connect();
-					
+
 					OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
 					wr.write(data);
 					wr.close();
-					
+
 					JsonObject imgurJson = json.parse(new InputStreamReader(conn.getInputStream())).getAsJsonObject();
-					
-					if (imgurJson.get("success").getAsBoolean()) {
+
+					if (imgurJson.get("success").getAsBoolean())
+					{
 						url = imgurJson.get("data").getAsJsonObject().get("link").getAsString();
-					} else {
+					} else
+					{
 						sendMessage("Rehost unsuccessful, original image: " + url, channel);
 					}
-					
+
 					conn.disconnect();
 				}
 			}
-			
-			if(url.equals("")) {
+
+			if (url.equals(""))
+			{
 				sendMessage("No results found.", channel);
-			} else {
+			} else
+			{
 				sendMessage(url, channel);
 			}
-		} catch (IOException timeout) { 
+		} catch (IOException timeout)
+		{
 			sendMessage("Rehost unsuccessful, original image: " + url, channel);
 		}
 	}
 
 	@Override
-	public String[] getAliases() {
-		return new String[]{ "gimage", "imagesearch" };
+	public String[] getAliases()
+	{
+		return new String[] { "gimage", "imagesearch" };
 	}
 
 	@Override
-	public String getHelp() {
+	public String getHelp()
+	{
 		return "Usage: gimage <search term> [--number <1-4>] [--rehost] | Result: A link to the first result on google images, if --n is included, returns the nth result, will rehost the image to imgur or gfycat if --rehost is included.";
 	}
-	
+
 	@Override
-	public int requiredArguments() {
+	public int requiredArguments()
+	{
 		return 1;
 	}
 }

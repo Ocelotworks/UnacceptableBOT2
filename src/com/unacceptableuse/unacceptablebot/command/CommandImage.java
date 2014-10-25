@@ -13,77 +13,74 @@ public class CommandImage extends Command
 {
 
 	@Override
-	public void performCommand(User sender, Channel channel, String message,String[] args)
+	public void performCommand(User sender, Channel channel, String message, String[] args)
 	{
 		sendMessage(getRandomImage(args[1]), channel);
 	}
-	
+
 	private String getRandomImage(String subreddit)
 	{
 		String bannedReddits = UnacceptableBot.getConfigHandler().getString("bannedReddits");
 		ArrayList<String> bannedRedditsAry = new ArrayList<String>(Arrays.asList(bannedReddits.split(",")));
 		boolean canGetImage = true;
-		for(String s : bannedRedditsAry){
-			if(s.equals(subreddit)){
+		for (String s : bannedRedditsAry)
+		{
+			if (s.equals(subreddit))
+			{
 				canGetImage = false;
 			}
 		}
-		if(!canGetImage)return "This subreddit has been disabled";
-		try{
+		if (!canGetImage)
+			return "This subreddit has been disabled";
+		try
+		{
 
-		
-			InputStream is = UnacceptableBot.getUrlContents("http://api.reddit.com/r/"+subreddit.replace(",","").replace(".",""));
-			com.google.gson.JsonParser parser = new com.google.gson.JsonParser(); 
+			InputStream is = UnacceptableBot.getUrlContents("http://api.reddit.com/r/" + subreddit.replace(",", "").replace(".", ""));
+			com.google.gson.JsonParser parser = new com.google.gson.JsonParser();
 
 			String imageURL = "Error";
 			int timeout = 0;
 			boolean isNSFW = false;
-			while(!imageURL.contains("imgur") && timeout < 40)
+			while (!imageURL.contains("imgur") && timeout < 40)
 			{
-				com.google.gson.JsonObject object = 
-						parser.parse(new InputStreamReader(is)).getAsJsonObject()
-						.get("data").getAsJsonObject()
-						.get("children").getAsJsonArray()
-						.get(UnacceptableBot.rand.nextInt(20)).getAsJsonObject()
-						.get("data").getAsJsonObject();
+				com.google.gson.JsonObject object = parser.parse(new InputStreamReader(is)).getAsJsonObject().get("data").getAsJsonObject().get("children").getAsJsonArray().get(UnacceptableBot.rand.nextInt(20)).getAsJsonObject().get("data").getAsJsonObject();
 				isNSFW = object.get("over_18").getAsBoolean();
-				imageURL = object.get("title").getAsString()+": "+object.get("url").getAsString();
+				imageURL = object.get("title").getAsString() + ": " + object.get("url").getAsString();
 				timeout++;
 			}
-			
+
 			is.close();
-			
+
 			boolean canGetNSFW = UnacceptableBot.getConfigHandler().getBoolean("allowNSFW");
-			if(!canGetNSFW && isNSFW) return "NSFW Images are currently not allowed. Please try again later!";
-			return imageURL.contains("imgur") ?  imageURL + (isNSFW ? " &RED&BOLD[NSFW]&RESET" : ""): "Could not find image in that sub!" ;
-		}catch(IllegalStateException e)
+			if (!canGetNSFW && isNSFW)
+				return "NSFW Images are currently not allowed. Please try again later!";
+			return imageURL.contains("imgur") ? imageURL + (isNSFW ? " &RED&BOLD[NSFW]&RESET" : "") : "Could not find image in that sub!";
+		} catch (IllegalStateException e)
 		{
 			return "Reddit returned nothing, try again later.";
-		}
-		catch(IndexOutOfBoundsException e)
+		} catch (IndexOutOfBoundsException e)
 		{
 			return "That subreddit does not exist or does not contain enough images.";
-		}
-		catch(NullPointerException e)
+		} catch (NullPointerException e)
 		{
 			return "That subreddit is banned, private or invalid.";
-		}
-		catch(Exception e)
+		} catch (Exception e)
 		{
-			UnacceptableBot.log("ERROR", "!image", "Unhandled Exception: "+e.toString());
+			UnacceptableBot.log("ERROR", "!image", "Unhandled Exception: " + e.toString());
 			e.printStackTrace();
-			return "You crashed the bot, so have a gif of two kittens crashing into eachother: http://stream1.gifsoup.com/view6/2612041/kitty-crash-test-no-3-o.gif  &RED"+e.toString();
+			return "You crashed the bot, so have a gif of two kittens crashing into eachother: http://stream1.gifsoup.com/view6/2612041/kitty-crash-test-no-3-o.gif  &RED" + e.toString();
 		}
 	}
 
 	@Override
 	public String[] getAliases()
 	{
-		return new String[]{"image","images"};
+		return new String[] { "image", "images" };
 	}
 
 	@Override
-	public String getHelp() {
+	public String getHelp()
+	{
 		return "Usage: image <subreddit>  | Result: Returns a link of a picture from the desired subreddit";
 	}
 

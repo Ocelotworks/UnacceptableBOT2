@@ -10,30 +10,37 @@ import com.unacceptableuse.unacceptablebot.UnacceptableBot;
  * @author Neil
  *
  */
-public class CommandHelp extends Command {
+public class CommandHelp extends Command
+{
 
 	@Override
-	public void performCommand(User sender, Channel channel, String message, String[] args) {
+	public void performCommand(User sender, Channel channel, String message, String[] args)
+	{
 		Command command = UnacceptableBot.getCommandHandler().getCommand(args[1]);
-		
-		if(command != null) {
+
+		if (command != null)
+		{
 			sendMessage(command.getHelp(), channel);
-		} else {
+		} else
+		{
 			sendMessage("Command, " + args[1] + ", not found.", channel);
 		}
 	}
 
 	@Override
-	public String[] getAliases() {
+	public String[] getAliases()
+	{
 		return new String[] { "help", "?" };
 	}
 
 	@Override
-	public String getHelp() {
+	public String getHelp()
+	{
 		return "Usage help <command> | Returns: information about the specified command.";
 	}
-	
-	public int requiredArguments() {
+
+	public int requiredArguments()
+	{
 		return 1;
 	}
 }

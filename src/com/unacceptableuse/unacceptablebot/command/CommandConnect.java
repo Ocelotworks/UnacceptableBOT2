@@ -15,18 +15,18 @@ public class CommandConnect extends Command
 {
 
 	@Override
-	public void performCommand(User sender, Channel channel, String message,String[] args)
+	public void performCommand(User sender, Channel channel, String message, String[] args)
 	{
 		UnacceptableBot.getBot().sendIRC().joinChannel(args[1]);
-		sendMessage("Connecting to channel "+args[1], channel);
+		sendMessage("Connecting to channel " + args[1], channel);
 	}
 
 	@Override
 	public String[] getAliases()
 	{
-		return new String[]{"connect","join"};
+		return new String[] { "connect", "join" };
 	}
-	
+
 	@Override
 	public int requiredArguments()
 	{
@@ -34,12 +34,14 @@ public class CommandConnect extends Command
 	}
 
 	@Override
-	public Level getAccessLevel() {
+	public Level getAccessLevel()
+	{
 		return Level.ADMIN;
 	}
 
 	@Override
-	public String getHelp() {
+	public String getHelp()
+	{
 		return "Usage: join <channel> | Result: Joins the bot to the specified channel";
 	}
 

@@ -22,28 +22,35 @@ import org.pircbotx.User;
  * @author Neil
  * 
  */
-public class CommandSeuss extends Command {
+public class CommandSeuss extends Command
+{
 
 	@Override
-	public void performCommand(User sender, Channel channel, String message,
-			String[] args) {
-		switch (args[1]) {
-		default: {
-			try {
+	public void performCommand(User sender, Channel channel, String message, String[] args)
+	{
+		switch (args[1])
+		{
+		default:
+		{
+			try
+			{
 				sendMessage(getLine(args[1]), channel);
-			} catch (IOException e) {
+			} catch (IOException e)
+			{
 				e.printStackTrace();
 			}
 			break;
 		}
-		case ("list"): {
+		case ("list"):
+		{
 			File folder = new File("books/");
 			File[] listOfFiles = folder.listFiles();
 			String books = "";
-			for (int i = 0; i < listOfFiles.length; i++) {
+			for (int i = 0; i < listOfFiles.length; i++)
+			{
 				books.concat(listOfFiles[i].getName());
 			}
-			sendMessage("Books: ".concat(books),channel);
+			sendMessage("Books: ".concat(books), channel);
 			break;
 		}
 		}
@@ -51,37 +58,47 @@ public class CommandSeuss extends Command {
 	}
 
 	@Override
-	public String[] getAliases() {
+	public String[] getAliases()
+	{
 		return new String[] { "seuss" };
 	}
 
 	@Override
-	public int requiredArguments() {
+	public int requiredArguments()
+	{
 		return 1;
 	}
 
-	public static String getLine(String args) throws IOException {
+	public static String getLine(String args) throws IOException
+	{
 		File file = new File("books/", args);
 		int maxLines = countLines("books/" + args);
 		int rand = new Random().nextInt(maxLines);
-		if (rand == maxLines) {
+		if (rand == maxLines)
+		{
 			rand = rand + 1;
 		}
 
 		BufferedReader in = null;
 		List<String> fileList = new ArrayList<String>();
-		try {
+		try
+		{
 			in = new BufferedReader(new FileReader(file));
 			String str;
-			while ((str = in.readLine()) != null) {
+			while ((str = in.readLine()) != null)
+			{
 				fileList.add(str);
 			}
-		} catch (FileNotFoundException e) {
+		} catch (FileNotFoundException e)
+		{
 			e.printStackTrace();
-		} catch (IOException e) {
+		} catch (IOException e)
+		{
 			e.printStackTrace();
-		} finally {
-			if (in != null) {
+		} finally
+		{
+			if (in != null)
+			{
 				in.close();
 			}
 		}
@@ -89,29 +106,36 @@ public class CommandSeuss extends Command {
 		return fileList.get(rand);
 	}
 
-	public static int countLines(String filename) throws IOException {
+	public static int countLines(String filename) throws IOException
+	{
 		InputStream is = new BufferedInputStream(new FileInputStream(filename));
-		try {
+		try
+		{
 			byte[] c = new byte[1024];
 			int count = 0;
 			int readChars = 0;
 			boolean empty = true;
-			while ((readChars = is.read(c)) != -1) {
+			while ((readChars = is.read(c)) != -1)
+			{
 				empty = false;
-				for (int i = 0; i < readChars; ++i) {
-					if (c[i] == '\n') {
+				for (int i = 0; i < readChars; ++i)
+				{
+					if (c[i] == '\n')
+					{
 						++count;
 					}
 				}
 			}
 			return (count == 0 && !empty) ? 1 : count;
-		} finally {
+		} finally
+		{
 			is.close();
 		}
 	}
 
 	@Override
-	public String getHelp() {
+	public String getHelp()
+	{
 		return "Usage: seuss <bookName|list> | Result: Either pick a line of a Dr. Seuss book at random, or list all availble Dr. Seuss books ";
 	}
 }

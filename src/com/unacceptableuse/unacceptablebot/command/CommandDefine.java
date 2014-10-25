@@ -20,29 +20,29 @@ import com.google.gson.JsonObject;
 public class CommandDefine extends Command
 {
 
-	//http://api.wordnik.com:80/v4/word.json/hello/definitions?limit=1&includeRelated=false&sourceDictionaries=webster&useCanonical=false&includeTags=false&api_key=a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5
+	// http://api.wordnik.com:80/v4/word.json/hello/definitions?limit=1&includeRelated=false&sourceDictionaries=webster&useCanonical=false&includeTags=false&api_key=a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5
 	@Override
-	public void performCommand(User sender, Channel channel, String message, String[] args) 
+	public void performCommand(User sender, Channel channel, String message, String[] args)
 	{
 		String definition = null;
 		String word = null;
 		try
 		{
 			URL url = null;
-			
+
 			url = new URL("http://api.wordnik.com:80/v4/word.json/" + args[1] + "/definitions?limit=1&includeRelated=false&sourceDictionaries=webster&useCanonical=false&includeTags=false&api_key=a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5");
-			
+
 			HttpURLConnection conn = null;
-			
+
 			conn = (HttpURLConnection) url.openConnection();
-			
+
 			conn.setDoInput(true);
 			conn.setDoOutput(false);
 			conn.setUseCaches(false);
 			conn.setRequestMethod("GET");
 			conn.setRequestProperty("Content-Type", "application/json; charset=utf-8");
-			
-			//System.out.println(conn.getResponseCode());
+
+			// System.out.println(conn.getResponseCode());
 			System.out.println(conn.getResponseMessage());
 
 			// open the stream and put it into BufferedReader
@@ -54,26 +54,24 @@ public class CommandDefine extends Command
 			{
 				stb.append(line);
 			}
-			
+
 			try
 			{
 				JsonElement JElement = new com.google.gson.JsonParser().parse(stb.toString());
-			    JsonArray array = JElement.getAsJsonArray();
-			    JsonObject obj = array.get(0).getAsJsonObject();
-			    definition = obj.get("text").getAsString();
-			    word = obj.get("word").getAsString();
-			}
-			catch (ClassCastException e)
+				JsonArray array = JElement.getAsJsonArray();
+				JsonObject obj = array.get(0).getAsJsonObject();
+				definition = obj.get("text").getAsString();
+				word = obj.get("word").getAsString();
+			} catch (ClassCastException e)
 			{
 				sendMessage(word + " not found.", channel);
 			}
-			
-			if(definition != null)
+
+			if (definition != null)
 			{
 				sendMessage(word + ": " + definition, channel);
 			}
-		}
-		catch (Exception e)
+		} catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -82,7 +80,7 @@ public class CommandDefine extends Command
 	@Override
 	public String[] getAliases()
 	{
-		return new String[]{"define"};
+		return new String[] { "define" };
 	}
 
 	@Override
@@ -92,7 +90,8 @@ public class CommandDefine extends Command
 	}
 
 	@Override
-	public String getHelp() {
+	public String getHelp()
+	{
 		return "Usage: define <word> | Result: Returns the lookup for the word ";
 	}
 }

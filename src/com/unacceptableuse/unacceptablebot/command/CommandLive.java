@@ -16,39 +16,40 @@ import com.google.gson.JsonObject;
  * @author Joel
  *
  */
-public class CommandLive extends Command {
+public class CommandLive extends Command
+{
 
 	@Override
-	public void performCommand(User sender, Channel channel, String message,
-			String[] args) {
-		
+	public void performCommand(User sender, Channel channel, String message, String[] args)
+	{
+
 		String result = null;
-		
+
 		sendMessage("Checking live status...", channel);
 		String liveUsername = message.substring(6);
-		
+
 		try
 		{
 			@SuppressWarnings("unused")
 			int i = 0;
-			
+
 			URL url = null;
-			
+
 			url = new URL("https://api.twitch.tv/kraken/streams/" + args[1]);
-			
+
 			HttpURLConnection conn = null;
-			
+
 			conn = (HttpURLConnection) url.openConnection();
-			
+
 			conn.setDoInput(true);
 			conn.setDoOutput(false);
 			conn.setUseCaches(false);
 			conn.setRequestMethod("GET");
-			//conn.setRequestProperty("Content-Type", "application/json");
+			// conn.setRequestProperty("Content-Type", "application/json");
 			conn.setRequestProperty("Accept", "application/vnd.twitchtv.v3+json");
-			
-			//System.out.println(conn.getResponseCode());
-			//System.out.println(conn.getResponseMessage());
+
+			// System.out.println(conn.getResponseCode());
+			// System.out.println(conn.getResponseMessage());
 
 			// open the stream and put it into BufferedReader
 			BufferedReader br = null;
@@ -59,34 +60,34 @@ public class CommandLive extends Command {
 			{
 				stb.append(line);
 			}
-			
+
 			try
 			{
 				JsonElement JElement = new com.google.gson.JsonParser().parse(stb.toString());
-			    JsonObject  JObject = JElement.getAsJsonObject();
-			    JObject = JObject.getAsJsonObject("stream");
-			    result = JObject.toString();
+				JsonObject JObject = JElement.getAsJsonObject();
+				JObject = JObject.getAsJsonObject("stream");
+				result = JObject.toString();
 			} catch (ClassCastException e)
 			{
 				sendMessage(liveUsername + " is offline.", channel);
 			}
-			if(result != null)
+			if (result != null)
 			{
-				sendMessage(liveUsername + " is live! http://twitch.tv/" + liveUsername, channel);				
+				sendMessage(liveUsername + " is live! http://twitch.tv/" + liveUsername, channel);
 			}
 		} catch (Exception e)
 		{
 			e.printStackTrace();
 		}
 
-		
 	}
 
 	@Override
-	public String[] getAliases() {
-		return new String[]{"live"};
+	public String[] getAliases()
+	{
+		return new String[] { "live" };
 	}
-	
+
 	@Override
 	public int requiredArguments()
 	{
@@ -94,7 +95,8 @@ public class CommandLive extends Command {
 	}
 
 	@Override
-	public String getHelp() {
+	public String getHelp()
+	{
 		return "Usage: live <twitch user>  | Result: Checks if the specified twitch streamer is live ";
 	}
 

@@ -16,41 +16,45 @@ import com.google.gson.JsonParser;
  * @author Joel
  *
  */
-public class CommandDefineUD extends Command {
+public class CommandDefineUD extends Command
+{
 	@Override
-	public void performCommand(User sender, Channel channel, String message, String[] args) {
+	public void performCommand(User sender, Channel channel, String message, String[] args)
+	{
 		InputStream is = null;
 		String word = message.replace(args[0], "").trim();
-		try {
+		try
+		{
 			URL url = new URL("http://api.urbandictionary.com/v0/define?term=" + word.replace(" ", "%20"));
-			
+
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-			is =  conn.getInputStream();
-			
+			is = conn.getInputStream();
+
 			JsonParser json = new JsonParser();
-			String definition = json.parse(new InputStreamReader(is)).getAsJsonObject()
-					.get("list").getAsJsonArray()
-					.get(0).getAsJsonObject()
-					.get("definition").getAsString().replace(" \r", "").replace("\n", "");
-			
+			String definition = json.parse(new InputStreamReader(is)).getAsJsonObject().get("list").getAsJsonArray().get(0).getAsJsonObject().get("definition").getAsString().replace(" \r", "").replace("\n", "");
+
 			sendMessage(word + ": " + definition, channel);
-		} catch (Exception e2) {
+		} catch (Exception e2)
+		{
 			sendMessage("An unknown exception occurred.", channel); // Probably needs to be more descriptive.
 		}
 	}
 
 	@Override
-	public String[] getAliases() {
-		return new String[]{"defineud"};
+	public String[] getAliases()
+	{
+		return new String[] { "defineud" };
 	}
 
 	@Override
-	public int requiredArguments() {
+	public int requiredArguments()
+	{
 		return 1;
 	}
 
 	@Override
-	public String getHelp() {
+	public String getHelp()
+	{
 		return "Usage: defineud <word> | Result: Returns the Urban Dictionary definition of the word.";
 	}
 }

@@ -3,7 +3,8 @@ package com.unacceptableuse.unacceptablebot.command;
 import org.pircbotx.Channel;
 import org.pircbotx.User;
 
-public class CommandTime extends Command{
+public class CommandTime extends Command
+{
 
 	@Override
 	public void performCommand(User sender, Channel channel, String message, String[] args)
@@ -12,8 +13,9 @@ public class CommandTime extends Command{
 	}
 
 	@Override
-	public String[] getAliases() {
-		return new String[]{"time"};
+	public String[] getAliases()
+	{
+		return new String[] { "time" };
 	}
 
 	@Override
@@ -23,7 +25,8 @@ public class CommandTime extends Command{
 	}
 
 	@Override
-	public String getHelp() {
+	public String getHelp()
+	{
 		return "Usage: time | Result: Returns the current system time";
 	}
 }

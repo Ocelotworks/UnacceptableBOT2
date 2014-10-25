@@ -11,38 +11,36 @@ public class CommandDebug extends Command
 {
 
 	@Override
-	public void performCommand(User sender, Channel channel, String message,
-			String[] args)
+	public void performCommand(User sender, Channel channel, String message, String[] args)
 	{
-		if(args[1].equalsIgnoreCase("sock"))
+		if (args[1].equalsIgnoreCase("sock"))
 		{
-			if(args.length < 3)
+			if (args.length < 3)
 			{
 				sendMessage("Usage: !debug sock status|send ", channel);
 				return;
-			}else
+			} else
 			{
 				final WebSocketHandler w = UnacceptableBot.getWebSocketHandler();
-				if(args[2].equalsIgnoreCase("status"))
+				if (args[2].equalsIgnoreCase("status"))
 				{
-					sendMessage("WebSocket on "+w.getAddress().getHostString()+":"+w.getPort()+" connected to "+w.getConnectedClients()+" clients.", channel);
-				}else if(args[2].equalsIgnoreCase("send"))
+					sendMessage("WebSocket on " + w.getAddress().getHostString() + ":" + w.getPort() + " connected to " + w.getConnectedClients() + " clients.", channel);
+				} else if (args[2].equalsIgnoreCase("send"))
 				{
-					sendMessage("Sending "+args[3]+" to all connected clients.", channel);
+					sendMessage("Sending " + args[3] + " to all connected clients.", channel);
 					w.logMessage(args[3]);
 				}
 			}
-			
-		}else
-		if(args[1].equalsIgnoreCase("commands"))
+
+		} else if (args[1].equalsIgnoreCase("commands"))
 		{
-			if(args.length < 3)
+			if (args.length < 3)
 			{
 				sendMessage("Usage: !debug commands reload| ", channel);
 				return;
-			}else
+			} else
 			{
-				if(args[2].equalsIgnoreCase("reload"))
+				if (args[2].equalsIgnoreCase("reload"))
 				{
 					UnacceptableBot.getCommandHandler()._commands.clear();
 					UnacceptableBot.getCommandHandler().init();
@@ -50,54 +48,67 @@ public class CommandDebug extends Command
 				}
 			}
 
-		}else
-		if(args[1].equalsIgnoreCase("irc"))
+		} else if (args[1].equalsIgnoreCase("irc"))
 		{
-			if(args.length < 3)
+			if (args.length < 3)
 			{
 				sendMessage("Usage: !debug irc status|nick|action|mode|notice|invite|message", channel);
 				return;
-			}else
+			} else
 			{
-				switch(args[2].toLowerCase())
+				switch (args[2].toLowerCase())
 				{
-					case "nick": 	UnacceptableBot.getBot().sendIRC().changeNick(args[3]);				break;
-					case "mode": 	UnacceptableBot.getBot().sendIRC().mode(args[3], args[4]);			break;
-					case "action": 	UnacceptableBot.getBot().sendIRC().action(args[3], args[4]);		break;
-					case "notice": 	UnacceptableBot.getBot().sendIRC().notice(args[3], args[4]);		break;
-					case "invite": 	UnacceptableBot.getBot().sendIRC().invite(args[3], args[4]);		break;
-					case "message": UnacceptableBot.getBot().sendIRC().message(args[3], args[4]);		break;
-					case "status": 	sendMessage(UnacceptableBot.getBot().getState().name(), channel);	break;
-					default: 		sendMessage("Unknown option. See !debug irc", channel);
+				case "nick":
+					UnacceptableBot.getBot().sendIRC().changeNick(args[3]);
+					break;
+				case "mode":
+					UnacceptableBot.getBot().sendIRC().mode(args[3], args[4]);
+					break;
+				case "action":
+					UnacceptableBot.getBot().sendIRC().action(args[3], args[4]);
+					break;
+				case "notice":
+					UnacceptableBot.getBot().sendIRC().notice(args[3], args[4]);
+					break;
+				case "invite":
+					UnacceptableBot.getBot().sendIRC().invite(args[3], args[4]);
+					break;
+				case "message":
+					UnacceptableBot.getBot().sendIRC().message(args[3], args[4]);
+					break;
+				case "status":
+					sendMessage(UnacceptableBot.getBot().getState().name(), channel);
+					break;
+				default:
+					sendMessage("Unknown option. See !debug irc", channel);
 				}
 			}
-		}else
-		if(args[1].equalsIgnoreCase("bot"))
+		} else if (args[1].equalsIgnoreCase("bot"))
 		{
-//			if(args.length < 3)
-//			{
-//				sendMessage("Usage: !debug bot ", channel);
-//				return;
-//			}else
-//			{
-//				switch(args[2].toLowerCase())
-//				{
-//					case "nick": 	UnacceptableBot.getBot().getUserBot().		break;
-//					case "mode": 	UnacceptableBot.getBot().sendIRC().mode(args[3], args[4]);		break;
-//					case "action": 	UnacceptableBot.getBot().sendIRC().action(args[3], args[4]);	break;
-//					case "notice": 	UnacceptableBot.getBot().sendIRC().notice(args[3], args[4]);	break;
-//					case "invite": 	UnacceptableBot.getBot().sendIRC().invite(args[3], args[4]);	break;
-//					case "message": UnacceptableBot.getBot().sendIRC().message(args[3], args[4]);	break;
-//					default: 		sendMessage("Unknown option. See !debug irc", channel);
-//				}
-//			}
+			// if(args.length < 3)
+			// {
+			// sendMessage("Usage: !debug bot ", channel);
+			// return;
+			// }else
+			// {
+			// switch(args[2].toLowerCase())
+			// {
+			// case "nick": UnacceptableBot.getBot().getUserBot(). break;
+			// case "mode": UnacceptableBot.getBot().sendIRC().mode(args[3], args[4]); break;
+			// case "action": UnacceptableBot.getBot().sendIRC().action(args[3], args[4]); break;
+			// case "notice": UnacceptableBot.getBot().sendIRC().notice(args[3], args[4]); break;
+			// case "invite": UnacceptableBot.getBot().sendIRC().invite(args[3], args[4]); break;
+			// case "message": UnacceptableBot.getBot().sendIRC().message(args[3], args[4]); break;
+			// default: sendMessage("Unknown option. See !debug irc", channel);
+			// }
+			// }
 		}
 	}
 
 	@Override
 	public String[] getAliases()
 	{
-		return new String[]{"debug"};
+		return new String[] { "debug" };
 	}
 
 	@Override
@@ -105,7 +116,7 @@ public class CommandDebug extends Command
 	{
 		return "sock|commands|irc";
 	}
-	
+
 	@Override
 	public Level getAccessLevel()
 	{

@@ -12,39 +12,47 @@ import org.pircbotx.User;
  * @author Edward
  *
  */
-public class CommandPing extends Command {
+public class CommandPing extends Command
+{
 
 	@Override
-	public void performCommand(User sender, Channel channel, String message, String[] args) {
+	public void performCommand(User sender, Channel channel, String message, String[] args)
+	{
 		String address = message.replace(args[0] + " ", "").replace("http://", "");
 		sendMessage("Pinging " + address + "...", channel);
-		
+
 		int ping = 0;
-		try {
+		try
+		{
 			final URL url = new URL("http://" + address);
 			final HttpURLConnection urlConn = (HttpURLConnection) url.openConnection();
-			urlConn.setConnectTimeout(1000 * 10); 
+			urlConn.setConnectTimeout(1000 * 10);
 			final long startTime = System.currentTimeMillis();
 			urlConn.connect();
 			final long endTime = System.currentTimeMillis();
-			if (urlConn.getResponseCode() == HttpURLConnection.HTTP_OK) {
-				ping = (int) (endTime - startTime) ; 
+			if (urlConn.getResponseCode() == HttpURLConnection.HTTP_OK)
+			{
+				ping = (int) (endTime - startTime);
 				sendMessage(address + " responded in " + ping + "ms.", channel);
-			} else {
+			} else
+			{
 				sendMessage("HTTP Error " + urlConn.getResponseCode(), channel);
 			}
-		} catch (IOException e) {
+		} catch (IOException e)
+		{
 			sendMessage("Unable to connect to " + address + ".", channel);
 		}
 	}
 
 	@Override
-	public String[] getAliases() {
-		return new String[]{"ping"};
+	public String[] getAliases()
+	{
+		return new String[] { "ping" };
 	}
 
 	@Override
-	public String getHelp() {
+	public String getHelp()
+	{
 		return "Usage: ping <url> | Pings the given URL.";
 	}
 

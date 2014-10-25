@@ -14,36 +14,34 @@ public class CommandTopic extends Command
 {
 
 	@Override
-	public void performCommand(User sender, Channel channel, String message,
-			String[] args)
+	public void performCommand(User sender, Channel channel, String message, String[] args)
 	{
 		try
 		{
-			ResultSet rs = UnacceptableBot.getConfigHandler().sql.query("SELECT Username,Message FROM `teknogeek_unacceptablebot`.`"+channel.getName()+"` WHERE ID=(SELECT MAX(ID) FROM `teknogeek_unacceptablebot`.`"+channel.getName()+"`)");
+			ResultSet rs = UnacceptableBot.getConfigHandler().sql.query("SELECT Username,Message FROM `teknogeek_unacceptablebot`.`" + channel.getName() + "` WHERE ID=(SELECT MAX(ID) FROM `teknogeek_unacceptablebot`.`" + channel.getName() + "`)");
 			rs.next();
-			String newTopic = "<"+rs.getString(1)+"> "+rs.getString(2);
-			
+			String newTopic = "<" + rs.getString(1) + "> " + rs.getString(2);
+
 			PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("sexquotes.txt", true)));
 			out.println(newTopic);
 			out.close();
-			
+
 			UnacceptableBot.sexQuotes.add(newTopic);
-			
-			sendMessage("Added topic "+newTopic, channel);
-			
-			
+
+			sendMessage("Added topic " + newTopic, channel);
+
 		} catch (Exception e)
 		{
-			sendMessage("Unable to add quote: "+e.toString(), channel);
+			sendMessage("Unable to add quote: " + e.toString(), channel);
 			e.printStackTrace();
 		}
-		
+
 	}
 
 	@Override
 	public String[] getAliases()
 	{
-		return new String[]{"topic"};
+		return new String[] { "topic" };
 	}
 
 	@Override

@@ -6,13 +6,15 @@ import org.pircbotx.PircBotX;
 
 import com.unacceptableuse.unacceptablebot.UnacceptableBot;
 
-public class SnapchatThread extends TimerTask {
+public class SnapchatThread extends TimerTask
+{
 
-	public PircBotX bot =  UnacceptableBot.getBot();
+	public PircBotX bot = UnacceptableBot.getBot();
 
-	public void run() {
+	public void run()
+	{
 		UnacceptableBot.getSnapchat().doOneInQueue();
-		//UnacceptableBot.log("INFO", "SNAPCHAT", "Trying queue!"); Sorry Peter:)
+		// UnacceptableBot.log("INFO", "SNAPCHAT", "Trying queue!"); Sorry Peter:)
 	}
 
 }

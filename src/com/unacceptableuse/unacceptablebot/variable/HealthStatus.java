@@ -6,16 +6,15 @@ public class HealthStatus
 	private boolean isCritical = false;
 	private String glyph = "asterisk"; // See: http://getbootstrap.com/components/#glyphicons
 	private String status = "unknown status";
-	
-	private String serviceColour = "default"; //default - grey / primary - blue / success - green / info - blue / warning - orange / danger - red
-	
-	
+
+	private String serviceColour = "default"; // default - grey / primary - blue / success - green / info - blue / warning - orange / danger - red
+
 	public HealthStatus(String serviceName, String status)
 	{
 		this.serviceName = serviceName;
 		this.status = status;
 	}
-	
+
 	public HealthStatus(String serviceName, String status, String glyph)
 	{
 		this.serviceName = serviceName;
@@ -66,7 +65,7 @@ public class HealthStatus
 	@Override
 	public String toString()
 	{
-		return "serviceName=" + serviceName + ",isCritical="+isCritical + ",glyph=" + glyph + ",status=" + status+ ",serviceColour=" + serviceColour;
+		return "serviceName=" + serviceName + ",isCritical=" + isCritical + ",glyph=" + glyph + ",status=" + status + ",serviceColour=" + serviceColour;
 	}
 
 	public String getServiceColour()
@@ -78,6 +77,5 @@ public class HealthStatus
 	{
 		this.serviceColour = serviceColour;
 	}
-	
-	
+
 }

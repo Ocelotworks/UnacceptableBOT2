@@ -29,7 +29,8 @@ import com.jcraft.jsch.Session;
 import com.unacceptableuse.unacceptablebot.UnacceptableBot;
 import com.unacceptableuse.unacceptablebot.variable.Snap;
 
-public class SnapchatHandler {
+public class SnapchatHandler
+{
 
 	private String user;
 	private String pass;
@@ -38,37 +39,47 @@ public class SnapchatHandler {
 	StringBuilder stb;
 	ArrayList<Snap> snaps = new ArrayList<Snap>();
 
-	public void init() throws Exception {
+	public void init() throws Exception
+	{
 		user = "Stevie-BOT";
 		this.pass = UnacceptableBot.getConfigHandler().getString("sc_password");
 
-		try {
+		try
+		{
 			login(user, pass);
-		} catch (IOException e) {
+		} catch (IOException e)
+		{
 			e.printStackTrace();
 		}
 
-		if (logged()) {
+		if (logged())
+		{
 			System.out.println("Snapchat logged in as " + user);
-		} else {
+		} else
+		{
 			System.out.println("Snapchat login failed!");
 		}
 	}
 
-	public void getImage(String strURL, String target) {
-		try {
+	public void getImage(String strURL, String target)
+	{
+		try
+		{
 			Random rn = new Random();
 			int number = rn.nextInt(10000);
 			fileName = "temp" + number;
-			if (strURL.substring(strURL.lastIndexOf(".")).equals(".png")) {
+			if (strURL.substring(strURL.lastIndexOf(".")).equals(".png"))
+			{
 				convertToJPG(strURL);
-			} else {
+			} else
+			{
 				URL url = new URL(strURL);
 				InputStream in = new BufferedInputStream(url.openStream());
 				ByteArrayOutputStream out = new ByteArrayOutputStream();
 				byte[] buf = new byte[8192];
 				int n = 0;
-				while (-1 != (n = in.read(buf))) {
+				while (-1 != (n = in.read(buf)))
+				{
 					out.write(buf, 0, n);
 				}
 				out.close();
@@ -81,26 +92,29 @@ public class SnapchatHandler {
 			upload(fileName + ".jpg", target, user, pass);
 			boolean pngSuccess = new File(fileName + ".png").delete();
 			boolean jpgSuccess = new File(fileName + ".jpg").delete();
-			if (!jpgSuccess && !pngSuccess) {
-				System.out
-						.print("Failed to delete sent snap files:"
-								+ " File.delete() provides no insight into why, so that's all I got, sorry");
+			if (!jpgSuccess && !pngSuccess)
+			{
+				System.out.print("Failed to delete sent snap files:" + " File.delete() provides no insight into why, so that's all I got, sorry");
 			}
 
-		} catch (IOException e) {
+		} catch (IOException e)
+		{
 			e.printStackTrace();
 		}
 	}
 
-	public void convertToJPG(String pngURL) {
+	public void convertToJPG(String pngURL)
+	{
 		BufferedImage bufferedImage;
-		try {
+		try
+		{
 			URL url = new URL(pngURL);
 			InputStream in = new BufferedInputStream(url.openStream());
 			ByteArrayOutputStream out = new ByteArrayOutputStream();
 			byte[] buf = new byte[8192];
 			int n = 0;
-			while (-1 != (n = in.read(buf))) {
+			while (-1 != (n = in.read(buf)))
+			{
 				out.write(buf, 0, n);
 			}
 			out.close();
@@ -114,24 +128,22 @@ public class SnapchatHandler {
 
 			// create a blank, RGB, same width and height, and a white
 			// background
-			BufferedImage newBufferedImage = new BufferedImage(
-					bufferedImage.getWidth(), bufferedImage.getHeight(),
-					BufferedImage.TYPE_INT_RGB);
-			newBufferedImage.createGraphics().drawImage(bufferedImage, 0, 0,
-					Color.WHITE, null);
+			BufferedImage newBufferedImage = new BufferedImage(bufferedImage.getWidth(), bufferedImage.getHeight(), BufferedImage.TYPE_INT_RGB);
+			newBufferedImage.createGraphics().drawImage(bufferedImage, 0, 0, Color.WHITE, null);
 
 			// write to jpeg file
 			ImageIO.write(newBufferedImage, "jpg", new File(fileName + ".jpg"));
-		} catch (IOException e) {
+		} catch (IOException e)
+		{
 			e.printStackTrace();
 		}
 	}
 
-	public void login(String user, String pass) throws IOException {
+	public void login(String user, String pass) throws IOException
+	{
 
 		// build a URL
-		String s = " http://boywanders.us:6969/snapapi.php?username=" + user
-				+ "&password=" + pass + "&method=userinfo";
+		String s = " http://boywanders.us:6969/snapapi.php?username=" + user + "&password=" + pass + "&method=userinfo";
 		URL url = new URL(s);
 
 		// read from the URL
@@ -144,28 +156,29 @@ public class SnapchatHandler {
 		// build a JSON object
 		JsonParser parser = new JsonParser();
 		JsonObject obj = (JsonObject) parser.parse(str);
-		if (obj.get("auth_token") != null) {
+		if (obj.get("auth_token") != null)
+		{
 			// String auth_token = obj.get("auth_token").toString();
 			_loggedIn = true;
-		} else {
+		} else
+		{
 			_loggedIn = false;
 		}
 
 	}
 
-	public static void post(String imageName, String target, int time,
-			String user, String pass) throws Exception {
+	public static void post(String imageName, String target, int time, String user, String pass) throws Exception
+	{
 
-		String s = "http://boywanders.us:6969/snapapi.php?username=" + user
-				+ "&password=" + pass + "&method=sendsnap&variables=target:"
-				+ target + ";;time:" + time + ";;image:" + imageName;
+		String s = "http://boywanders.us:6969/snapapi.php?username=" + user + "&password=" + pass + "&method=sendsnap&variables=target:" + target + ";;time:" + time + ";;image:" + imageName;
 		URL url = new URL(s);
 
 		// read from the URL
 		Scanner scan = new Scanner(url.openStream());
 		@SuppressWarnings("unused")
 		String str = new String();
-		while (scan.hasNext()) {
+		while (scan.hasNext())
+		{
 			str += scan.nextLine();
 		}
 		scan.close();
@@ -173,8 +186,8 @@ public class SnapchatHandler {
 		// GET SNAP COMPLETEION. LATER
 	}
 
-	public static void upload(String fileName, String target, String scUser,
-			String pass) throws FileNotFoundException {
+	public static void upload(String fileName, String target, String scUser, String pass) throws FileNotFoundException
+	{
 		String hostname = "boywanders.us";
 		int port = 22;
 		String user = "api";
@@ -185,7 +198,8 @@ public class SnapchatHandler {
 		Channel channel = null;
 		ChannelSftp channelSFTP = null;
 
-		try {
+		try
+		{
 			JSch jsch = new JSch();
 			jsch.addIdentity(keyFilePath);
 			session = jsch.getSession(user, hostname, port);
@@ -201,16 +215,20 @@ public class SnapchatHandler {
 			channelSFTP.put(new FileInputStream(f), f.getName());
 
 			post(fileName, target, 10, scUser, pass);
-		} catch (Exception ex) {
+		} catch (Exception ex)
+		{
 			ex.printStackTrace();
 		}
 		session.disconnect();
 		channel.disconnect();
 	}
 
-	public void doOneInQueue() {
-		for(Snap snap : snaps){
-			if(snap.sent != true){
+	public void doOneInQueue()
+	{
+		for (Snap snap : snaps)
+		{
+			if (snap.sent != true)
+			{
 				snap.send();
 				snap.sent = true;
 				break;
@@ -219,10 +237,10 @@ public class SnapchatHandler {
 	}
 
 	@SuppressWarnings("unused")
-	public byte[] getSnaps() throws IOException {
+	public byte[] getSnaps() throws IOException
+	{
 		// build a URL
-		String s = " http://boywanders.us:6969/snapapi.php?username=" + user
-				+ "&password=" + pass + "&method=getsnaps";
+		String s = " http://boywanders.us:6969/snapapi.php?username=" + user + "&password=" + pass + "&method=getsnaps";
 		URL url = new URL(s);
 
 		// read from the URL
@@ -235,9 +253,10 @@ public class SnapchatHandler {
 		// build a JSON object
 		JsonParser parser = new JsonParser();
 		JsonObject obj = (JsonObject) parser.parse(str);
-		if (obj.get("received_snaps") != null) {
-			for (int i = 0; i < obj.get("received_snaps").getAsJsonArray()
-					.size(); i++) {
+		if (obj.get("received_snaps") != null)
+		{
+			for (int i = 0; i < obj.get("received_snaps").getAsJsonArray().size(); i++)
+			{
 				JsonArray objArray = obj.get("received_snaps").getAsJsonArray();
 				JsonObject snapObj = (JsonObject) objArray.get(i);
 				return Base64.decodeBase64(snapObj.toString());
@@ -246,21 +265,24 @@ public class SnapchatHandler {
 		return new byte[] { 0 };
 	}
 
-	public boolean logged() {
+	public boolean logged()
+	{
 		return _loggedIn;
 	}
 
-	public String getUser() {
+	public String getUser()
+	{
 		return user;
 	}
 
-	public String getPass() {
-		String pass = UnacceptableBot.getConfigHandler().getString(
-				"sc_password");
+	public String getPass()
+	{
+		String pass = UnacceptableBot.getConfigHandler().getString("sc_password");
 		return pass;
 	}
-	
-	public void addSnap(Snap snap){
+
+	public void addSnap(Snap snap)
+	{
 		snaps.add(snap);
 	}
 }

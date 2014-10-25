@@ -9,7 +9,7 @@ public class CommandFunction extends Command
 {
 
 	@Override
-	public void performCommand(User sender, Channel channel, String message,String[] args)
+	public void performCommand(User sender, Channel channel, String message, String[] args)
 	{
 		UnacceptableBot.getCommandHandler().addCommand(new CommandDynamic(args[1], message.substring(message.indexOf(args[2]))));
 		sendMessage("Command added succesfully.", channel);
@@ -18,9 +18,9 @@ public class CommandFunction extends Command
 	@Override
 	public String[] getAliases()
 	{
-		return new String[]{"function"};
+		return new String[] { "function" };
 	}
-	
+
 	@Override
 	public int requiredArguments()
 	{
@@ -28,7 +28,8 @@ public class CommandFunction extends Command
 	}
 
 	@Override
-	public String getHelp() {
+	public String getHelp()
+	{
 		return "System command";
 	}
 

@@ -15,27 +15,24 @@ import com.unacceptableuse.unacceptablebot.variable.Level;
  * @author Peter
  *
  */
-public class CommandCommand extends Command{
+public class CommandCommand extends Command
+{
 
 	@SuppressWarnings("unused")
 	@Override
 	public void performCommand(User sender, Channel channel, String message, String[] args)
 	{
-		if(message.contains("rm"))
+		if (message.contains("rm"))
 		{
-			sendMessage( "Nice try, you are now banned from using " + UnacceptableBot.getBot().getNick() + " ever.", channel);
-			//ub.accessLevels.put(sender, -1);
+			sendMessage("Nice try, you are now banned from using " + UnacceptableBot.getBot().getNick() + " ever.", channel);
+			// ub.accessLevels.put(sender, -1);
 			return;
 		}
-		
+
 		/*
-		if(ub.disabledCommands.contains("console:" + args[1]))
-		{
-			bot.sendIRC().message(channel.getName(), "That command has been disabled.");
-			return;
-		}
-		*/
-		
+		 * if(ub.disabledCommands.contains("console:" + args[1])) { bot.sendIRC().message(channel.getName(), "That command has been disabled."); return; }
+		 */
+
 		try
 		{
 			Process p = Runtime.getRuntime().exec(message.split(args[0] + " ")[1]);
@@ -43,35 +40,29 @@ public class CommandCommand extends Command{
 			System.out.println(p.toString());
 			String line = "";
 			int lineCount = 0;
-		
-			while((line = br.readLine()) != null)
+
+			while ((line = br.readLine()) != null)
 			{
 				lineCount++;
 				sendMessage(line, channel);
-				
+
 				/*
-				if(ub.disabledCommands.contains("consoleOutput")) return;
-				if(ub.disabledCommands.contains("consoleDisableAt:" + lineCount))
-				{
-					sendMessage(channel, "&REDLine exceeds maximum line count.");
-					break;
-				}
-				*/
+				 * if(ub.disabledCommands.contains("consoleOutput")) return; if(ub.disabledCommands.contains("consoleDisableAt:" + lineCount)) { sendMessage(channel, "&REDLine exceeds maximum line count."); break; }
+				 */
 			}
-			
+
 			br.close();
-		}
-		catch(IOException e)
+		} catch (IOException e)
 		{
 			sendMessage("The command " + args[1] + " was not recognized.", channel);
 		}
-		
+
 	}
 
 	@Override
 	public String[] getAliases()
 	{
-		return new String[]{"command"};
+		return new String[] { "command" };
 	}
 
 	@Override
@@ -81,12 +72,14 @@ public class CommandCommand extends Command{
 	}
 
 	@Override
-	public Level getAccessLevel() {
-		return  Level.SUPERADMIN;
+	public Level getAccessLevel()
+	{
+		return Level.SUPERADMIN;
 	}
 
 	@Override
-	public String getHelp() {
+	public String getHelp()
+	{
 		return "Usage: command <linux command> | Result: Runs the linux command on the server";
 	}
 }

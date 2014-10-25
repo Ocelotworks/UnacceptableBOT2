@@ -15,20 +15,20 @@ public class CommandGoogle extends Command
 	public void performCommand(User sender, Channel channel, String message, String[] args)
 	{
 		String add = "http://www.lmgtfy.com/?q=";
-		for(int i = 1; i < args.length; i++)
+		for (int i = 1; i < args.length; i++)
 		{
 			add += args[i] + "+";
 		}
-		add = add.substring(0, add.length() - 1); //Wouldn't it be better to use StringBuilder here? - Peter
+		add = add.substring(0, add.length() - 1); // Wouldn't it be better to use StringBuilder here? - Peter
 		sendMessage(add, channel);
 	}
 
 	@Override
 	public String[] getAliases()
 	{
-		return new String[]{"google", "lmgtfy"};
+		return new String[] { "google", "lmgtfy" };
 	}
-	
+
 	@Override
 	public int requiredArguments()
 	{
@@ -36,7 +36,8 @@ public class CommandGoogle extends Command
 	}
 
 	@Override
-	public String getHelp() {
+	public String getHelp()
+	{
 		return "Usage: google <terms> | Result: Produces a LMGTFY link using the specified terms";
 	}
 
