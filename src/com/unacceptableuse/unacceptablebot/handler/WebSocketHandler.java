@@ -61,28 +61,33 @@ public class WebSocketHandler extends WebSocketServer
 	@Override
 	public void onMessage(final WebSocket sock, final String message)
 	{
-		switch (message)
+
+		if(message.equals("cinf"))
 		{
-		case "cinf":
 			final User u = UnacceptableBot.getBot().getUserBot();
 			final ImmutableSet<Channel> channels = u.getChannels();
 			for (final Channel c : channels)
 				sock.send("cinf:" + c.getName() + ":" + c.getMode() + ":" + c.getUsers().size() + (c.getChannelLimit() != -1 ? c.getChannelLimit() : "") + ":" + (c.getOps().contains(u) ? "Opped" : c.getVoices().contains(u) ? "Voiced" : "User"));
 			sock.send("cinfend");
 			sock.close(1000);
-			break;
-		case "recon":
-			try
-			{
-				UnacceptableBot.getBot().startBot();
-			} catch (final Exception e)
-			{
-				sock.send("recon:" + e.toString());
-				e.printStackTrace();
-			}
-
-			break;
+		}else if(message.startsWith("cadd"))
+		{
+			UnacceptableBot.getBot().sendIRC().joinChannel(message.split(":")[1]);
 		}
+	
+			
+//		case "recon":
+//			try
+//			{
+//				UnacceptableBot.getBot().startBot();
+//			} catch (final Exception e)
+//			{
+//				sock.send("recon:" + e.toString());
+//				e.printStackTrace();
+//			}
+//
+//			break;
+		
 
 	}
 

@@ -1,6 +1,7 @@
 package com.unacceptableuse.unacceptablebot.command;
 
 import org.pircbotx.Channel;
+import org.pircbotx.Colors;
 import org.pircbotx.User;
 
 import com.unacceptableuse.unacceptablebot.UnacceptableBot;
@@ -31,8 +32,7 @@ public class CommandStevie extends Command
 	{
 		if (args[1].equalsIgnoreCase("credits"))
 		{
-			sendMessage(UnacceptableBot.getConfigHandler().getString("botName") + " uses PircBotX. Made by Peter, Jool, Neil. (unacceptableuse.com)", channel);
-			sendMessage("Special thanks to irc.matrixdevuk.pw for hosting the bot's website/database. Special thanks to Atmalik for hosting the bot!", channel);
+			sendMessage("http://unacceptableuse.com/bot/credits.html", channel);
 		} else if (args[1].equalsIgnoreCase("source"))
 			sendMessage("Source can be found here: https://github.com/UnacceptableUse/UnacceptableBot2", channel);
 		else if (args[1].equalsIgnoreCase("about"))

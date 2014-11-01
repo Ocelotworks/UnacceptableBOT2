@@ -139,8 +139,8 @@ public class UnacceptableBot extends ListenerAdapter
 
 				final JsonObject jo = parser.parse(new InputStreamReader(is)).getAsJsonObject().get("entry").getAsJsonObject();
 				final String title = jo.get("title").getAsJsonObject().get("$t").getAsString();
-				final float mins = Float.parseFloat(jo.get("media$group").getAsJsonObject().get("yt$duration").getAsString()) / 60;
-				bot.sendIRC().message(channel, Colors.BOLD + "Youtube link: " + title + " [" + mins + "]");
+				//final float mins = Float.parseFloat(jo.get("media$group").getAsJsonObject().get("yt$duration").getAsString()) / 60;
+				bot.sendIRC().message(channel, Colors.BOLD + "Youtube link: " + title);
 				is.close();
 		} catch (final Exception e)
 		{
