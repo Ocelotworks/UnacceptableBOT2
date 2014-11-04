@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 
 import org.pircbotx.Channel;
@@ -17,10 +19,11 @@ public class LotteryHandler
 
 	private HashMap<String, Long> participants = new HashMap<String, Long>();
 	private long currentTotal = 0L, currentJackpot = 0L;
+	private boolean lotteryDone = false;
 
 	public void init()
 	{
-
+			//Um
 	}
 
 	public void addParticipant(String user, long amount)
@@ -141,6 +144,59 @@ public class LotteryHandler
 		currentJackpot = 0;
 		getConfig().setBoolean("lott:isRollover", false); 
 		UnacceptableBot.updateDogecoinBalance();
+	}
+	
+	public void doTick()
+	{
+		if(Calendar.getInstance().get(Calendar.HOUR_OF_DAY) == 12 && !lotteryDone)
+		{
+			log("Lottery commencing");
+			pickWinner();
+			lotteryDone = true;
+		}else if(Calendar.getInstance().get(Calendar.HOUR_OF_DAY) == 13)
+		{
+			lotteryDone = false;
+		}
+	}
+	
+	public void forceLottery()
+	{
+		log("Lottery forced");
+		pickWinner();
+	}
+	
+	public void forceReset()
+	{
+		log("Reset forced");
+		resetLottery();
+	}
+	
+	public void forceParticipant(String name, long amt)
+	{
+		log("Participant force added");
+		participants.put(name, amt);
+	}
+	
+	public void forceRefund()
+	{
+		log("Refund forced");
+		sendMessage("A refund has been forced. Lottery will be reset.");
+		for(String user : participants.keySet())
+			sendCoins(user, participants.get(user));
+		resetLottery();
+		
+	}
+	
+	public void forceRefund(String user)
+	{
+		log("Refund forced for "+user);
+		sendCoins(user, participants.get(user));
+		resetLottery();
+	}
+	
+	public String getParticipants()
+	{
+		return participants.toString();
 	}
 
 	public void sendCoins(String user, long amount)

@@ -15,6 +15,7 @@ public class SnapchatThread extends TimerTask
 	public void run()
 	{
 		UnacceptableBot.getSnapchat().doOneInQueue();
+		UnacceptableBot.getLotteryHandler().doTick();
 		// UnacceptableBot.log("INFO", "SNAPCHAT", "Trying queue!"); Sorry Peter:)
 	}
 

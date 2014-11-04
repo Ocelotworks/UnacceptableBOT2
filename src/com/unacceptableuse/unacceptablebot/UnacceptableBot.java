@@ -169,6 +169,10 @@ public class UnacceptableBot extends ListenerAdapter
 	{
 		return config;
 	}
+	 public static LotteryHandler getLotteryHandler()
+	 {
+		 return lottery;
+	 }
 
 	public static InputStream getHTTPSUrlContents(final String surl)
 	{
@@ -247,9 +251,11 @@ public class UnacceptableBot extends ListenerAdapter
 
 	public static void log(final String level, final String origin, final String message)
 	{
-
+		
 		getWebSocketHandler().logMessage("[" + level + "]" + " " + message);
 		System.out.println("[" + level + "]" + " " + message);
+		if(level.equals("WARN"))
+			getBot().sendIRC().message("Peter", "["+origin+"] "+message);
 
 		// try {
 		// getConfigHandler().createChannelTable("SYSTEM");
