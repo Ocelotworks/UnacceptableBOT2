@@ -42,6 +42,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.unacceptableuse.unacceptablebot.handler.CommandHandler;
 import com.unacceptableuse.unacceptablebot.handler.ConfigHandler;
+import com.unacceptableuse.unacceptablebot.handler.LotteryHandler;
 import com.unacceptableuse.unacceptablebot.handler.SnapchatHandler;
 import com.unacceptableuse.unacceptablebot.handler.SpellCheckHandler;
 import com.unacceptableuse.unacceptablebot.handler.WebSocketHandler;
@@ -62,6 +63,7 @@ public class UnacceptableBot extends ListenerAdapter
 	public static ArrayList<String> sexQuotes = new ArrayList<String>();
 	private static SnapchatHandler snapchat = new SnapchatHandler();
 	private static WebSocketHandler socks = new WebSocketHandler();
+	private static LotteryHandler lottery = new LotteryHandler();
 	private static Timer timer = null;
 	public static boolean twatMode = false;
 	private static HealthStatus ZNCStatus = new HealthStatus("ZNC", "Connected", "export");
@@ -366,6 +368,24 @@ public class UnacceptableBot extends ListenerAdapter
 		if (!chanStr.equals(""))
 			config.setChannels(chanStr);
 	}
+	
+	public void doLottery(final String message, final String channel, final User sender)
+	{
+		if(!channel.equals(getConfigHandler().getString("lott:channel")))return;
+		if(!getBot().getUserBot().isVerified()) return; //Lottery is disabled if bot is not logged in
+		
+		if(message.startsWith(".tip "+getBot().getNick()) && message.endsWith("lottery"))
+		{
+			getBot().sendIRC().message(channel, sender+" just entered the lottery! Type .tip "+getBot().getNick()+" to enter!");
+			
+		}
+		
+	}
+	
+	public static void updateDogecoinBalance()
+	{
+		getBot().sendIRC().message("DogeWallet", ".balance");
+	}
 
 	/**
 	 * Handlers should be started in order of priority, because I said so.
@@ -379,6 +399,7 @@ public class UnacceptableBot extends ListenerAdapter
 		config.init(); // ConfigHandler
 		socks.init(); // WebSocketHandler
 		snapchat.init(); // SnapchatHandler
+		lottery.init();
 		parser = new JsonParser();
 	}
 
@@ -492,6 +513,7 @@ public class UnacceptableBot extends ListenerAdapter
 
 		doReddit(event.getMessage(), event.getChannel().getName(), event.getUser());
 		doYoutube(event.getMessage(), event.getChannel().getName());
+		doLottery(event.getMessage(), event.getChannel().getName(), event.getUser());
 		recordMessage(event);
 	}
 
@@ -519,29 +541,15 @@ public class UnacceptableBot extends ListenerAdapter
 			}
 
 		if (event.getUser().getNick().equals("DogeWallet"))
-			if (event.getMessage().contains("Active"))
-			{
-				final int activeUsers = Integer.parseInt(event.getMessage().split(": ")[1]);
-				if (activeUsers == 0)
-					event.getBot().sendIRC().message("#doge-coin", ">> There are no active users, so soak cannot happen :( <<");
-				else
-				{
-					final long amtToSoak = ((getConfigHandler().getLong("dogeWalletBalance") - (getConfigHandler().getInteger("faucetReserve") + getConfigHandler().getInteger("profitReserve"))) / activeUsers);
-					event.getBot().sendIRC().message("#doge-coin", ".soak " + amtToSoak);
-					getConfigHandler().increment("stat:totalSoaked", (int) amtToSoak);
-				}
-			} else
-			{
-				final float balance = Float.parseFloat(event.getMessage());
-				final int tipOver = getConfigHandler().getInteger("faucetReserve") + getConfigHandler().getInteger("profitReserve") + getConfigHandler().getInteger("soakThreshold");
+		{
+			try{
+				float balance = Float.parseFloat(event.getMessage());
 				getConfigHandler().setFloat("dogeWalletBalance", balance);
-
-				if (balance > tipOver)
-					event.getBot().sendIRC().message("DogeWallet", ".active");
-				else
-					event.getBot().sendIRC().message("#doge-coin", ">> Only " + (tipOver - balance) + " Doge needed to soak! <<");
-
+			}catch(Exception e)
+			{
+				log("WARN", "DOGE", "Error getting dogewallet balance: "+e.toString());
 			}
+		}
 	}
 
 	@Override
