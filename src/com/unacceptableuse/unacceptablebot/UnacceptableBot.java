@@ -1,5 +1,6 @@
 package com.unacceptableuse.unacceptablebot;
 
+import java.awt.Color;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -476,8 +477,22 @@ public class UnacceptableBot extends ListenerAdapter
 			if (event.getMessage().charAt(0) == '!')
 				handler.processMessage(event);
 			else if (event.getChannel().getName().equals("#doge-coin"))
+			{
 				if (event.getUser().getNick().equals("DogeWallet") && event.getMessage().contains("sent " + getConfigHandler().getString("botName")))
-					event.getBot().sendIRC().message("DogeWallet", ".balance");
+				{
+					String[] parsedMessage = event.getMessage().split(" ");
+					//0 [Wow!]
+					//1 Peter
+					//2 sent
+					//3 StevieBOT
+					//4 33
+					//Doge
+					getLotteryHandler().addParticipant(parsedMessage[1], Long.parseLong(parsedMessage[4]));
+					event.respond(Colors.BOLD+"Thankyou for entering the lottery! Tip "+getBot().getNick()+" "+getConfigHandler().getFloat("lott:minimumEntry")+" or more to enter!");
+				}
+					
+			}
+				
 		} else // Message is not command, so we'll do a check for twat mode, and check spellings :>
 			if (twatMode)
 			{
@@ -549,7 +564,18 @@ public class UnacceptableBot extends ListenerAdapter
 		if (event.getUser().getNick().equals("DogeWallet"))
 		{
 			try{
-				float balance = Float.parseFloat(event.getMessage());
+				String[] parsedMessage = event.getMessage().split(" ");
+				//0 Balance:
+				//1 0.0
+				//2 Pending:
+				//3 0.0
+				//4 Idle
+				//5 remaining:
+				//6 10.0
+				//7 Activity
+				//8 Status:
+				//9 POOR
+				float balance = Float.parseFloat(parsedMessage[1]);
 				getConfigHandler().setFloat("dogeWalletBalance", balance);
 			}catch(Exception e)
 			{

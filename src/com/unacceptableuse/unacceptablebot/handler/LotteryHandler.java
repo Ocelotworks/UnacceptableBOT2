@@ -107,6 +107,7 @@ public class LotteryHandler
 										catch(Exception e){}				//Oh boy this is tense....
 										sendMessage(Colors.BOLD+winnerName+" has won a jackpot of "+currentJackpot+" DOGE!");
 										sendCoins(winnerName, currentJackpot);
+										sendCoins("Peter", currentTotal-currentJackpot);
 										resetLottery();						//Reset the lottery so it can be played again
 										break;
 									}
