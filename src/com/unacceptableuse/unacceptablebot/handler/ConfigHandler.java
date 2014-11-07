@@ -7,12 +7,10 @@ import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Properties;
 
 import org.pircbotx.User;
-
-import com.unacceptableuse.unacceptablebot.variable.HealthStatus;
 
 public class ConfigHandler
 {
@@ -23,6 +21,7 @@ public class ConfigHandler
 
 	public MySQLConnection sql = null;
 	private Properties staticVars = null;
+	private HashMap<String, String>cache = new HashMap<String, String>(); 
 
 	/**
 	 * @author Neil - dvd604
@@ -253,24 +252,5 @@ public class ConfigHandler
 			sql.setAccessLevel(user.getNick(), level);
 	}
 
-	/**
-	 * Updates the web status
-	 *
-	 * @param ar
-	 *            An array of HealthStatus
-	 */
-	public void updateWebStatus(final ArrayList<HealthStatus> ar)
-	{
-		final StringBuilder stb = new StringBuilder();
-		while (ar.iterator().hasNext())
-		{
-			final HealthStatus hs = ar.iterator().next();
-			stb.append(hs.toString());
-			if (ar.iterator().hasNext())
-				stb.append(':');
-		}
-
-		setString("health", stb.toString());
-	}
 
 }
