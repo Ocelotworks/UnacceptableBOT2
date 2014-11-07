@@ -217,7 +217,7 @@ public class LotteryHandler
 
 	private static void sendMessage(String message)
 	{
-		UnacceptableBot.getBot().sendIRC().message(getConfig().getString("lott:channel"), message);
+		UnacceptableBot.getBot().sendIRC().message("#doge-coin", message);
 	}
 
 	private static ConfigHandler getConfig()
