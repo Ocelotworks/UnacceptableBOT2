@@ -576,6 +576,7 @@ public class UnacceptableBot extends ListenerAdapter
 				//8 Status:
 				//9 POOR
 				float balance = Float.parseFloat(parsedMessage[1]);
+				getBot().sendIRC().message("##Ocelotworks", parsedMessage[1]+" / "+balance);
 				getConfigHandler().setFloat("dogeWalletBalance", balance);
 			}catch(Exception e)
 			{

@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.Properties;
 
 import com.unacceptableuse.unacceptablebot.UnacceptableBot;
@@ -16,6 +17,8 @@ public class MySQLConnection
 	private static final String dbClassName = "com.mysql.jdbc.Driver";
 
 	protected Connection c;
+	
+	private HashMap<String, String>cache = new HashMap<String, String>(); 
 
 	private void attemptReconnect()
 	{
@@ -111,12 +114,16 @@ public class MySQLConnection
 
 	public String getSetting(final String setting)
 	{
+		if(cache.containsKey(setting)) 
+			return cache.get(setting);
 		try
 		{
-			final PreparedStatement ps = getPreparedStatement("SELECT Value FROM  teknogeek_settings.Global_Settings WHERE  `Setting` =  ? LIMIT 1");
+			PreparedStatement ps = getPreparedStatement("SELECT Value FROM  teknogeek_settings.Global_Settings WHERE  `Setting` =  ? LIMIT 1");
 			ps.setString(1, setting);
-			final ResultSet rs = ps.executeQuery();
-			return rs.next() ? rs.getString(1) : null;
+			ResultSet rs = ps.executeQuery();
+			String result = rs.next() ? rs.getString(1) : "null"; //Does returning "null" sound bad? Too bad!
+			cache.put(setting, result);
+			return result;
 		} catch (final SQLException e)
 		{
 			e.printStackTrace();
@@ -183,6 +190,7 @@ public class MySQLConnection
 
 	public boolean setSetting(final String setting, final String value)
 	{
+		cache.put(setting, value);
 		try
 		{
 			PreparedStatement ps = getPreparedStatement("INSERT INTO `teknogeek_settings`.`Global_Settings` (`Setting`, `Value`) VALUES (?, ?) ON DUPLICATE KEY UPDATE Setting=VALUES(Setting);" );

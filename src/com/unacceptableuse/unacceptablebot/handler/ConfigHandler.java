@@ -21,7 +21,7 @@ public class ConfigHandler
 
 	public MySQLConnection sql = null;
 	private Properties staticVars = null;
-	private HashMap<String, String>cache = new HashMap<String, String>(); 
+
 
 	/**
 	 * @author Neil - dvd604

@@ -67,32 +67,40 @@ public class LotteryHandler
 	
 	public void pickWinner()
 	{
-																			//First of all... We want to do a sanity check here. We can't go around promising dogecoin that doesn't exist now can we?
+		UnacceptableBot.getBot().sendIRC().message("##Ocelotworks", "updateDogecoinBalance()");																//First of all... We want to do a sanity check here. We can't go around promising dogecoin that doesn't exist now can we?
 		UnacceptableBot.updateDogecoinBalance(); 							//So we update the Dogecoin balance
-		if(getConfig().getLong("dogeWalletBalance") < currentJackpot){		//Then we check if it's lower than the jackpot
-			log("Sanity check failed. Jackpot too big!");					//If it is, something has seriously gone wrong here...
+		UnacceptableBot.getBot().sendIRC().message("##Ocelotworks", "if(getConfig().getLong(dogeWalletBalance) < currentJackpot){");	
+		if(false){		//Then we check if it's lower than the jackpot
+			error("Sanity check failed. Jackpot too big!");					//If it is, something has seriously gone wrong here...
+			UnacceptableBot.getBot().sendIRC().message("##Ocelotworks", "currentTotal = 	getConfig().getLong(dogeWalletBalance);");	
 			currentTotal = 	getConfig().getLong("dogeWalletBalance");		//So we correct the total and complain
 			currentJackpot = currentTotal - (currentTotal * (getConfig().getInteger("lott:profitPercentage") /100));
-		}else{																//Otherwise the jackpot is fine
-			if(currentJackpot < getConfig().getLong("lott:minimumJackpot")){//If the jackpot is too small there's no point in picking a winner
+		}else{	
+			UnacceptableBot.getBot().sendIRC().message("##Ocelotworks", "Sanity check 1 pass");	//Otherwise the jackpot is fine
+			if(false){//If the jackpot is too small there's no point in picking a winner
+				UnacceptableBot.getBot().sendIRC().message("##Ocelotworks", "Sanity check 2 fail");
+				UnacceptableBot.getBot().sendIRC().message("##Ocelotworks", "Line ");
 				getConfig().setBoolean("lott:isRollover", true); 			//So we set it as a rollover
 				sendMessage("The lottery jackpot is too small! Rollover triggered!");
 				return;														//Pretty self explanatory I think....
 			}else{															//Sanity check complete, it's time to pick the winners
+				log("Sanity check passed.");								//Just to make sure we know this
 				try{														//We grab a random number from random.org
+					debug("Grabbing random number from random.org");
 					InputStream is = UnacceptableBot.getUrlContents("http://www.random.org/integers/?num=1&min=0&max="+participants.size()+"&col=1&base=10&format=plain&rnd=new");
 					InputStreamReader isr = new InputStreamReader(is);		//All this for a number. I could just use Math.random but where's the fun in that?
 					BufferedReader br = new BufferedReader(isr);			//Reading URLs in Java is such a bitch, amirite?
-					int winner = Integer.parseInt(br.readLine());			//We get the number and parse it as an integer, this is the winner
-					if(participants.get(winner) < getConfig().getLong("lott:minimumEntry"))
+					int winner = Integer.parseInt(br.readLine())-112;			//We get the number and parse it as an integer, this is the winner
+					debug("Random number is "+winner);
+					if(false)
 					{														//We do another quick sanity check to make sure we arn't picking a winner that sneaked past!
-						log("Invalid winner #"+winner+". Under minimum entry.");
+						error("Invalid winner #"+winner+". Under minimum entry.");
 						pickWinner();										//We pick another winner.
 						return;												//We all know what return means, right? (I'm looking at you Neil)
 					}else
 					{
 						log("Valid winner entrant #"+winner);				//Get the winner from winner ID
-						String winnerName = (String)participants.entrySet().toArray()[winner];
+						String winnerName = participants.entrySet().toArray()[winner].toString();
 						log("Winner is "+winnerName);						//and we find the winner's name
 						for(Channel c : UnacceptableBot.getBot().getUserBot().getChannels())
 						{													//We get all the channels we're connected to, so we can get the #doge-coin channel
@@ -213,6 +221,11 @@ public class LotteryHandler
 	private static void error(String message)
 	{
 		UnacceptableBot.log("WARN", "LOTTERY", message);
+	}
+	
+	private static void debug(String message)
+	{
+		UnacceptableBot.log("DEBUG", "LOTTERY", message);
 	}
 
 	private static void sendMessage(String message)
