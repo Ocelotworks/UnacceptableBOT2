@@ -24,7 +24,7 @@ public class CommandRelay extends Command
 	@Override
 	public String[] getAliases()
 	{
-		return new String[] { "startrelay", "stoprelay" };
+		return new String[] { "relay", "startrelay", "stoprelay" };
 	}
 
 	@Override
@@ -41,6 +41,14 @@ public class CommandRelay extends Command
 
 		if (to.equals(from))
 			return;
+		
+		if(args[0].equalsIgnoreCase("!relay")) {
+			if(UnacceptableBot.relay.containsKey(from)) {
+				args[0] = "!stoprelay";
+			} else {
+				args[0] = "!startrelay";
+			}
+		}
 
 		if (args[0].equalsIgnoreCase("!startrelay"))
 		{
