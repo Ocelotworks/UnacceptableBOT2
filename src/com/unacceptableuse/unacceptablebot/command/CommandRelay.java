@@ -24,7 +24,7 @@ public class CommandRelay extends Command
 	@Override
 	public String[] getAliases()
 	{
-		return new String[] { "startrelay", "stoprelay" };
+		return new String[] { "relay", "startrelay", "stoprelay" };
 	}
 
 	@Override
@@ -41,6 +41,14 @@ public class CommandRelay extends Command
 
 		if (to.equals(from))
 			return;
+		
+		if(args[0].equalsIgnoreCase("!relay")) {
+			if(UnacceptableBot.relay.containsKey(from) && UnacceptableBot.relay.get(from).contains(to)) {
+				args[0] = "!stoprelay";
+			} else {
+				args[0] = "!startrelay";
+			}
+		}
 
 		if (args[0].equalsIgnoreCase("!startrelay"))
 		{
@@ -54,7 +62,7 @@ public class CommandRelay extends Command
 				sendMessage("Now relaying to " + to + ".", to);
 			}
 		} else if (args[0].equalsIgnoreCase("!stoprelay"))
-			if (UnacceptableBot.relay.containsKey(from))
+			if (UnacceptableBot.relay.containsKey(from) && UnacceptableBot.relay.get(from).contains(to))
 			{
 				UnacceptableBot.relay.get(from).remove(to);
 				sendMessage("No longer relaying from " + from + ".", to);
