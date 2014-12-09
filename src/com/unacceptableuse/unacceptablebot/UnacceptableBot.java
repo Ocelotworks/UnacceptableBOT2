@@ -448,15 +448,6 @@ public class UnacceptableBot extends ListenerAdapter
 			return;
 		}
 		
-		if(event.getChannel().getName().equals("##Ocelotworks"))
-		{
-			if(event.getUser().getHostmask().contains("boywanders.us") || event.getUser().getHostmask().equals("212.38.181.6"))
-			{
-				getBot().sendRaw().rawLine("KICK "+event.getChannel().getName()+" "+event.getUser().getNick()+" "+"Forbidden host");
-				log("INFO", "JOIN", event.getUser().getNick()+" joined from forbidden host "+event.getUser().getHostmask());
-				return;
-			}
-		}
 
 	}
 
