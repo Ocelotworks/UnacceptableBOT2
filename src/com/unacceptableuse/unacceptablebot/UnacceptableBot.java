@@ -405,7 +405,7 @@ public class UnacceptableBot extends ListenerAdapter
 		handler.init(); // CommandHandler
 		config.init(); // ConfigHandler
 		socks.init(); // WebSocketHandler
-		snapchat.init(); // SnapchatHandler
+		//snapchat.init(); // SnapchatHandler
 		lottery.init();
 		parser = new JsonParser();
 	}
