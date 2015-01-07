@@ -61,6 +61,7 @@ public class UnacceptableBot extends ListenerAdapter
 	private static JsonParser parser;
 	public static Random rand = new Random();
 	public static HashMap<String, ArrayList<String>> relay = new HashMap<String, ArrayList<String>>();
+	public static HashMap<String, ArrayList<User>> msgalert = new HashMap<String, ArrayList<User>>();
 	public static ArrayList<String> sexQuotes = new ArrayList<String>();
 	private static SnapchatHandler snapchat = new SnapchatHandler();
 	private static WebSocketHandler socks = new WebSocketHandler();
@@ -463,6 +464,18 @@ public class UnacceptableBot extends ListenerAdapter
 
 			for (final String to : relay.get(event.getChannel().getName().toLowerCase()))
 				bot.sendIRC().message(to, event.getChannel().getName() + " - <" + user + "> " + event.getMessage());
+		}
+		
+		if (msgalert.containsKey(event.getChannel().getName().toLowerCase())) {
+			String channel = event.getChannel().getName().toLowerCase();
+			for (User to : msgalert.get(channel)) {
+				bot.sendIRC().message(to.getNick(), "There is activity in " + event.getChannel().getName());
+				msgalert.get(channel).remove(to);
+			}
+			
+			if (msgalert.get(channel).isEmpty()) {
+				msgalert.remove(channel);
+			}
 		}
 
 		if (event.getUser().getNick().equals("[MC]-DogeFest") && event.getMessage().contains("<"))
