@@ -28,7 +28,14 @@ public class Initializer
 			final Properties props = new Properties();
 			props.load(is);
 
-			final Configuration config = new Configuration.Builder().setName(username).setLogin(username).setAutoNickChange(true).addListener(new UnacceptableBot()).setServerHostname(props.getProperty("server")).setServerPort(Integer.parseInt(props.getProperty("port"))).setServerPassword(props.getProperty("password")).addAutoJoinChannel(props.getProperty("default_channel")).buildConfiguration();
+			final Configuration config = 
+					new Configuration.Builder()
+					.setName(username).setLogin(username)
+					.setAutoNickChange(true)
+					.addListener(new UnacceptableBot())
+					.setServer(props.getProperty("server"), Integer.parseInt(props.getProperty("port")), props.getProperty("password"))
+					.addAutoJoinChannel(props.getProperty("default_channel"))
+					.buildConfiguration();
 
 			UnacceptableBot.channels.add(props.getProperty("default_channel"));
 			// UnacceptableBot.nickAuth(username, props.getProperty("nickserv_password"));
