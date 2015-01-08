@@ -37,17 +37,23 @@ public class CommandTopic extends Command
 	{
 		try
 		{
-			final ResultSet rs = UnacceptableBot.getConfigHandler().sql.query("SELECT Username,Message FROM `teknogeek_unacceptablebot`.`" + channel.getName() + "` WHERE ID=(SELECT MAX(ID) FROM `teknogeek_unacceptablebot`.`" + channel.getName() + "`)");
+			final ResultSet rs = UnacceptableBot.getConfigHandler().sql.query("SELECT Username,Message FROM `teknogeek_unacceptablebot`.`" + channel.getName() + "` WHERE ID=(SELECT MAX(ID)"+(args[1] != null ? "-"+args[1]: "")+" FROM `teknogeek_unacceptablebot`.`" + channel.getName() + "`)");
 			rs.next();
 			final String newTopic = "<" + rs.getString(1) + "> " + rs.getString(2);
+			
+			if(newTopic.contains("!topic"))
+			{
+				sendMessage("Ignoring Duplicate request!", channel);
+			}else
+			{
+				final PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("sexquotes.txt", true)));
+				out.println(newTopic);
+				out.close();
 
-			final PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("sexquotes.txt", true)));
-			out.println(newTopic);
-			out.close();
+				UnacceptableBot.sexQuotes.add(newTopic);
 
-			UnacceptableBot.sexQuotes.add(newTopic);
-
-			sendMessage("Added topic " + newTopic, channel);
+				sendMessage("Added topic " + newTopic, channel);
+			}
 
 		} catch (final Exception e)
 		{
