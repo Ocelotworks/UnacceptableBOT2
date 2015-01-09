@@ -9,6 +9,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
+import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.DigestInputStream;
@@ -150,6 +151,27 @@ public class UnacceptableBot extends ListenerAdapter
 		{
 			e.printStackTrace();
 		}
+	}
+	
+	private static void doSoundcloud(final String message, final String channel)
+	{
+		try{
+			final String pattern = "/http:\\/\\/w.soundcloud\\.com\\/.*%2Ftracks%2F([0-9A-F]+)/";
+			final Pattern compiledPattern = Pattern.compile(pattern);
+			final Matcher matcher = compiledPattern.matcher(message);
+			if(matcher.find())
+			{
+				String URL = matcher.group();
+				final InputStream is = getHTTPSUrlContents("https://api.soundcloud.com/resolve.json?url="+URLEncoder.encode(URL, "UTF-8"));
+				final JsonObject jo = getParser().parse(new InputStreamReader(is)).getAsJsonObject();
+				
+				bot.sendIRC().message(channel, Colors.BOLD+Tools.capitaliseFirstLetter(jo.get("kind").toString())+": "+jo.get("user").getAsJsonObject().get("username").getAsString()+": "+
+				jo.get("title").getAsString());
+				//stb.append("♫  ");
+			}
+		}catch(final Exception e){};
+			
+		
 	}
 
 	public static PircBotX getBot()
@@ -545,6 +567,7 @@ public class UnacceptableBot extends ListenerAdapter
 
 		doReddit(event.getMessage(), event.getChannel().getName(), event.getUser());
 		doYoutube(event.getMessage(), event.getChannel().getName());
+		doSoundcloud(event.getMessage(), event.getChannel().getName());
 		doLottery(event.getMessage(), event.getChannel().getName(), event.getUser());
 		recordMessage(event);
 	}
