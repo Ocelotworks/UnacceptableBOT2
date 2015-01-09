@@ -68,7 +68,7 @@ public class UnacceptableBot extends ListenerAdapter
 	private static LotteryHandler lottery = new LotteryHandler();
 	private static Timer timer = null;
 	public static boolean twatMode = false;
-	private static HealthStatus ZNCStatus = new HealthStatus("ZNC", "Connected", "export");
+	//private static HealthStatus ZNCStatus = new HealthStatus("ZNC", "Connected", "export");
 
 	private static void doReddit(final String message, final String channel, final User sender)
 	{
@@ -237,10 +237,6 @@ public class UnacceptableBot extends ListenerAdapter
 		return socks;
 	}
 
-	public static HealthStatus getZNCStatus()
-	{
-		return ZNCStatus;
-	}
 
 	private static void handleNewBuild()
 	{
@@ -561,20 +557,7 @@ public class UnacceptableBot extends ListenerAdapter
 		// String user = event.getUser().getNick();
 		// handler.processMessage(event);
 		// }
-
-		if (event.getUser().equals("*status"))
-			if (ZNCStatus.isCritical())
-			{
-				if (event.getMessage().contains("Connected"))
-				{
-					ZNCStatus.setCritical(false);
-					ZNCStatus.setStatus(event.getMessage());
-				}
-			} else if (event.getMessage().contains("Disconnected") || event.getMessage().contains("Error"))
-			{
-				ZNCStatus.setCritical(true);
-				ZNCStatus.setStatus(event.getMessage());
-			}
+		
 
 		if (event.getUser().getNick().equals("DogeWallet"))
 		{
