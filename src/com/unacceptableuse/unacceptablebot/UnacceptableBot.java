@@ -156,7 +156,7 @@ public class UnacceptableBot extends ListenerAdapter
 	private static void doSoundcloud(final String message, final String channel)
 	{
 		try{
-			final String pattern = "/http:\\/\\/w.soundcloud\\.com\\/.*%2Ftracks%2F([0-9A-F]+)/";
+			final String pattern = "/https?:\\/\\/soundcloud\\.com\\/\\S*/gi";
 			final Pattern compiledPattern = Pattern.compile(pattern);
 			final Matcher matcher = compiledPattern.matcher(message);
 			if(matcher.find())
