@@ -3,6 +3,7 @@ package com.unacceptableuse.unacceptablebot.command;
 import org.pircbotx.Channel;
 import org.pircbotx.User;
 
+import com.unacceptableuse.unacceptablebot.Tools;
 import com.unacceptableuse.unacceptablebot.UnacceptableBot;
 import com.unacceptableuse.unacceptablebot.handler.WebSocketHandler;
 import com.unacceptableuse.unacceptablebot.variable.Level;
@@ -114,6 +115,71 @@ public class CommandDebug extends Command
 			// default: sendMessage("Unknown option. See !debug irc", channel);
 			// }
 			// }
+		} else if (args[1].equalsIgnoreCase("topic"))
+		{
+			if (args.length < 3)
+			{
+				sendMessage("Usage: !debug topic removecurrent|removeindex|addcurrent|add|show|showall ", channel);
+				return;
+			} else
+			{
+				if (args[2].equalsIgnoreCase("removecurrent"))
+				{
+					Channel c = Tools.getChannel("##Ocelotworks");
+					if(!c.getTopicSetter().equals(Tools.getBotUsername()))
+					{
+						sendMessage("Topic was not set by "+Tools.getBotUsername()+"!", channel);
+						return;
+					}else
+					{
+						int i = 0;
+						for(String quote : UnacceptableBot.sexQuotes)
+						{
+							if(quote.equals(c.getTopic()))
+							{
+								UnacceptableBot.sexQuotes.remove(i);
+								sendMessage("Successfully Removed quote.", channel);
+								
+								break;
+							}
+							i++;
+						}
+					}
+					
+				}else if(args[2].equalsIgnoreCase("removeindex"))
+				{
+					if(args.length < 4)
+					{
+						sendMessage("Usage: !debug topic removeindex <num>", channel);
+						return;
+					}else
+					{
+						int index = Integer.parseInt(args[3]);
+						if(UnacceptableBot.sexQuotes.size() < index)
+						{
+							sendMessage("Index number higher than maximum ("+UnacceptableBot.sexQuotes.size()+")", channel);
+							return;
+						}else
+						{
+							
+						}
+					}
+					
+					
+				}else if(args[2].equalsIgnoreCase("addcurrent"))
+				{
+					
+				}else if(args[2].equalsIgnoreCase("add"))
+				{
+					
+				}else if(args[2].equalsIgnoreCase("show"))
+				{
+					
+				}else if(args[2].equalsIgnoreCase("showall"))
+				{
+					
+				}
+			}
 		}
 	}
 
