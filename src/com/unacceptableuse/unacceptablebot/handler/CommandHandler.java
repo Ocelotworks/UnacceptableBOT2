@@ -47,6 +47,7 @@ import com.unacceptableuse.unacceptablebot.command.CommandTime;
 import com.unacceptableuse.unacceptablebot.command.CommandTopic;
 import com.unacceptableuse.unacceptablebot.command.CommandTwat;
 import com.unacceptableuse.unacceptablebot.command.CommandTwitter;
+import com.unacceptableuse.unacceptablebot.command.CommandUptime;
 import com.unacceptableuse.unacceptablebot.command.CommandWhoami;
 import com.unacceptableuse.unacceptablebot.command.CommandWolfram;
 import com.unacceptableuse.unacceptablebot.variable.Level;
@@ -143,6 +144,7 @@ public class CommandHandler
 		addCommand(new CommandTopic());
 		addCommand(new CommandTwat());
 		addCommand(new CommandTwitter());
+		addCommand(new CommandUptime());
 		addCommand(new CommandWhoami());
 		addCommand(new CommandWolfram());
 		UnacceptableBot.log("DEBUG", "CMDREG", "Registered " + getCommands().size() + " commands successfully!");
