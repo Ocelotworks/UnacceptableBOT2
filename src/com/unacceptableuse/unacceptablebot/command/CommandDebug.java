@@ -119,7 +119,7 @@ public class CommandDebug extends Command
 		{
 			if (args.length < 3)
 			{
-				sendMessage("Usage: !debug topic removecurrent|removeindex|addcurrent|add|show|showall ", channel);
+				sendMessage("Usage: !debug topic removecurrent|removeindex|addcurrent|add|show|showall|up|down|set ", channel);
 				return;
 			} else
 			{
@@ -178,6 +178,33 @@ public class CommandDebug extends Command
 				}else if(args[2].equalsIgnoreCase("showall"))
 				{
 					
+				}else if(args[2].equalsIgnoreCase("up"))
+				{
+					UnacceptableBot.currentTopic++;
+					UnacceptableBot.updateTopic();
+				}else if(args[2].equalsIgnoreCase("down"))
+				{
+					UnacceptableBot.currentTopic--;
+					UnacceptableBot.updateTopic();
+				}else if(args[2].equalsIgnoreCase("set"))
+				{
+					if(args.length < 4)
+					{
+						sendMessage("Usage: !debug topic set <num>", channel);
+						return;
+					}else
+					{
+						int index = Integer.parseInt(args[3]);
+						if(UnacceptableBot.sexQuotes.size() < index)
+						{
+							sendMessage("Index number higher than maximum ("+UnacceptableBot.sexQuotes.size()+")", channel);
+							return;
+						}else
+						{
+							UnacceptableBot.currentTopic = index;
+							UnacceptableBot.updateTopic();
+						}
+					}
 				}
 			}
 		}

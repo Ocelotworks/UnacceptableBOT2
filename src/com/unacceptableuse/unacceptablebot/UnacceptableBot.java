@@ -173,6 +173,17 @@ public class UnacceptableBot extends ListenerAdapter
 			
 		
 	}
+	
+	private static void doTopicTick(String channel)
+	{
+		messageCount++;
+		if (messageCount > 100)
+		{
+			updateTopic();
+			currentTopic++;
+			messageCount = 0;
+		}
+	}
 
 	public static PircBotX getBot()
 	{
@@ -318,7 +329,7 @@ public class UnacceptableBot extends ListenerAdapter
 
 	private final boolean loadChansFromDB = false; // When using ZNC this should be false to avoid dual entries in the database!
 
-	private int messageCount = 0;
+	public static int messageCount = 0, currentTopic = 0;
 
 	/**
 	 * Starts the init process of everything
@@ -547,27 +558,17 @@ public class UnacceptableBot extends ListenerAdapter
 				final MessageEvent evt = new MessageEvent(event.getBot(), event.getChannel(), event.getUser(), messageStr[1]);
 				handler.processMessage(evt);
 			}
-		} else if (event.getChannel().getName().equals("##Ocelotworks"))
+		}
+		
+		if(event.getMessage().equalsIgnoreCase("new topic plz"))
 		{
-			if (event.getMessage().equals("new topic plz"))
-				messageCount = 100;
-			if (event.getMessage().equals("reload those sweet sex phrases bro"))
-			{
-				sexQuotes.clear();
-				loadSexQuotes();
-				event.respond("Doneski");
-			}
-			messageCount++;
-			if (messageCount > 100)
-			{
-				event.getBot().sendRaw().rawLine("TOPIC ##Ocelotworks " + sexQuotes.get(rand.nextInt(sexQuotes.size())));
-				messageCount = 0;
-			}
+			event.respond("Deprecated: Use !debug topic up/down instead");
 		}
 
 		doReddit(event.getMessage(), event.getChannel().getName(), event.getUser());
 		doYoutube(event.getMessage(), event.getChannel().getName());
 		doSoundcloud(event.getMessage(), event.getChannel().getName());
+		doTopicTick(event.getChannel().getName());
 		//doLottery(event.getMessage(), event.getChannel().getName(), event.getUser());
 		recordMessage(event);
 	}
@@ -654,5 +655,10 @@ public class UnacceptableBot extends ListenerAdapter
 			else
 				bot.sendIRC().message(channel, sender.getNick() + " is a bad boy :(");
 		}
+	}
+	
+	public static void updateTopic()
+	{
+		getBot().sendRaw().rawLine("TOPIC ##Ocelotworks " + sexQuotes.get(currentTopic));
 	}
 }
