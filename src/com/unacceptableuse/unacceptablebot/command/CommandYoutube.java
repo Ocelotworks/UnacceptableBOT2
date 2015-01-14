@@ -34,14 +34,17 @@ public class CommandYoutube extends Command {
 					p.getInputStream()));
 
 			String line = "";
+			String song = "";
 			while ((line = reader.readLine()) != null) {
 				if(line.contains("[download]")){
 					line.replace("[download] ", "");
 					line.replace("Destination: ", "");
 					line.replace(".m4a", "");
 					sendMessage("Youtube:" + line, channel);
+					song = line;
 				}
 			}
+			sendMessage("&GREEN Song availble here: http://files.unacceptableuse.com/"+song,channel);
 		} catch (InterruptedException | IOException e) {
 			e.printStackTrace();
 		}
