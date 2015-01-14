@@ -36,6 +36,9 @@ public class CommandMessageAlert extends Command {
 		
 		if(!UnacceptableBot.msgalert.get(target).contains(sender)) {
 			UnacceptableBot.msgalert.get(target).add(sender);
+			sender.send().notice("You will be notified the next time there is activity in " + target + ".");
+		} else {
+			sender.send().notice("You have already requested to be notified the next time there is activity in " + target + ".");
 		}
 	}
 }
