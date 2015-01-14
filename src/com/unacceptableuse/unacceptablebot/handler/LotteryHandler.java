@@ -14,6 +14,7 @@ import org.pircbotx.User;
 
 import com.unacceptableuse.unacceptablebot.UnacceptableBot;
 
+@SuppressWarnings("unused")
 public class LotteryHandler
 {
 
@@ -67,6 +68,7 @@ public class LotteryHandler
 	
 	public void pickWinner()
 	{
+		/* Dead code warnings are ugly.
 		UnacceptableBot.getBot().sendIRC().message("##Ocelotworks", "updateDogecoinBalance()");																//First of all... We want to do a sanity check here. We can't go around promising dogecoin that doesn't exist now can we?
 		UnacceptableBot.updateDogecoinBalance(); 							//So we update the Dogecoin balance
 		UnacceptableBot.getBot().sendIRC().message("##Ocelotworks", "if(getConfig().getLong(dogeWalletBalance) < currentJackpot){");	
@@ -142,7 +144,7 @@ public class LotteryHandler
 					return;
 				}
 			}
-		}
+		}*/
 	}
 	
 	public void resetLottery()

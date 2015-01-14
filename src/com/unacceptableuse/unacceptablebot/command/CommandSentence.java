@@ -31,7 +31,6 @@ public class CommandSentence extends Command
 		return "Unfinished";
 	}
 
-	@SuppressWarnings("unused")
 	@Override
 	public void performCommand(final User sender, final Channel channel, final String message, final String[] args)
 	{

@@ -50,6 +50,7 @@ import com.unacceptableuse.unacceptablebot.command.CommandTwitter;
 import com.unacceptableuse.unacceptablebot.command.CommandUptime;
 import com.unacceptableuse.unacceptablebot.command.CommandWhoami;
 import com.unacceptableuse.unacceptablebot.command.CommandWolfram;
+import com.unacceptableuse.unacceptablebot.command.CommandYoutube;
 import com.unacceptableuse.unacceptablebot.variable.Level;
 
 public class CommandHandler
@@ -147,6 +148,7 @@ public class CommandHandler
 		addCommand(new CommandUptime());
 		addCommand(new CommandWhoami());
 		addCommand(new CommandWolfram());
+		addCommand(new CommandYoutube());
 		UnacceptableBot.log("DEBUG", "CMDREG", "Registered " + getCommands().size() + " commands successfully!");
 	}
 

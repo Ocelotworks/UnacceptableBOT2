@@ -1,6 +1,5 @@
 package com.unacceptableuse.unacceptablebot.command;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.pircbotx.Channel;

@@ -62,7 +62,7 @@ public class CommandImport extends Command
 				final String time = split[1] + " " + split[2] + ", " + split[3];
 				final String user = split[6];
 				String logMessage = "";
-				for (final String element : split)
+				//for (final String element : split)
 					if (i > 6)
 						logMessage = logMessage + " " + split[i];
 				config.createChannelTable(args[2]);

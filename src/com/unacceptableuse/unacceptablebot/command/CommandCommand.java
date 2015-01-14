@@ -36,7 +36,6 @@ public class CommandCommand extends Command
 		return "Usage: command <linux command> | Result: Runs the linux command on the server";
 	}
 
-	@SuppressWarnings("unused")
 	@Override
 	public void performCommand(final User sender, final Channel channel, final String message, final String[] args)
 	{

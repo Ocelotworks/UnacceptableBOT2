@@ -1,6 +1,5 @@
 package com.unacceptableuse.unacceptablebot;
 
-import java.awt.Color;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -49,7 +48,6 @@ import com.unacceptableuse.unacceptablebot.handler.SnapchatHandler;
 import com.unacceptableuse.unacceptablebot.handler.SpellCheckHandler;
 import com.unacceptableuse.unacceptablebot.handler.WebSocketHandler;
 import com.unacceptableuse.unacceptablebot.threading.SnapchatThread;
-import com.unacceptableuse.unacceptablebot.variable.HealthStatus;
 
 @SuppressWarnings("rawtypes")
 public class UnacceptableBot extends ListenerAdapter
