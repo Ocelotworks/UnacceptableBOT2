@@ -1,11 +1,16 @@
 package com.unacceptableuse.unacceptablebot.command;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
 import org.pircbotx.Channel;
 import org.pircbotx.User;
+
+import com.google.common.io.Files;
+import com.unacceptableuse.unacceptablebot.variable.Level;
 
 public class CommandYoutube extends Command {
 
@@ -24,9 +29,10 @@ public class CommandYoutube extends Command {
 	public void performCommand(User sender, Channel channel, String message,
 			String[] args) {
 		try {
-			Process p = Runtime.getRuntime().exec(
-					"youtube-dl --extract-audio --audio-format mp3 -l "
-							+ args[0]);
+			Runtime rt = Runtime.getRuntime();
+			Process p = rt
+					.exec("youtube-dl --extract-audio --audio-format mp3 -l "
+							+ args[1]);
 
 			p.waitFor();
 
@@ -35,30 +41,44 @@ public class CommandYoutube extends Command {
 
 			String line = "";
 			String song = "";
+			String temp = "";
 			while ((line = reader.readLine()) != null) {
-				if(line.contains("[download]")){
-					line.replace("[download] ", "");
-					line.replace("Destination: ", "");
-					line.replace(".m4a", "");
-					sendMessage("Youtube:" + line, channel);
-					song = line;
+				if (line.contains("[download]")) {
+					if (line.contains("in")) {
+						line = line.replace("[download] ", "");
+						line = line.replace("Destination: ", "");
+						line = line.replace(".m4a", "");
+						line = temp += line
+								+ System.getProperty("line.separator");
+						song = line;
+					}
 				}
 			}
-			sendMessage("&GREEN Song availble here: http://files.unacceptableuse.com/"+song,channel);
-		} catch (InterruptedException | IOException e) {
-			e.printStackTrace();
+			sendMessage(temp, channel);
+			File file = finder("/home/peter/Stevie/")[0];
+			new File("/home/peter/mp3" + file.getName()).createNewFile();
+			Files.copy(file, new File("/home/peter/mp3/" + file.getName()));
+			file.delete();
+
+		} catch (IOException | InterruptedException e) {
+			sendMessage("Fuck." + e.getMessage(), channel);
 		}
-		
-		copy("*.mp3","/home/peter/mp3");
 	}
-	
-	public void copy(String from, String to){
-		try {
-			Process p = Runtime.getRuntime().exec(
-					"mv " + from + " " + to);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+
+	public File[] finder(String dirName) {
+		File dir = new File(dirName);
+
+		return dir.listFiles(new FilenameFilter() {
+			public boolean accept(File dir, String filename) {
+				return filename.endsWith(".mp3");
+			}
+		});
+
+	}
+
+	@Override
+	public Level getAccessLevel() {
+		return Level.SUPERADMIN;
 	}
 
 }
