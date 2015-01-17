@@ -20,7 +20,7 @@ public class Tools
 	
 	public static String getBotUsername()
 	{
-		return UnacceptableBot.getBot().getNick();
+		return UnacceptableBot.getBot().isConnected() ? UnacceptableBot.getBot().getNick() : "NOTCONNECTED";
 	}
 	
 	
