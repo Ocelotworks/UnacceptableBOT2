@@ -109,7 +109,8 @@ public class ConfigHandler
 
 	public String getString(final String key)
 	{
-		return sql.getSetting(key);
+		String get = sql.getSetting(key);
+		return get == null ? "not set" : get;
 	}
 
 	public int getUserLevel(final User user)

@@ -20,7 +20,7 @@ public class CommandUptime extends Command
 	@Override
 	public String getHelp()
 	{
-		return "Returns the time "+Tools.getBotUsername()+" has been up.";
+		return "Returns the time the bot has been up.";
 	}
 
 	@Override

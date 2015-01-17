@@ -357,7 +357,8 @@ public class UnacceptableBot extends ListenerAdapter
 			final MessageDigest mdg = dis.getMessageDigest();
 
 			final String newDigest = String.valueOf(mdg.digest());
-			final String oldDigest = config.getString("checksum");
+			String oldDigest = config.getString("checksum");
+			if(oldDigest == null) oldDigest = "none";
 
 			System.out.println("MD5: " + newDigest);
 
