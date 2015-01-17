@@ -17,7 +17,7 @@ public class CommandMessageStats extends Command
 	@Override
 	public String[] getAliases()
 	{
-		return new String[] { "messagestats" };
+		return new String[] { "messagestats", "stats", "allmessagestats"};
 	}
 
 	@Override
@@ -72,6 +72,8 @@ public class CommandMessageStats extends Command
 		{
 			sendMessage("&REDSHIT!&RESET: " + e.toString(), channel);
 		}
+		
+		sendMessage("View more stats at http://unacceptableuse.com/user/"+target, channel);
 	}
 
 }
