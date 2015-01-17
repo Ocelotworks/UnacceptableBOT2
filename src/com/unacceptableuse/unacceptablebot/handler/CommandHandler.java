@@ -155,7 +155,7 @@ public class CommandHandler
 		
 		String table = "<html><body style=\"background-color: #F1F2DA\">\n";
 		
-		table += "<table border=\"1\">\n" +
+		table += "<table border=\"1\" width=\"50%\">\n" +
 							"\t<tr>\n" +
 								"\t\t<td>Command</td>\n" +
 								"\t\t<td>Description</td>\n" +
@@ -165,9 +165,9 @@ public class CommandHandler
 		for(Command c : _commands) {
 			table += "\t<tr>\n" +
 						"\t\t<td>!" + c.getAliases()[0] + "</td>\n" +
-						"\t\t<td>" + c.getHelp() + "</td>\n" +
+						"\t\t<td>" + c.getHelp().replace("<", "&lt;").replace(">", "&gt;") + "</td>\n" +
 						"\t\t<td>" + c.getAccessLevel() + "</td>\n" +
-					"\t</tr>/n";
+					"\t</tr>\n";
 		}
 		
 		table += "</table>\n";
