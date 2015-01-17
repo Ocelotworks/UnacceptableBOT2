@@ -121,7 +121,7 @@ public class MySQLConnection
 			PreparedStatement ps = getPreparedStatement("SELECT Value FROM  teknogeek_settings.Global_Settings WHERE  `Setting` =  ? LIMIT 1");
 			ps.setString(1, setting);
 			ResultSet rs = ps.executeQuery();
-			String result = rs.next() ? rs.getString(1) : "null"; //Does returning "null" sound bad? Too bad!
+			String result = rs.next() ? rs.getString(1) : null; //Does returning "null" sound bad? Too bad!
 			cache.put(setting, result);
 			return result;
 		} catch (final SQLException e)
