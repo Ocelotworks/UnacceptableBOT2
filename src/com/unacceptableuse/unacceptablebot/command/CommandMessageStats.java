@@ -73,7 +73,7 @@ public class CommandMessageStats extends Command
 			sendMessage("&REDSHIT!&RESET: " + e.toString(), channel);
 		}
 		
-		sendMessage("View more stats at http://unacceptableuse.com/user/"+target, channel);
+		sendMessage("View more stats at http://unacceptableuse.com/bot/user/"+target, channel);
 	}
 
 }
