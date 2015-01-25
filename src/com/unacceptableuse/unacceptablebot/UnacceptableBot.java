@@ -60,7 +60,7 @@ public class UnacceptableBot extends ListenerAdapter
 
 	public static final Pattern 
 			PATTERN_TWITTER = Pattern.compile("@([A-Za-z0-9_]{1,15})"), 
-			PATTERN_YOUTUBE = Pattern.compile("(?<=watch\\?v=|/videos/|embed\\/)[^#\\&\\?]*)"), 
+			PATTERN_YOUTUBE = Pattern.compile("(?<=watch\\?v=|/videos/|embed\\/)[^#\\&\\?]*"), 
 			PATTERN_SOUNDCLOUD = Pattern.compile("/(https?:\\/\\/soundcloud\\.com\\/\\S*)/gi");
 	
 	
