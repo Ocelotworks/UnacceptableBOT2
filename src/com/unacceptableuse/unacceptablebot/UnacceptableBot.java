@@ -166,19 +166,22 @@ public class UnacceptableBot extends ListenerAdapter
 
 		if (matcher.find()){
 			
-			ConfigurationBuilder cb = new ConfigurationBuilder();
-			cb.setOAuthConsumerKey(getConfigHandler().getPassword("twitter_consumer_key")); 
-			cb.setOAuthConsumerSecret(getConfigHandler().getPassword("twitter_consumer_secret"));
-			cb.setOAuthAccessToken(getConfigHandler().getPassword("twitter_token"));
-			cb.setOAuthAccessToken(getConfigHandler().getPassword("twitter_token_secret"));
 			
-			String username = matcher.group();
+			
+			ConfigurationBuilder cb = new ConfigurationBuilder()
+					.setDebugEnabled(true)
+					.setOAuthConsumerKey(getConfigHandler().getPassword("twitter_consumer_key"))
+					.setOAuthConsumerSecret(getConfigHandler().getPassword("twitter_consumer_secret"))
+					.setOAuthAccessToken(getConfigHandler().getPassword("twitter_token"))
+					.setOAuthAccessTokenSecret(getConfigHandler().getPassword("twitter_token_secret"));
+			
+			String username = matcher.group().replace("@","");
 			Twitter twitter = new TwitterFactory(cb.build()).getInstance();
 			twitter4j.User user;
 			try
 			{
 				user = twitter.showUser(username);
-				bot.sendIRC().message(channel, Colors.BOLD + "@" + username+" "+user.getName()+": "+user.getFollowersCount()+" followers. "+user.getURL());
+				bot.sendIRC().message(channel, Colors.BOLD + "@" + username+" "+user.getName()+": "+user.getDescription()+" - "+user.getFollowersCount()+" followers. http://twitter.com/"+username);
 			} catch (TwitterException e)
 			{
 				// TODO Auto-generated catch block
