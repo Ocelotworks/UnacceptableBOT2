@@ -34,13 +34,19 @@ public class CommandTwitter extends Command
 	{
 		try
 		{
-			final ConfigurationBuilder cb = new ConfigurationBuilder();
-			cb.setDebugEnabled(true).setOAuthConsumerKey("qkjJsZ6OfDaOGN0HHuqXUitsb").setOAuthConsumerSecret(UnacceptableBot.getConfigHandler().getString("twitPrivKey")).setOAuthAccessToken("https://api.twitter.com/oauth/access_token").setOAuthAccessTokenSecret("https://api.twitter.com/oauth/authorize");
-			final Twitter unauthenticatedTwitter = new TwitterFactory(cb.build()).getInstance();
+			ConfigurationBuilder cb = new ConfigurationBuilder()
+			.setDebugEnabled(true)
+			.setOAuthConsumerKey(UnacceptableBot.getConfigHandler().getPassword("twitter_consumer_key"))
+			.setOAuthConsumerSecret(UnacceptableBot.getConfigHandler().getPassword("twitter_consumer_secret"))
+			.setOAuthAccessToken(UnacceptableBot.getConfigHandler().getPassword("twitter_token"))
+			.setOAuthAccessTokenSecret(UnacceptableBot.getConfigHandler().getPassword("twitter_token_secret"));
+	
+
+			Twitter twitter = new TwitterFactory(cb.build()).getInstance();
 			// First param of Paging() is the page number, second is the number
 			// per page (this is capped around 200 I think.
 			final Paging paging = new Paging(1, 100);
-			final List<Status> statuses = unauthenticatedTwitter.getUserTimeline(args[0], paging);
+			final List<Status> statuses = twitter.getUserTimeline(args[0], paging);
 			sendMessage(statuses.get(0).getText(), channel);
 		} catch (final TwitterException e)
 		{
