@@ -468,7 +468,7 @@ public class UnacceptableBot extends ListenerAdapter
 	 * @throws Exception
 	 *             Any exceptions thrown by the handlers should be handled with extreme panic
 	 */
-	private void initHandlers() throws Exception
+	private static void initHandlers() throws Exception
 	{
 		handler.init(); // CommandHandler
 		config.init(); // ConfigHandler
@@ -478,7 +478,7 @@ public class UnacceptableBot extends ListenerAdapter
 		parser = new JsonParser();
 	}
 
-	private void loadSexQuotes()
+	private static void loadSexQuotes()
 	{
 		try
 		{
