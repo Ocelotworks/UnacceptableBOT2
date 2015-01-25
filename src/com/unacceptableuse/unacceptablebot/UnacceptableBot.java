@@ -38,6 +38,11 @@ import org.pircbotx.hooks.events.MessageEvent;
 import org.pircbotx.hooks.events.PrivateMessageEvent;
 import org.pircbotx.hooks.events.QuitEvent;
 
+import twitter4j.Twitter;
+import twitter4j.TwitterException;
+import twitter4j.TwitterFactory;
+import twitter4j.conf.ConfigurationBuilder;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -53,6 +58,12 @@ import com.unacceptableuse.unacceptablebot.threading.SnapchatThread;
 public class UnacceptableBot extends ListenerAdapter
 {
 
+	public static final Pattern 
+			PATTERN_TWITTER = Pattern.compile("@([A-Za-z0-9_]{1,15})"), 
+			PATTERN_YOUTUBE = Pattern.compile("(?<=watch\\?v=|/videos/|embed\\/)[^#\\&\\?]*)"), 
+			PATTERN_SOUNDCLOUD = Pattern.compile("/(https?:\\/\\/soundcloud\\.com\\/\\S*)/gi");
+	
+	
 	private static PircBotX bot = null;
 	public static ArrayList<String> channels = new ArrayList<String>();
 	private static ConfigHandler config = new ConfigHandler();
@@ -129,10 +140,7 @@ public class UnacceptableBot extends ListenerAdapter
 
 	private static void doYoutube(final String message, final String channel)
 	{
-		final String pattern = "(?<=watch\\?v=|/videos/|embed\\/)[^#\\&\\?]*";
-
-		final Pattern compiledPattern = Pattern.compile(pattern);
-		final Matcher matcher = compiledPattern.matcher(message);
+		final Matcher matcher = PATTERN_YOUTUBE.matcher(message);
 
 		if (matcher.find())
 			try
@@ -151,12 +159,40 @@ public class UnacceptableBot extends ListenerAdapter
 		}
 	}
 	
+	
+	private static void doTwitter(final String message, final String channel)
+	{
+		Matcher matcher = PATTERN_TWITTER.matcher(message);
+
+		if (matcher.find()){
+			
+			ConfigurationBuilder cb = new ConfigurationBuilder();
+			cb.setOAuthConsumerKey(getConfigHandler().getPassword("twitter_consumer_key")); 
+			cb.setOAuthConsumerSecret(getConfigHandler().getPassword("twitter_consumer_secret"));
+			cb.setOAuthAccessToken(getConfigHandler().getPassword("twitter_token"));
+			cb.setOAuthAccessToken(getConfigHandler().getPassword("twitter_token_secret"));
+			
+			String username = matcher.group();
+			Twitter twitter = new TwitterFactory(cb.build()).getInstance();
+			twitter4j.User user;
+			try
+			{
+				user = twitter.showUser(username);
+				bot.sendIRC().message(channel, Colors.BOLD + "@" + username+" "+user.getName()+": "+user.getFollowersCount()+" followers. "+user.getURL());
+			} catch (TwitterException e)
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+					
+		}
+	}
+	
 	private static void doSoundcloud(final String message, final String channel)
 	{
 		try{
-			final String pattern = "/(https?:\\/\\/soundcloud\\.com\\/\\S*)/gi";
-			final Pattern compiledPattern = Pattern.compile(pattern);
-			final Matcher matcher = compiledPattern.matcher(message);
+			final Matcher matcher = PATTERN_SOUNDCLOUD.matcher(message);
 			if(matcher.find())
 			{
 				String URL = matcher.group();
