@@ -54,11 +54,12 @@ public class CommandYoutube extends Command {
 					}
 				}
 			}
-			sendMessage(temp, channel);
+			
 			File file = finder("/home/peter/Stevie/")[0];
 			new File("/home/peter/mp3" + file.getName()).createNewFile();
 			Files.copy(file, new File("/home/peter/mp3/" + file.getName()));
 			file.delete();
+			sendMessage("&GREENThe requested video can be found at: http://files.unacceptableuse.com",channel);
 
 		} catch (IOException | InterruptedException e) {
 			sendMessage("Fuck." + e.getMessage(), channel);
