@@ -26,13 +26,14 @@ public class CommandFillMeIn extends Command
 	@Override
 	public String getHelp()
 	{
-		return "Usage: fmi <number> | Result: Shows you the last specified number of messages";
+		return "Depreciated";
 	}
 
 	@Override
 	public void performCommand(final User sender, final Channel channel, final String message, final String[] args)
 	{
-		String id = "";
+		sendMessage("&REDFillMeIn is depreciated!",channel);
+		/*String id = "";
 		try
 		{
 			final ConfigHandler config = UnacceptableBot.getConfigHandler();
@@ -57,7 +58,7 @@ public class CommandFillMeIn extends Command
 		{
 			e.printStackTrace();
 			System.out.println("Error from CommandFillMeIn.class. Ranging from line 29 to line 38");
-		}
+		}*/
 	}
 
 	@Override
