@@ -80,7 +80,12 @@ public class CommandHandler
 		
 		UnacceptableBot.log("DEBUG", "CMDREG", "Registered " + getCommands().size() + " commands successfully!");
 		
-		String table = "<html><body style=\"background-color: #F1F2DA\">\n";
+		String table = "<html>"
+				+ "<head>"
+				+ "<title>Stevie Help Page</title>"
+				+ "<link rel="+'"'+"stylesheet"+'"'+" type="+'"'+"text/css"+'"'+" href="+'"'+"https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css"+'"'+" />"
+				+ "<link rel="+'"'+"stylesheet"+'"'+" type="+'"'+"text/css"+'"'+" href="+'"'+"https://boywanders.us/stevie.css"+'"'+"/>"
+						+ "</head>\n";
 		
 		table += "<table border=\"1\" width=\"50%\">\n" +
 							"\t<tr>\n" +
