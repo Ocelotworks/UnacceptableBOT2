@@ -40,7 +40,6 @@ public class CommandYoutube extends Command {
 					p.getInputStream()));
 
 			String line = "";
-			String song = "";
 			String temp = "";
 			while ((line = reader.readLine()) != null) {
 				if (line.contains("[download]")) {
@@ -50,7 +49,6 @@ public class CommandYoutube extends Command {
 						line = line.replace(".m4a", "");
 						line = temp += line
 								+ System.getProperty("line.separator");
-						song = line;
 					}
 				}
 			}

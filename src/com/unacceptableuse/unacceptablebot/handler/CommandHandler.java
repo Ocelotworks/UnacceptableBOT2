@@ -70,7 +70,7 @@ public class CommandHandler
 			for(ClassInfo ci : ClassPath.from(ClassLoader.getSystemClassLoader()).getTopLevelClasses("com.unacceptableuse.unacceptablebot.command")) {
 				if(!ci.getName().equals("com.unacceptableuse.unacceptablebot.command.Command")
 						&& !ci.getName().contains("Dynamic")
-						&& !ci.getName().contains("RPS")) {
+						&& ci.load().getAnnotation(Deprecated.class) == null) {
 					addCommand(((Command) ci.load().newInstance()));
 				}
 			}
