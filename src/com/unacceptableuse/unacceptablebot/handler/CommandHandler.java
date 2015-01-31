@@ -8,51 +8,10 @@ import org.pircbotx.Channel;
 import org.pircbotx.User;
 import org.pircbotx.hooks.events.MessageEvent;
 
+import com.google.common.reflect.ClassPath;
+import com.google.common.reflect.ClassPath.ClassInfo;
 import com.unacceptableuse.unacceptablebot.UnacceptableBot;
 import com.unacceptableuse.unacceptablebot.command.Command;
-import com.unacceptableuse.unacceptablebot.command.CommandBroadcast;
-import com.unacceptableuse.unacceptablebot.command.CommandCanIDate;
-import com.unacceptableuse.unacceptablebot.command.CommandCommand;
-import com.unacceptableuse.unacceptablebot.command.CommandConnect;
-import com.unacceptableuse.unacceptablebot.command.CommandCount;
-import com.unacceptableuse.unacceptablebot.command.CommandDebug;
-import com.unacceptableuse.unacceptablebot.command.CommandDefine;
-import com.unacceptableuse.unacceptablebot.command.CommandDefineUD;
-import com.unacceptableuse.unacceptablebot.command.CommandFaucet;
-import com.unacceptableuse.unacceptablebot.command.CommandFillMeIn;
-import com.unacceptableuse.unacceptablebot.command.CommandFucksGiven;
-import com.unacceptableuse.unacceptablebot.command.CommandFunction;
-import com.unacceptableuse.unacceptablebot.command.CommandGitInfo;
-import com.unacceptableuse.unacceptablebot.command.CommandGoogle;
-import com.unacceptableuse.unacceptablebot.command.CommandHelp;
-import com.unacceptableuse.unacceptablebot.command.CommandImage;
-import com.unacceptableuse.unacceptablebot.command.CommandImageSearch;
-import com.unacceptableuse.unacceptablebot.command.CommandImport;
-import com.unacceptableuse.unacceptablebot.command.CommandInsult;
-import com.unacceptableuse.unacceptablebot.command.CommandListChans;
-import com.unacceptableuse.unacceptablebot.command.CommandLive;
-import com.unacceptableuse.unacceptablebot.command.CommandLotteryDebug;
-import com.unacceptableuse.unacceptablebot.command.CommandMessageAlert;
-import com.unacceptableuse.unacceptablebot.command.CommandMessageStats;
-import com.unacceptableuse.unacceptablebot.command.CommandPing;
-import com.unacceptableuse.unacceptablebot.command.CommandQuote;
-import com.unacceptableuse.unacceptablebot.command.CommandRand;
-import com.unacceptableuse.unacceptablebot.command.CommandRelay;
-import com.unacceptableuse.unacceptablebot.command.CommandSentence;
-import com.unacceptableuse.unacceptablebot.command.CommandSetAccessLevel;
-import com.unacceptableuse.unacceptablebot.command.CommandSeuss;
-import com.unacceptableuse.unacceptablebot.command.CommandSnapChat;
-import com.unacceptableuse.unacceptablebot.command.CommandSoundcloud;
-import com.unacceptableuse.unacceptablebot.command.CommandSql;
-import com.unacceptableuse.unacceptablebot.command.CommandStevie;
-import com.unacceptableuse.unacceptablebot.command.CommandTime;
-import com.unacceptableuse.unacceptablebot.command.CommandTopic;
-import com.unacceptableuse.unacceptablebot.command.CommandTwat;
-import com.unacceptableuse.unacceptablebot.command.CommandTwitter;
-import com.unacceptableuse.unacceptablebot.command.CommandUptime;
-import com.unacceptableuse.unacceptablebot.command.CommandWhoami;
-import com.unacceptableuse.unacceptablebot.command.CommandWolfram;
-import com.unacceptableuse.unacceptablebot.command.CommandYoutube;
 import com.unacceptableuse.unacceptablebot.variable.Level;
 
 public class CommandHandler
@@ -107,53 +66,26 @@ public class CommandHandler
 	public void init()
 	{
 		System.out.println("Starting command registration");
-		// Keep this in alphabetical order.
-		addCommand(new CommandBroadcast());
-		addCommand(new CommandCanIDate());
-		addCommand(new CommandCommand());
-		addCommand(new CommandConnect());
-		addCommand(new CommandCount());
-		addCommand(new CommandDebug());
-		addCommand(new CommandDefine());
-		addCommand(new CommandDefineUD());
-		addCommand(new CommandFaucet());
-		addCommand(new CommandFillMeIn());
-		addCommand(new CommandFucksGiven());
-		addCommand(new CommandFunction());
-		addCommand(new CommandGitInfo());
-		addCommand(new CommandGoogle());
-		addCommand(new CommandHelp());
-		addCommand(new CommandImage());
-		addCommand(new CommandImageSearch());
-		addCommand(new CommandImport());
-		addCommand(new CommandInsult());
-		addCommand(new CommandLotteryDebug());
-		addCommand(new CommandListChans());
-		addCommand(new CommandLive());
-		addCommand(new CommandMessageAlert());
-		addCommand(new CommandMessageStats());
-		addCommand(new CommandPing());
-		addCommand(new CommandQuote());
-		addCommand(new CommandRand());
-		addCommand(new CommandRelay());
-		addCommand(new CommandSentence());
-		addCommand(new CommandSetAccessLevel());
-		addCommand(new CommandSeuss());
-		addCommand(new CommandSnapChat());
-		addCommand(new CommandSoundcloud());
-		addCommand(new CommandSql());
-		addCommand(new CommandStevie());
-		addCommand(new CommandTime());
-		addCommand(new CommandTopic());
-		addCommand(new CommandTwat());
-		addCommand(new CommandTwitter());
-		addCommand(new CommandUptime());
-		addCommand(new CommandWhoami());
-		addCommand(new CommandWolfram());
-		addCommand(new CommandYoutube());
+		try {
+			for(ClassInfo ci : ClassPath.from(ClassLoader.getSystemClassLoader()).getTopLevelClasses("com.unacceptableuse.unacceptablebot.command")) {
+				if(!ci.getName().equals("com.unacceptableuse.unacceptablebot.command.Command")
+						&& !ci.getName().contains("Dynamic")
+						&& ci.load().getAnnotation(Deprecated.class) == null) {
+					addCommand(((Command) ci.load().newInstance()));
+				}
+			}
+		} catch(InstantiationException | IllegalAccessException | IOException e) {
+			e.printStackTrace();
+		}
+		
 		UnacceptableBot.log("DEBUG", "CMDREG", "Registered " + getCommands().size() + " commands successfully!");
 		
-		String table = "<html><body style=\"background-color: #F1F2DA\">\n";
+		String table = "<html>"
+				+ "<head>"
+				+ "<title>Stevie Help Page</title>"
+				+ "<link rel="+'"'+"stylesheet"+'"'+" type="+'"'+"text/css"+'"'+" href="+'"'+"https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css"+'"'+" />"
+				+ "<link rel="+'"'+"stylesheet"+'"'+" type="+'"'+"text/css"+'"'+" href="+'"'+"https://boywanders.us/stevie.css"+'"'+"/>"
+						+ "</head>\n";
 		
 		table += "<table border=\"1\" width=\"50%\">\n" +
 							"\t<tr>\n" +

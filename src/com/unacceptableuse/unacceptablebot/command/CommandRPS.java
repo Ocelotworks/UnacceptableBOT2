@@ -12,6 +12,7 @@ import com.unacceptableuse.unacceptablebot.UnacceptableBot;
  * @author Peter
  *
  */
+@Deprecated
 public class CommandRPS extends Command
 {
 
@@ -34,7 +35,7 @@ public class CommandRPS extends Command
 	public String[] getAliases()
 	{
 
-		return null;
+		return new String[] { "rps" };
 	}
 
 	@Override

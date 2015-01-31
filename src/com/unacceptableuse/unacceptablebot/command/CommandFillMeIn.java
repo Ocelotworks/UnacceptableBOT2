@@ -14,6 +14,7 @@ import com.unacceptableuse.unacceptablebot.handler.ConfigHandler;
  * @author Neil
  *
  */
+@Deprecated
 public class CommandFillMeIn extends Command
 {
 
@@ -26,7 +27,7 @@ public class CommandFillMeIn extends Command
 	@Override
 	public String getHelp()
 	{
-		return "Usage: fmi <number> | Result: Shows you the last specified number of messages";
+		return "Usage: fmi <number> | Result: Shows you the last specified number of messages.";
 	}
 
 	@Override
