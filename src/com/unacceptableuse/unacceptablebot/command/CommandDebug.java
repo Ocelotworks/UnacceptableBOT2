@@ -224,8 +224,8 @@ public class CommandDebug extends Command
 			{
 				if(args[2].equals("variable"))
 				{
-					Class c = UnacceptableBot.class;
-					Method m = c.getDeclaredMethod(args[3]);
+				//	Class c = UnacceptableBot.class;
+					//Method m = c.getDeclaredMethod(args[3]);
 					
 					
 				}else if(args[2].equals("variable"))
