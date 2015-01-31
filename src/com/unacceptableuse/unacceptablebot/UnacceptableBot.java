@@ -214,14 +214,15 @@ public class UnacceptableBot extends ListenerAdapter
 	private static void doTopicTick(String channel)
 	{
 		if(channel.equals("##Ocelotworks")){
-		messageCount++;
-		if (messageCount > 100)
-		{
-				updateTopic();
-				currentTopic++;
-				messageCount = 0;
+			messageCount++;
+			if (messageCount > 100)
+			{
+					updateTopic();
+					currentTopic++;
+					messageCount = 0;
+			}
 		}
-		}
+		
 	}
 
 	public static PircBotX getBot()

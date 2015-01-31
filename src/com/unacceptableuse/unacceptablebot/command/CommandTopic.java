@@ -4,6 +4,7 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import org.pircbotx.Channel;
 import org.pircbotx.User;
@@ -37,7 +38,7 @@ public class CommandTopic extends Command
 	{
 		try
 		{
-			final ResultSet rs = UnacceptableBot.getConfigHandler().sql.query("SELECT Username,Message FROM `teknogeek_unacceptablebot`.`" + channel.getName() + "` WHERE ID=(SELECT MAX(ID)"+(args.length > 1 ? "-"+args[1]: "")+" FROM `teknogeek_unacceptablebot`.`" + channel.getName() + "`)");
+			final ResultSet rs = UnacceptableBot.getConfigHandler().sql.query("SELECT Username,Message FROM `teknogeek_unacceptablebot`.`" + channel.getName() + "` WHERE ID=(SELECT MAX(ID)"+(args.length > 1 ? "-"+Integer.parseInt(args[1]): "")+" FROM `teknogeek_unacceptablebot`.`" + channel.getName() + "`)");
 			rs.next();
 			final String newTopic = "<" + rs.getString(1) + "> " + rs.getString(2);
 			
@@ -55,7 +56,13 @@ public class CommandTopic extends Command
 				sendMessage("Added topic " + newTopic, channel);
 			}
 
-		} catch (final Exception e)
+		}catch(SQLException e)
+		{
+			sendMessage("Unable to add quote:"+(UnacceptableBot.getConfigHandler().isConnected() ? "Invalid number" : "Database connection failed"), channel);		
+		}catch(NumberFormatException e)
+		{
+			sendMessage("Unable to add quote: Invalid number", channel);
+		}catch (final Exception e)
 		{
 			sendMessage("Unable to add quote: " + e.toString(), channel);
 			e.printStackTrace();
