@@ -22,16 +22,23 @@ public class CommandDebug extends Command
 	{
 		return new String[] { "debug" };
 	}
+	
+	@Override
+	public int requiredArguments()
+	{
+		return 1;
+	}
 
 	@Override
 	public String getHelp()
 	{
-		return "sock|commands|irc";
+		return "sock|commands|irc|reflection - Provides basic debug functions";
 	}
 
 	@Override
 	public void performCommand(final User sender, final Channel channel, final String message, final String[] args)
 	{
+		
 		if (args[1].equalsIgnoreCase("sock"))
 		{
 			if (args.length < 3)
@@ -67,7 +74,7 @@ public class CommandDebug extends Command
 		{
 			if (args.length < 3)
 			{
-				sendMessage("Usage: !debug irc status|nick|action|mode|notice|invite|message", channel);
+				sendMessage("Usage: !debug irc status|nick|action|mode|notice|invite|message - Debug actions for IRC functions", channel);
 				return;
 			} else
 				switch (args[2].toLowerCase())
@@ -119,7 +126,7 @@ public class CommandDebug extends Command
 		{
 			if (args.length < 3)
 			{
-				sendMessage("Usage: !debug topic removecurrent|removeindex|addcurrent|add|show|showall|up|down|set ", channel);
+				sendMessage("Usage: !debug topic removecurrent|removeindex|addcurrent|add|show|showall|up|down|set - Debug actions for topic setting", channel);
 				return;
 			} else
 			{
@@ -207,6 +214,31 @@ public class CommandDebug extends Command
 					}
 				}
 			}
+		} else if (args[1].equalsIgnoreCase("reflection"))
+		{
+			if(args.length < 4)
+			{
+				sendMessage("Usage: !debug reflection variable <Instance in UnacceptableBot.class> <varible> OR method <method> <parameters> - Retrieves a varible from a selected class", channel);
+				return;
+			}else
+			{
+				if(args[2].equals("variable"))
+				{
+					Class c = UnacceptableBot.class;
+					Method m = c.getDeclaredMethod(args[3]);
+					
+					
+				}else if(args[2].equals("variable"))
+				{
+					
+				}else
+				{
+					sendMessage("Invalid", channel);
+					return;
+				}
+					
+			}
+			
 		}
 	}
 

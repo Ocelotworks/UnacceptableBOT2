@@ -213,6 +213,7 @@ public class UnacceptableBot extends ListenerAdapter
 	
 	private static void doTopicTick(String channel)
 	{
+		if(!channel.equals("##Ocelotworks"))return;
 		messageCount++;
 		if (messageCount > 100)
 		{
