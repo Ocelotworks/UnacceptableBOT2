@@ -71,10 +71,10 @@ public class CommandHandler
 				if(!ci.getName().equals("com.unacceptableuse.unacceptablebot.command.Command")
 						&& !ci.getName().contains("Dynamic")
 						&& ci.load().getAnnotation(Deprecated.class) == null) {
-					addCommand(((Command) ci.load().newInstance()));
+					addCommand(((Command) Command.class.getClassLoader().loadClass(ci.getName()).newInstance()));
 				}
 			}
-		} catch(InstantiationException | IllegalAccessException | IOException e) {
+		} catch(InstantiationException | IllegalAccessException | IOException | ClassNotFoundException e) {
 			e.printStackTrace();
 		}
 		
