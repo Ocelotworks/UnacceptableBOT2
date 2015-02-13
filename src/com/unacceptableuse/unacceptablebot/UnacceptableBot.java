@@ -610,7 +610,7 @@ public class UnacceptableBot extends ListenerAdapter
 		doYoutube(event.getMessage(), event.getChannel().getName());
 		doSoundcloud(event.getMessage(), event.getChannel().getName());
 		doTopicTick(event.getChannel().getName());
-		doTwitter(event.getMessage(), event.getChannel().getName());
+		//doTwitter(event.getMessage(), event.getChannel().getName());
 		//doLottery(event.getMessage(), event.getChannel().getName(), event.getUser());
 		recordMessage(event);
 	}
