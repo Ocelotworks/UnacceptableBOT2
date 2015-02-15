@@ -12,7 +12,7 @@ import com.unacceptableuse.unacceptablebot.UnacceptableBot;
 
 public class MySQLConnection
 {
-	private static final String CONNECTION = "jdbc:mysql://hp.matrixdevuk.pw:3306/";
+	private static final String CONNECTION = "jdbc:mysql://boywanders.us:3306/";
 
 	private static final String dbClassName = "com.mysql.jdbc.Driver";
 
