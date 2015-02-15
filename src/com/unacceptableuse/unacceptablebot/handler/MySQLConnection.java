@@ -12,7 +12,7 @@ import com.unacceptableuse.unacceptablebot.UnacceptableBot;
 
 public class MySQLConnection
 {
-	private static final String CONNECTION = "jdbc:mysql://boywanders.us:3306/";
+	private static final String CONNECTION = "jdbc:mysql://localhost:3306/";
 
 	private static final String dbClassName = "com.mysql.jdbc.Driver";
 
@@ -49,7 +49,7 @@ public class MySQLConnection
 		Class.forName(dbClassName);
 
 		final Properties p = new Properties();
-		p.put("user", "unacceptablebot");
+		p.put("user", "stevie");
 		p.put("password", UnacceptableBot.getConfigHandler().getPassword("mysql"));
 
 		c = DriverManager.getConnection(CONNECTION, p);
@@ -70,7 +70,7 @@ public class MySQLConnection
 	{
 		try
 		{
-			final ResultSet rs = query("SELECT * FROM  teknogeek_settings.Access_Levels WHERE  `Username` =  '" + user + "' LIMIT 1");
+			final ResultSet rs = query("SELECT * FROM  stevie.Access_Levels WHERE  `Username` =  '" + user + "' LIMIT 1");
 			return rs.next() ? rs.getInt(2) : 0;
 		} catch (final SQLException e)
 		{
@@ -84,7 +84,7 @@ public class MySQLConnection
 	{
 		try
 		{
-			final ResultSet rs = query("SELECT * FROM  `teknogeek_settings`.`Channels` WHERE  `Setting` =  '" + setting + "' LIMIT 1");
+			final ResultSet rs = query("SELECT * FROM  `stevie`.`Channels` WHERE  `Setting` =  '" + setting + "' LIMIT 1");
 			return rs.next() ? rs.getString(2) : null;
 		} catch (final SQLException e)
 		{
@@ -118,7 +118,7 @@ public class MySQLConnection
 			return cache.get(setting);
 		try
 		{
-			PreparedStatement ps = getPreparedStatement("SELECT Value FROM  teknogeek_settings.Global_Settings WHERE  `Setting` =  ? LIMIT 1");
+			PreparedStatement ps = getPreparedStatement("SELECT Value FROM  stevie.Global_Settings WHERE  `Setting` =  ? LIMIT 1");
 			ps.setString(1, setting);
 			ResultSet rs = ps.executeQuery();
 			String result = rs.next() ? rs.getString(1) : null; //Does returning "null" sound bad? Too bad!
@@ -136,7 +136,7 @@ public class MySQLConnection
 	{
 		try
 		{
-			return excecute("UPDATE `teknogeek_settings`.`Global_Settings` SET `Value` = `Value`+" + amt + " WHERE `Setting` = '" + setting + "';");
+			return excecute("UPDATE `stevie`.`Global_Settings` SET `Value` = `Value`+" + amt + " WHERE `Setting` = '" + setting + "';");
 		} catch (final SQLException e)
 		{
 			e.printStackTrace();
@@ -166,7 +166,7 @@ public class MySQLConnection
 	{
 		try
 		{
-			return excecute("INSERT INTO `teknogeek_settings`.`Access_Levels` (`Username`, `Level`) VALUES ('" + user + "', '" + level + "') ON DUPLICATE KEY UPDATE Username=VALUES(Username);");
+			return excecute("INSERT INTO `stevie`.`Access_Levels` (`Username`, `Level`) VALUES ('" + user + "', '" + level + "') ON DUPLICATE KEY UPDATE Username=VALUES(Username);");
 		} catch (final SQLException e)
 		{
 			e.printStackTrace();
@@ -179,7 +179,7 @@ public class MySQLConnection
 	{
 		try
 		{
-			return excecute("INSERT INTO `teknogeek_settings`.`Channels` (`Setting`, `Value`) VALUES ('" + setting + "', '" + value + "') ON DUPLICATE KEY UPDATE Setting=VALUES(Setting);");
+			return excecute("INSERT INTO `stevie`.`Channels` (`Setting`, `Value`) VALUES ('" + setting + "', '" + value + "') ON DUPLICATE KEY UPDATE Setting=VALUES(Setting);");
 		} catch (final SQLException e)
 		{
 			e.printStackTrace();
@@ -193,7 +193,7 @@ public class MySQLConnection
 		cache.put(setting, value);
 		try
 		{
-			PreparedStatement ps = getPreparedStatement("INSERT INTO `teknogeek_settings`.`Global_Settings` (`Setting`, `Value`) VALUES (?, ?) ON DUPLICATE KEY UPDATE Setting=VALUES(Setting);" );
+			PreparedStatement ps = getPreparedStatement("INSERT INTO `stevie`.`Global_Settings` (`Setting`, `Value`) VALUES (?, ?) ON DUPLICATE KEY UPDATE Setting=VALUES(Setting);" );
 			ps.setString(1, setting);
 			ps.setString(2, value);
 			return ps.execute();
