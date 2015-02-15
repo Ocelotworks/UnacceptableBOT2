@@ -31,7 +31,7 @@ public class ConfigHandler
 	{
 		try
 		{
-			return sql.excecute("CREATE TABLE IF NOT EXISTS `teknogeek_unacceptablebot`.`" + channel + "` (ID int NOT NULL AUTO_INCREMENT, Time text,Username text,Message text, PRIMARY KEY (ID))");
+			return sql.excecute("CREATE TABLE IF NOT EXISTS `stevie`.`" + channel + "` (ID int NOT NULL AUTO_INCREMENT, Time text,Username text,Message text, PRIMARY KEY (ID))");
 		} catch (final SQLException e)
 		{
 			e.printStackTrace();
@@ -87,7 +87,7 @@ public class ConfigHandler
 			// This gets the logth record. It requires some black magic before
 			// handing it a number
 			// Similar to the stuff I did in the first fillmein.
-			final ResultSet rs = sql.query("SELECT Time,Username,Message FROM `teknogeek_unacceptablebot`.`" + channel + "` ORDER BY ID LIMIT " + log + ",1");
+			final ResultSet rs = sql.query("SELECT Time,Username,Message FROM `stevie`.`" + channel + "` ORDER BY ID LIMIT " + log + ",1");
 			return rs;
 		} catch (final SQLException e)
 		{
@@ -181,7 +181,7 @@ public class ConfigHandler
 	{
 		try
 		{
-			return sql.query("SELECT MAX(ID) FROM `teknogeek_unacceptablebot`.`" + channel + "`");
+			return sql.query("SELECT MAX(ID) FROM `stevie`.`" + channel + "`");
 		} catch (final SQLException e)
 		{
 			e.printStackTrace();
@@ -224,7 +224,7 @@ public class ConfigHandler
 	{
 		try
 		{
-			final PreparedStatement ps = sql.getPreparedStatement("INSERT INTO `teknogeek_unacceptablebot`.`" + channel + "` (`Time`, `Username`, `Message`) VALUES (?, ?, ?)");
+			final PreparedStatement ps = sql.getPreparedStatement("INSERT INTO `stevie`.`" + channel + "` (`Time`, `Username`, `Message`) VALUES (?, ?, ?)");
 			ps.setString(1, time);
 			ps.setString(2, user);
 			ps.setString(3, message);

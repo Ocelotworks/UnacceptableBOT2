@@ -38,7 +38,7 @@ public class CommandTopic extends Command
 	{
 		try
 		{
-			final ResultSet rs = UnacceptableBot.getConfigHandler().sql.query("SELECT Username,Message FROM `teknogeek_unacceptablebot`.`" + channel.getName() + "` WHERE ID=(SELECT MAX(ID)"+(args.length > 1 ? "-"+Integer.parseInt(args[1]): "")+" FROM `teknogeek_unacceptablebot`.`" + channel.getName() + "`)");
+			final ResultSet rs = UnacceptableBot.getConfigHandler().sql.query("SELECT Username,Message FROM `stevie`.`" + channel.getName() + "` WHERE ID=(SELECT MAX(ID)"+(args.length > 1 ? "-"+Integer.parseInt(args[1]): "")+" FROM `stevie`.`" + channel.getName() + "`)");
 			rs.next();
 			final String newTopic = "<" + rs.getString(1) + "> " + rs.getString(2);
 			
@@ -58,7 +58,7 @@ public class CommandTopic extends Command
 
 		}catch(SQLException e)
 		{
-			sendMessage("Unable to add quote:"+(UnacceptableBot.getConfigHandler().isConnected() ? "Invalid number" : "Database connection failed"), channel);		
+			sendMessage("Unable to add quote:"+e.toString(), channel);		
 		}catch(NumberFormatException e)
 		{
 			sendMessage("Unable to add quote: Invalid number", channel);
