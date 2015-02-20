@@ -12,7 +12,7 @@ import com.unacceptableuse.unacceptablebot.UnacceptableBot;
 
 public class MySQLConnection
 {
-	private static final String CONNECTION = "jdbc:mysql://localhost:3306/";
+	private static final String CONNECTION = "jdbc:mysql://boywanders.us:3306/";
 
 	private static final String dbClassName = "com.mysql.jdbc.Driver";
 
@@ -70,7 +70,7 @@ public class MySQLConnection
 	{
 		try
 		{
-			final ResultSet rs = query("SELECT * FROM  stevie.Access_Levels WHERE  `Username` =  '" + user + "' LIMIT 1");
+			final ResultSet rs = query("SELECT * FROM  `stevie`.`Access_Levels` WHERE  `Username` =  '" + user + "' LIMIT 1");
 			return rs.next() ? rs.getInt(2) : 0;
 		} catch (final SQLException e)
 		{

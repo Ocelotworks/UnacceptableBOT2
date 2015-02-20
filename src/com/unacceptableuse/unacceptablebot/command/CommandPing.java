@@ -2,6 +2,7 @@ package com.unacceptableuse.unacceptablebot.command;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.net.InetAddress;
 import java.net.URL;
 
 import org.pircbotx.Channel;
@@ -45,7 +46,7 @@ public class CommandPing extends Command
 			if (urlConn.getResponseCode() == HttpURLConnection.HTTP_OK)
 			{
 				ping = (int) (endTime - startTime);
-				sendMessage(address + " responded in " + ping + "ms.", channel);
+				sendMessage(address + "("+InetAddress.getByName(url.getHost()).getHostAddress()+") responded in " + ping + "ms.", channel);
 			} else
 				sendMessage("HTTP Error " + urlConn.getResponseCode(), channel);
 		} catch (final IOException e)
