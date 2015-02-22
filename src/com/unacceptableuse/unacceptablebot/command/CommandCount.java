@@ -29,7 +29,7 @@ public class CommandCount extends Command
 		try
 		{
 			final String phrase = message.replace(args[0], "").trim();
-			final PreparedStatement ps = UnacceptableBot.getConfigHandler().sql.getPreparedStatement("SELECT COUNT(*) FROM `teknogeek_unacceptablebot`.`" + channel.getName() + "` WHERE Message LIKE ?");
+			final PreparedStatement ps = UnacceptableBot.getConfigHandler().sql.getPreparedStatement("SELECT COUNT(*) FROM `stevie`.`" + channel.getName() + "` WHERE Message LIKE ?");
 			ps.setString(1, "%" + phrase + "%");
 			final ResultSet rs = ps.executeQuery();
 			rs.next();

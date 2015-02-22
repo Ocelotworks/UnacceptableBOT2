@@ -44,14 +44,14 @@ public class CommandMessageStats extends Command
 			final ArrayList<String> targetMessages = new ArrayList<String>();
 			final ArrayList<String> channelMessages = new ArrayList<String>();
 
-			final PreparedStatement ps = UnacceptableBot.getConfigHandler().sql.getPreparedStatement("SELECT Count(Message) AS MessageCount FROM `teknogeek_unacceptablebot`.`" + targetChannel + "`");
+			final PreparedStatement ps = UnacceptableBot.getConfigHandler().sql.getPreparedStatement("SELECT Count(Message) AS MessageCount FROM `stevie`.`" + targetChannel + "`");
 
 			final ResultSet rs = ps.executeQuery();
 			while (rs.next())
 				channelMessages.add(rs.getString("MessageCount"));
 			channelMessagesCount = Integer.valueOf(channelMessages.get(0));
 
-			final PreparedStatement ps1 = UnacceptableBot.getConfigHandler().sql.getPreparedStatement("SELECT Count(Message) AS MessageCount FROM `teknogeek_unacceptablebot`.`" + targetChannel + "` WHERE Username = '" + target + "'");
+			final PreparedStatement ps1 = UnacceptableBot.getConfigHandler().sql.getPreparedStatement("SELECT Count(Message) AS MessageCount FROM `stevie`.`" + targetChannel + "` WHERE Username = '" + target + "'");
 
 			final ResultSet rs1 = ps1.executeQuery();
 			while (rs1.next())

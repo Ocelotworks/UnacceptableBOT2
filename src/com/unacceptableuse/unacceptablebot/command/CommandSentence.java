@@ -41,7 +41,7 @@ public class CommandSentence extends Command
 
 		try
 		{
-			final PreparedStatement ps = UnacceptableBot.getConfigHandler().sql.getPreparedStatement("SELECT Id,Username,Message FROM `teknogeek_unacceptablebot`.`" + channel.getName() + "` WHERE Message LIKE '" + word + "' ORDER BY RAND() LIMIT 1");
+			final PreparedStatement ps = UnacceptableBot.getConfigHandler().sql.getPreparedStatement("SELECT Id,Username,Message FROM `stevie`.`" + channel.getName() + "` WHERE Message LIKE '" + word + "' ORDER BY RAND() LIMIT 1");
 			ps.setString(1, word);
 			// ps.setInt(2, limit > UnacceptableBot.getConfigHandler().getInteger("sentenceMaxLimit") ? 1 : limit);
 			// ps.setInt(2, 1);
@@ -58,7 +58,7 @@ public class CommandSentence extends Command
 					sendMessage("ID: " + id + " | Context: " + context + " | startID: " + startID, channel);
 					for (int i = startID; i >= id; i++)
 					{
-						final PreparedStatement cps = UnacceptableBot.getConfigHandler().sql.getPreparedStatement("SELECT Username,Message FROM `teknogeek_unacceptablebot`.`" + channel.getName() + "` WHERE Id=" + i);
+						final PreparedStatement cps = UnacceptableBot.getConfigHandler().sql.getPreparedStatement("SELECT Username,Message FROM `stevie`.`" + channel.getName() + "` WHERE Id=" + i);
 						final ResultSet crs = cps.executeQuery();
 						crs.next();
 						sendMessage("<" + crs.getString(1) + "> " + crs.getString(2), channel);

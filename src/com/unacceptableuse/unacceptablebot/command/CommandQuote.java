@@ -55,7 +55,7 @@ public class CommandQuote extends Command
 		{
 			for (int i = 0; i < count; i++)
 			{
-				final PreparedStatement ps = UnacceptableBot.getConfigHandler().sql.getPreparedStatement("SELECT Message FROM `teknogeek_unacceptablebot`.`" + quoteChannel + "` WHERE Username = '" + args[1] // No replace needed
+				final PreparedStatement ps = UnacceptableBot.getConfigHandler().sql.getPreparedStatement("SELECT Message FROM `stevie`.`" + quoteChannel + "` WHERE Username = '" + args[1] // No replace needed
 						+ "' ORDER BY RAND() LIMIT " + count);
 				final ResultSet rs = ps.executeQuery();
 				if (rs.next())
