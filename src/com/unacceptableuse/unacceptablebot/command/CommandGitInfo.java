@@ -29,10 +29,7 @@ public class CommandGitInfo extends Command
 	public void performCommand(final User sender, final Channel channel, final String message, final String[] args)
 	{
 		final String user = args[1];
-
-		final JsonParser parser = new JsonParser();
-
-		final JsonObject jo = parser.parse(new InputStreamReader(UnacceptableBot.getUrlContents("https://osrc.dfm.io/" + user + ".json"))).getAsJsonObject();
+		final JsonObject jo = UnacceptableBot.getParser().parse(new InputStreamReader(UnacceptableBot.getUrlContents("https://osrc.dfm.io/" + user + ".json"))).getAsJsonObject();
 
 		try
 		{
