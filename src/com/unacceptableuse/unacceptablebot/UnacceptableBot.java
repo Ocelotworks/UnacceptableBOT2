@@ -526,9 +526,7 @@ public class UnacceptableBot extends ListenerAdapter
 	@Override
 	public void onMessage(final MessageEvent event) throws Exception
 	{
-		if(Calendar.getInstance().get(Calendar.DAY_OF_MONTH) == 14 && Calendar.getInstance().get(Calendar.HOUR_OF_DAY) == 9 && Calendar.getInstance().get(Calendar.MINUTE) == 26 && Calendar.getInstance().get(Calendar.SECOND) == 53){
-			event.respond("It's 3.14.15 9:26:53! Happy pi day!");
-		}
+
 		if (relay.containsKey(event.getChannel().getName().toLowerCase()) && !event.getMessage().startsWith("!stoprelay"))
 		{
 			final String user = event.getUser().getNick().toLowerCase();
