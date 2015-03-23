@@ -229,7 +229,7 @@ public class ConfigHandler
 		try
 		{
 			String safeMessage = message.replaceAll("(;|\\s)(exec|execute|select|insert|update|delete|create|alter|drop|rename|truncate|backup|restore)\\s", "ಠ_ಠ ");
-			return sql.excecute("INSERT INTO `stevie`.`" + channel + "` (`Time`, `Username`, `Message`) VALUES ("+time+", "+user+", "+safeMessage+");");
+			return sql.excecute("INSERT INTO `stevie`.`" + channel + "` (`Time`, `Username`, `Message`) VALUES ('"+time+"', '"+user+"', '"+safeMessage+"');");
 		} catch (final SQLException e)
 		{
 			e.printStackTrace();
