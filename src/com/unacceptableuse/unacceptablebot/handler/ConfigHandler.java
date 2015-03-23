@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Properties;
 
 import org.pircbotx.User;
@@ -20,6 +21,7 @@ public class ConfigHandler
 
 	public MySQLConnection sql = null;
 	private Properties staticVars = null;
+	private ArrayList<String> chanTables = new ArrayList<String>();
 
 
 	/**
@@ -31,6 +33,8 @@ public class ConfigHandler
 	{
 		try
 		{
+			if(chanTables.contains(channel))return true;
+			chanTables.add(channel);
 			return sql.excecute("CREATE TABLE IF NOT EXISTS `stevie`.`" + channel + "` (ID int NOT NULL AUTO_INCREMENT, Time text,Username text,Message text, PRIMARY KEY (ID))");
 		} catch (final SQLException e)
 		{
@@ -224,11 +228,8 @@ public class ConfigHandler
 	{
 		try
 		{
-			final PreparedStatement ps = sql.getPreparedStatement("INSERT INTO `stevie`.`" + channel + "` (`Time`, `Username`, `Message`) VALUES (?, ?, ?)");
-			ps.setString(1, time);
-			ps.setString(2, user);
-			ps.setString(3, message);
-			return ps.executeUpdate() == 0;
+			String safeMessage = message.replaceAll("(;|\\s)(exec|execute|select|insert|update|delete|create|alter|drop|rename|truncate|backup|restore)\\s", "bobba");
+			return sql.excecute("INSERT INTO `stevie`.`" + channel + "` (`Time`, `Username`, `Message`) VALUES ("+time+", "+user+", "+safeMessage+");");
 		} catch (final SQLException e)
 		{
 			e.printStackTrace();
