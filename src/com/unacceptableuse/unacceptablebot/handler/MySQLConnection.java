@@ -166,7 +166,7 @@ public class MySQLConnection
 	{
 		try
 		{
-			return excecute("INSERT INTO `stevie`.`Access_Levels` (`Username`, `Level`) VALUES ('" + user + "', '" + level + "') ON DUPLICATE KEY UPDATE Username=VALUES(Username);");
+			return excecute("INSERT INTO `stevie`.`Access_Levels` (`Username`, `Level`) VALUES ('" + user + "', '" + level + "') ON DUPLICATE KEY UPDATE Username="+user+";");
 		} catch (final SQLException e)
 		{
 			e.printStackTrace();
@@ -197,10 +197,7 @@ public class MySQLConnection
 			ps.setString(1, setting);
 			ps.setString(2, value);
 			ps.setString(3, value);
-			return ps.execute();
-			
-
-			// XXX: This seems inefficient. Poor database :(
+			return ps.execute();			
 		} catch (final SQLException e)
 		{
 			e.printStackTrace();
