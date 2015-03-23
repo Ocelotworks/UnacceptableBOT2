@@ -2,6 +2,7 @@ package com.unacceptableuse.unacceptablebot;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -9,13 +10,8 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.security.DigestInputStream;
-import java.security.MessageDigest;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -391,19 +387,16 @@ public class UnacceptableBot extends ListenerAdapter
 
 		try
 		{
+			
 			System.out.println("Generating MD5 Checksum...");
-			final MessageDigest md = MessageDigest.getInstance("MD5");
-
-			final InputStream is = Files.newInputStream(Paths.get("unacceptablebot2.jar"));
-			final DigestInputStream dis = new DigestInputStream(is, md);
-
-			final MessageDigest mdg = dis.getMessageDigest();
-
-			final String newDigest = String.valueOf(mdg.digest());
+			FileInputStream fis = new FileInputStream(new File("unacceptablebot2.jar"));
+			String newDigest = org.apache.commons.codec.digest.DigestUtils.md5Hex(fis);
+			fis.close();
 			String oldDigest = config.getString("checksum");
 			if(oldDigest == null) oldDigest = "none";
 
-			System.out.println("MD5: " + newDigest);
+			
+			System.out.println("New: " + newDigest+" Old: "+oldDigest);
 
 			if (!newDigest.equals(oldDigest))
 			{

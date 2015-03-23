@@ -193,9 +193,10 @@ public class MySQLConnection
 		cache.put(setting, value);
 		try
 		{
-			PreparedStatement ps = getPreparedStatement("INSERT INTO `stevie`.`Global_Settings` (`Setting`, `Value`) VALUES (?, ?) ON DUPLICATE KEY UPDATE Setting=VALUES(Setting);" );
+			PreparedStatement ps = getPreparedStatement("INSERT INTO `stevie`.`Global_Settings` (`Setting`, `Value`) VALUES (?, ?) ON DUPLICATE KEY UPDATE Value=?;" );
 			ps.setString(1, setting);
 			ps.setString(2, value);
+			ps.setString(3, value);
 			return ps.execute();
 			
 
