@@ -228,7 +228,9 @@ public class ConfigHandler
 	{
 		try
 		{
-			String safeMessage = message.replaceAll("(;|\\s)(exec|execute|select|insert|update|delete|create|alter|drop|rename|truncate|backup|restore)\\s", "ಠ_ಠ ");
+			String safeMessage = message.replaceAll("(;|\\s)(exec|execute|select|insert|update|delete|create|alter|drop|rename|truncate|backup|restore)\\s", "<keyword>")
+					.replaceAll("/((\\%3D)|(=))[^\\n]*((\\%27)|(\\')|(\\-\\-)|(\\%3B)|(;))/i", ".");
+
 			return sql.excecute("INSERT INTO `stevie`.`" + channel + "` (`Time`, `Username`, `Message`) VALUES ('"+time+"', '"+user+"', '"+safeMessage+"');");
 		} catch (final SQLException e)
 		{
