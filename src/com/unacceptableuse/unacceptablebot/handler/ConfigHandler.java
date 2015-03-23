@@ -228,10 +228,11 @@ public class ConfigHandler
 	{
 		try
 		{
-			String safeMessage = message.replaceAll("(;|\\s)(exec|execute|select|insert|update|delete|create|alter|drop|rename|truncate|backup|restore)\\s", "<keyword>")
-					.replaceAll("/((\\%3D)|(=))[^\\n]*((\\%27)|(\\')|(\\-\\-)|(\\%3B)|(;))/i", ".");
-
-			return sql.excecute("INSERT INTO `stevie`.`" + channel + "` (`Time`, `Username`, `Message`) VALUES ('"+time+"', '"+user+"', '"+safeMessage+"');");
+			final PreparedStatement ps = sql.getPreparedStatement("INSERT INTO `stevie`.`" + channel + "` (`Time`, `Username`, `Message`) VALUES (?, ?, ?)");
+			ps.setString(1, time);
+			ps.setString(2, user);
+			ps.setString(3, message);
+			return ps.executeUpdate() == 0;
 		} catch (final SQLException e)
 		{
 			e.printStackTrace();
