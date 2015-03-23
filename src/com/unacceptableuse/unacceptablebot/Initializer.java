@@ -2,6 +2,7 @@ package com.unacceptableuse.unacceptablebot;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.nio.charset.Charset;
 import java.util.Properties;
 
 import org.pircbotx.Configuration;
@@ -30,13 +31,14 @@ public class Initializer
 
 			final Configuration config = 
 					new Configuration.Builder()
+					.setEncoding(Charset.forName("UTF-8"))
 					.setName(username).setLogin(username)
 					.setAutoNickChange(true)
 					.addListener(new UnacceptableBot())
 					.setServer(props.getProperty("server"), Integer.parseInt(props.getProperty("port")), props.getProperty("password"))
 					.addAutoJoinChannel(props.getProperty("default_channel"))
 					.buildConfiguration();
-
+			
 			UnacceptableBot.channels.add(props.getProperty("default_channel"));
 			// UnacceptableBot.nickAuth(username, props.getProperty("nickserv_password"));
 			props.clear();
