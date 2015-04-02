@@ -16,12 +16,11 @@ public class CommandYoutube extends Command {
 
 	@Override
 	public String[] getAliases() {
-		return new String[] { "youtube" };
+		return new String[] { "youtube", "yt" };
 	}
 
 	@Override
 	public String getHelp() {
-		// TODO Auto-generated method stub
 		return "Command to download youtube videos : !youtube <video link>";
 	}
 
@@ -57,7 +56,7 @@ public class CommandYoutube extends Command {
 			new File("/home/peter/mp3" + file.getName()).createNewFile();
 			Files.copy(file, new File("/home/peter/mp3/" + file.getName()));
 			file.delete();
-			sendMessage("&GREENThe requested video can be found at: http://files.unacceptableuse.com",channel);
+			sendMessage("&GREENThe requested video can be found at: http://files.unacceptableuse.com/"+file.getName(),channel);
 
 		} catch (IOException | InterruptedException e) {
 			sendMessage("Fuck." + e.getMessage(), channel);
