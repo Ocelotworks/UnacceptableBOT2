@@ -1,6 +1,9 @@
 package com.unacceptableuse.unacceptablebot.handler;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
@@ -155,6 +158,14 @@ public class CommandHandler
 			{
 				UnacceptableBot.log("ERROR", "CMDPRC", "Exception performing " + chosenCommand.getAliases()[0] + ": " + e.toString());
 				event.getBot().sendIRC().message(event.getChannel().getName(), "An error occurred. (" + e.toString() + ")");
+				try {
+					File err = new File("error.txt");
+					err.createNewFile();
+					e.printStackTrace(new PrintStream(err)); //Logs the error to a nice neat text file :D
+				} catch (IOException e1) {
+					event.getBot().sendIRC().message(event.getChannel().getName(), "An error occurred logging the error. (Are you kidding me?) (" + e1.toString() + ")"); //Oh the sweet sweet irony
+					e1.printStackTrace();
+				} 
 			}
 		}
 	}
